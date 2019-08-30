@@ -1,8 +1,18 @@
 import React from 'react';
 import { Component } from 'react';
 
+import { Background } from './components/background.js';
+import { ActiveScreen } from './active-screen.js';
+
+import './app.css';
+
 export class App extends Component {
   render() {
-    return <div>hello world</div>;
+    return (
+      <>
+        <Background />
+        <ActiveScreen />
+      </>
+    );
   }
 }
