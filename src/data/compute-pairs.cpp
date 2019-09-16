@@ -151,26 +151,6 @@ int main ()
 
   cout << LinksSize << " links" << endl;
 
-  cout << "exporting links..." << endl;
-
-  // export links
-  string linksFileName = "links.dat";
-  ofstream linksFile(linksFileName.c_str(), fstream::binary);
-  short endline = -1;
-  for(unsigned int i = 0; i < DictionarySize; i++)
-  {
-    for(unsigned int j = 0; j < Dictionary[i]->links.size(); j++)
-    {
-      unsigned int index = LookupWordIndex(Dictionary, Dictionary[i]->links[j]);
-      linksFile.write(reinterpret_cast<char*>(&index), sizeof(short));
-    }
-    if (i < DictionarySize)
-      linksFile.write(reinterpret_cast<char*>(&endline), sizeof(short));
-  }
-  linksFile.close();
-
-  cout << "links exported" << endl;
-
   ////////////////////////////////////////////////////////////////////////////////
   // compute paths
   ////////////////////////////////////////////////////////////////////////////////

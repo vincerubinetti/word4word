@@ -11,7 +11,7 @@ import { persister } from './state/persister';
 import { getInitialState } from './state/persister';
 import { App } from './app.js';
 
-const store = createStore(
+export const store = createStore(
   reducer,
   getInitialState(),
   applyMiddleware(thunk, persister, logger)

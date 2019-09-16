@@ -1,0 +1,16 @@
+.loading_background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+}
+.loading_bar {
+  width: 200px;
+  opacity: 0.5;
+  fill: black;
+}

@@ -3,7 +3,7 @@ import { copyObject } from '../util/object.js';
 const key = 'root';
 
 // for testing, clear storage on every page reload
-// window.localStorage.clear();
+window.localStorage.clear();
 
 export const persister = (store) => (next) => (action) => {
   const results = next(action);
