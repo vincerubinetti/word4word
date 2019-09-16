@@ -1,0 +1,39 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 260px;
+  height: 50px;
+  margin: 10px 0;
+  font-size: 1.25em;
+  font-weight: 500;
+  border-radius: 10px;
+  overflow: hidden;
+  outline: none;
+  background: none;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.button:hover {
+  cursor: pointer;
+}
+.button:hover,
+.button:focus {
+  transform: scale(1.1);
+  background: white;
+}
+
+.button_left {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 30%;
+  height: 100%;
+}
+.button_right {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 70%;
+  height: 100%;
+}

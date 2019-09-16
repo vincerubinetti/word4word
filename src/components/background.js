@@ -1,10 +1,10 @@
 import React from 'react';
 import { Component } from 'react';
 
-import styles from './background.module.css';
+import './background.css';
 
 export class Background extends Component {
   render() {
-    return <div className={styles.background}></div>;
+    return <div className='background'></div>;
   }
 }

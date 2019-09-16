@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 
 import { Screen } from '../components/screen.js';
-import { Button } from './button.js';
+import { Button } from '../components/button.js';
 
 export class Difficulty extends Component {
   render() {

@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700');
+@import url("https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700");
+@import url("https://use.fontawesome.com/releases/v5.8.2/css/all.css");
 
 * {
-  font-family: Quicksand, sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 html,
@@ -39,4 +40,70 @@ button {
 }
 *[data-color="gray"] {
   background: #b0bec5;
+}
+.wiggle_hitbox .wiggle_item {
+  display: inline-block;
+}
+.wiggle_hitbox:hover .wiggle_item,
+.wiggle_hitbox:focus .wiggle_item {
+  animation-name: wiggle;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+@keyframes wiggle {
+  0% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(-10%);
+  }
+  20% {
+    transform: translateY(10%);
+  }
+  30% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.wiggle_hitbox .wiggle_item:nth-of-type(1) {
+  animation-delay: 0.5s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(2) {
+  animation-delay: 0.6s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(3) {
+  animation-delay: 0.7s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(4) {
+  animation-delay: 0.8s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(5) {
+  animation-delay: 0.9s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(6) {
+  animation-delay: 1s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(7) {
+  animation-delay: 1.1s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(8) {
+  animation-delay: 1.2s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(9) {
+  animation-delay: 1.3s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(10) {
+  animation-delay: 1.4s;
+}
+.wiggle_hitbox .wiggle_item:nth-of-type(11) {
+  animation-delay: 1.5s;
+}
+
+i {
+  margin-right: 0.75em;
 }
