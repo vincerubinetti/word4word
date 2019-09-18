@@ -1,6 +1,17 @@
 export function copyObject(object) {
-  if (typeof object === 'object')
+  try {
     return JSON.parse(JSON.stringify(object));
-  else
+  } catch (error) {
     return object;
+  }
+}
+
+export function filterObject(object, keys) {
+  const newObject = {};
+  for (const key of Object.keys(object)) {
+    if (keys.includes(key))
+      continue;
+    newObject[key] = copyObject(object[key]);
+  }
+  return newObject;
 }

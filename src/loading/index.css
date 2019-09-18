@@ -8,6 +8,7 @@
   right: 0;
   bottom: 0;
   background: #ffffff;
+  z-index: 99;
 }
 .loading_bar {
   width: 200px;

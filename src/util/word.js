@@ -1,8 +1,9 @@
 export class Word {
-  constructor(word, index) {
+  constructor(word, index, type) {
     this.text = word;
     this.index = index;
     this.links = [];
+    this.type = type;
   }
 
   oneDifferent(otherWord) {

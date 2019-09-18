@@ -1,36 +1,38 @@
-.button {
+.icon_button {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 260px;
-  height: 50px;
-  margin: 10px 0;
+  width: var(--xxl);
+  height: var(--lg);
+  margin: var(--sm);
   font-size: 1.25em;
   font-weight: 500;
   border-radius: 10px;
-  overflow: hidden;
-  outline: none;
   background: none;
+  border: none;
+  outline: none;
+  overflow: hidden;
   transition: background 0.25s ease, transform 0.25s ease;
 }
-.button:hover {
+.icon_button:hover {
   cursor: pointer;
 }
-.button:hover,
-.button:focus {
+.icon_button:hover,
+.icon_button:focus {
   transform: scale(1.1);
   background: white;
 }
 
-.button_left {
+.icon_button_left {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 35%;
+  width: 30%;
+  padding-right: var(--md);
 }
-.button_right {
+.icon_button_right {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 65%;
+  width: 70%;
 }

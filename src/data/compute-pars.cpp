@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////////
-// This C++ program pre-computes the "par distance" between each pair of words in the standard dictionary.
+// This C++ program pre-computes the "par distance" between each par of words in the standard dictionary.
 // The par number is the length of the shortest path possible between the start and end words using only words in the standard dictionary.
 // The Floyd-Warshall algorithm to compute the pars is too slow to be used in real time, or to be implemented in JavaScript at all.
 // Therefore, the distances must be pre-computed and loaded with the game.
-// This program exports files with the name pairsXX.dat, where XX is the par length.
+// This program exports files with the name parXX.dat, where XX is the par length.
 // The exported files are sequences of short ints (2 bytes), to be read 2 at a time.
 // The first short is the index of the start word, as defined by the 0-based line number of the input dictionary text file, and the second is the index of the end word.
-// Shorts were used because saving all ~10 million pairs as plain text would multiply the amount of data to be loaded by 4.
+// Shorts were used because saving all ~10 million pars as plain text would multiply the amount of data to be loaded by 4.
 // Shorts were the smallest data type usuable for the ~2000 distinct words in the standard dictionary.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -155,21 +155,21 @@ int main ()
   // compute paths
   ////////////////////////////////////////////////////////////////////////////////
 
-  cout << "processing pairs..." << endl;
+  cout << "processing pars..." << endl;
 
   // floyd warshall
-  unsigned int** Pairs;
-  Pairs = new unsigned int*[DictionarySize];
+  unsigned int** Pars;
+  Pars = new unsigned int*[DictionarySize];
   for (unsigned int i = 0; i < DictionarySize; i++)
-    Pairs[i] = new unsigned int[DictionarySize];
+    Pars[i] = new unsigned int[DictionarySize];
 
   for(unsigned int i = 0; i < DictionarySize; i++)
     for(unsigned int j = 0; j < DictionarySize; j++)
     {
       if (i == j)
-        Pairs[i][j] = 0;
+        Pars[i][j] = 0;
       else
-        Pairs[i][j] = Infinity;
+        Pars[i][j] = Infinity;
     }
 
   for(unsigned int i = 0; i < DictionarySize; i++)
@@ -177,71 +177,71 @@ int main ()
       if (i < j)
         if (AreLinked(Dictionary[i], Dictionary[j]))
         {
-          Pairs[i][j] = 1;
-          Pairs[j][i] = 1;
+          Pars[i][j] = 1;
+          Pars[j][i] = 1;
         }
 
-  unsigned int PairsSize = 0;
+  unsigned int ParsSize = 0;
   for(unsigned int k = 0; k < DictionarySize; k++) 
   {
     cout << "\r" << Progress(k, DictionarySize, 50);
     for(unsigned int i = 0; i < DictionarySize; i++)
       for(unsigned int j = 0; j < DictionarySize; j++)
-        if (Pairs[i][j] > Pairs[i][k] + Pairs[k][j])
+        if (Pars[i][j] > Pars[i][k] + Pars[k][j])
         {
-          Pairs[i][j] = Pairs[i][k] + Pairs[k][j];
-          PairsSize++;
+          Pars[i][j] = Pars[i][k] + Pars[k][j];
+          ParsSize++;
         }
   }
 
   cout << endl;
 
-  cout << "pairs processed" << endl;
+  cout << "pars processed" << endl;
 
-  cout << PairsSize << " pairs" << endl;
+  cout << ParsSize << " pars" << endl;
 
-  unsigned int LongestPair = 0;
+  unsigned int LargestPar = 0;
   for(unsigned int i = 0; i < DictionarySize; i++)
     for(unsigned int j = 0; j < DictionarySize; j++)
-      if (Pairs[i][j] > LongestPair && Pairs[i][j] != Infinity)
-        LongestPair = Pairs[i][j];
+      if (Pars[i][j] > LargestPar && Pars[i][j] != Infinity)
+        LargestPar = Pars[i][j];
 
 
-  cout << LongestPair << " longest pair" << endl;
+  cout << LargestPar << " largest par" << endl;
 
-  // export pairs
-  cout << "exporting pairs..." << endl;
+  // export pars
+  cout << "exporting pars..." << endl;
 
-  ofstream pairFiles[LongestPair];
+  ofstream parFiles[LargestPar];
   ostringstream filename;
-  for(unsigned int i = 2; i < LongestPair; i++)
+  for(unsigned int i = 2; i < LargestPar; i++)
   {
     filename.str("");
-    filename << "pairs" << i+1 << ".dat";
-    pairFiles[i].open(filename.str().c_str(), fstream::binary);
+    filename << "par" << i+1 << ".dat";
+    parFiles[i].open(filename.str().c_str(), fstream::binary);
   }
 
   for(unsigned int i = 0; i < DictionarySize; i++)
     for(unsigned int j = 0; j < DictionarySize; j++)
       if (i < j)
-        if (Pairs[i][j] < LongestPair)
+        if (Pars[i][j] < LargestPar)
         {
           short startIndex = (short)i;
           short endIndex = (short)j;
-          pairFiles[Pairs[i][j]].write(reinterpret_cast<char*>(&startIndex), sizeof(short));
-          pairFiles[Pairs[i][j]].write(reinterpret_cast<char*>(&endIndex), sizeof(short));
+          parFiles[Pars[i][j]].write(reinterpret_cast<char*>(&startIndex), sizeof(short));
+          parFiles[Pars[i][j]].write(reinterpret_cast<char*>(&endIndex), sizeof(short));
         }
 
-  for(unsigned int i = 0; i < LongestPair; i++)
-    pairFiles[i].close();
+  for(unsigned int i = 0; i < LargestPar; i++)
+    parFiles[i].close();
   for (int i = 0; i < DictionarySize; i++)
   {
     delete Dictionary[i];
-    delete[] Pairs[i];
+    delete[] Pars[i];
   }
-  delete[] Pairs;
+  delete[] Pars;
 
-  cout << "pairs exported" << endl;
+  cout << "pars exported" << endl;
 
   ////////////////////////////////////////////////////////////////////////////////
   // halt program

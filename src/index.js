@@ -5,10 +5,10 @@ import { applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-import { reducer } from './state/reducers.js';
-import { logger } from './state/logger.js';
-import { persister } from './state/persister';
-import { getInitialState } from './state/persister';
+import { reducer } from './reducer.js';
+import { logger } from './redux/logger.js';
+import { persister } from './redux/persister';
+import { getInitialState } from './redux/persister';
 import { App } from './app.js';
 
 export const store = createStore(
