@@ -16,27 +16,27 @@ export class Home extends Component {
           <Wiggle text='WORD4WORD' />
         </h1>
         <IconButton
-          className='wiggle_hitbox'
+          className='home_button wiggle_hitbox'
           onClick={() => this.props.dispatch(setScreen({ screen: 'new-game' }))}
           left={<i className='fas fa-bolt' />}
           right={<Wiggle text='NEW GAME' />}
         />
         <IconButton
-          className='wiggle_hitbox'
+          className='home_button wiggle_hitbox'
           onClick={() => this.props.dispatch(setScreen({ screen: 'continue' }))}
           left={<i className='fas fa-bookmark' />}
           right={<Wiggle text='CONTINUE' />}
         />
         <IconButton
-          className='wiggle_hitbox'
+          className='home_button wiggle_hitbox'
           onClick={() =>
             this.props.dispatch(setScreen({ screen: 'completed' }))
           }
           left={<i className='fas fa-star' />}
-          right={<Wiggle text='COMPLETE' />}
+          right={<Wiggle text='COMPLETED' />}
         />
         <IconButton
-          className='wiggle_hitbox'
+          className='home_button wiggle_hitbox'
           onClick={() =>
             this.props.dispatch(setScreen({ screen: 'dictionary' }))
           }

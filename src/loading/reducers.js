@@ -25,6 +25,8 @@ export function loading(state = {}, action) {
       )
         newState = null;
 
+      break;
+
     default:
       break;
   }

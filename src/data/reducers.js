@@ -1,7 +1,7 @@
 import { Word } from '../util/word.js';
 
 export function data(state = {}, action) {
-  const newState = state;
+  let newState = state;
   switch (action.type) {
     case 'set_data':
       newState.standardDictionary = linkDictionary(
@@ -15,6 +15,7 @@ export function data(state = {}, action) {
         action.payload.pars,
         newState.standardDictionary
       );
+      break;
 
     default:
       break;

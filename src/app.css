@@ -4,13 +4,24 @@
 * {
   font-family: "Quicksand", sans-serif;
 
-  --xs: 5px;
-  --sm: 10px;
-  --md: 25px;
+  --xxs: 5px;
+  --xs: 10px;
+  --sm: 20px;
+  --md: 30px;
   --lg: 50px;
   --xl: 100px;
-  --xxl: 300px;
-  --xxxl: 600px;
+  --xxl: 250px;
+  --xxxl: 500px;
+
+  --black: #000000;
+  --white: #ffffff;
+  --slate: #00000010;
+  --red: #f48fb1;
+  --purple: #ce93d8;
+  --blue: #81d4fa;
+  --green: #a5d6a7;
+  --yellow: #ffe082;
+  --gray: #b0bec5;
 }
 
 html,
@@ -22,6 +33,25 @@ body,
   height: 100%;
   overflow: hidden;
 }
+
+button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  font-weight: 500;
+}
+button:hover {
+  cursor: pointer;
+}
+.semibold {
+  font-weight: 500;
+}
+
 *[data-color="red"] {
   background: #f48fb1;
 }

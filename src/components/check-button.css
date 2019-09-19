@@ -1,15 +1,8 @@
 .check_button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: var(--md);
-  margin: var(--xs);
-  padding: var(--xs) var(--sm);
-  font-size: 0.8em;
+  margin: var(--sm) var(--xxs);
+  padding: var(--xxs) var(--xs);
   font-weight: 500;
   border-radius: var(--xs);
-  background: none;
-  border: none;
   outline: none;
   opacity: 0.35;
   transition: opacity 0.25s ease, background 0.25s ease, transform 0.25s ease;

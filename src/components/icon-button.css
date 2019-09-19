@@ -1,15 +1,10 @@
 .icon_button {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: var(--xxl);
   height: var(--lg);
-  margin: var(--sm);
   font-size: 1.25em;
   font-weight: 500;
   border-radius: 10px;
-  background: none;
-  border: none;
   outline: none;
   overflow: hidden;
   transition: background 0.25s ease, transform 0.25s ease;
@@ -28,7 +23,7 @@
   justify-content: flex-end;
   align-items: center;
   width: 30%;
-  padding-right: var(--md);
+  padding-right: var(--sm);
 }
 .icon_button_right {
   display: flex;

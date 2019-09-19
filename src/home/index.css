@@ -1,7 +1,9 @@
 h1 {
   margin: 0;
-  margin-bottom: 2em;
+  margin-bottom: var(--xl);
   font-size: 2.5em;
-  line-height: 1.1em;
   text-align: center;
+}
+.home_button {
+  margin: var(--xs);
 }
