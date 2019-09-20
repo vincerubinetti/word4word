@@ -4,14 +4,13 @@
 * {
   font-family: "Quicksand", sans-serif;
 
-  --xxs: 5px;
-  --xs: 10px;
+  --line: 1px;
+  --xs: 5px;
   --sm: 20px;
-  --md: 30px;
-  --lg: 50px;
-  --xl: 100px;
-  --xxl: 250px;
-  --xxxl: 500px;
+  --md: 50px;
+  --lg: 100px;
+  --xl: 200px;
+  --xxl: 600px;
 
   --black: #000000;
   --white: #ffffff;
@@ -22,6 +21,10 @@
   --green: #a5d6a7;
   --yellow: #ffe082;
   --gray: #b0bec5;
+
+  --small: 0.85em;
+
+  --fast: 0.25s ease;
 }
 
 html,
@@ -33,7 +36,16 @@ body,
   height: 100%;
   overflow: hidden;
 }
-
+h1 {
+  margin: var(--md) 0;
+  font-size: 2.5em;
+  text-align: center;
+}
+h2 {
+  margin: 0;
+  font-size: 1.5em;
+  text-align: center;
+}
 button {
   display: inline-flex;
   justify-content: center;
@@ -47,6 +59,14 @@ button {
 }
 button:hover {
   cursor: pointer;
+}
+input {
+  padding: var(--xs);
+  border: none;
+  font-size: 1em;
+}
+.bold {
+  font-weight: 700;
 }
 .semibold {
   font-weight: 500;
@@ -69,4 +89,15 @@ button:hover {
 }
 *[data-color="gray"] {
   background: #b0bec5;
+}
+
+a {
+  color: var(--black);
+}
+
+@media screen and (max-height: 500px) {
+  h1 {
+    margin: 0;
+    margin-bottom: var(--sm);
+  }
 }

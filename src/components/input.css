@@ -1,0 +1,9 @@
+.input {
+  position: relative;
+  background: var(--slate);
+  text-align: center;
+  outline: none;
+  border-radius: var(--xs);
+  overflow: hidden;
+  transition: border var(--fast);
+}

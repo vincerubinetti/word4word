@@ -1,9 +1,9 @@
-h1 {
-  margin: 0;
-  margin-bottom: var(--xl);
-  font-size: 2.5em;
-  text-align: center;
-}
 .home_button {
-  margin: var(--xs);
+  margin: calc(2 * var(--xs));
+}
+
+@media screen and (max-height: 500px) {
+  .home_button {
+    margin: 0;
+  }
 }

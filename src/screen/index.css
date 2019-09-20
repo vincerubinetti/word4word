@@ -7,39 +7,46 @@
   height: 100%;
   margin: 0 auto;
 }
-.screen_top {
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: var(--xxxl);
-  height: var(--lg);
-  flex-grow: 0;
-  padding: var(--md);
-  flex-shrink: 0;
-}
-.screen_middle {
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  max-width: var(--xxxl);
-  flex-grow: 1;
-  padding: var(--md);
-  overflow-y: auto;
-}
+.screen_top,
+.screen_middle,
 .screen_bottom {
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: var(--xxxl);
-  height: var(--xl);
+  padding: calc(2 * var(--xs));
+}
+.screen_top {
   flex-grow: 0;
   flex-shrink: 0;
-  padding: var(--md);
+  flex-direction: row;
+}
+.screen_middle {
+  flex-grow: 1;
+  flex-direction: column;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.screen_bottom {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+.section {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: var(--xxl);
+}
+
+@media screen and (max-width: 600px), screen and (max-height: 600px) {
+  .screen_top,
+  .screen_middle,
+  .screen_bottom {
+  }
 }

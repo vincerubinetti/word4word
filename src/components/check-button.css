@@ -1,11 +1,10 @@
 .check_button {
-  margin: var(--sm) var(--xxs);
-  padding: var(--xxs) var(--xs);
+  padding: var(--xs) calc(2 * var(--xs));
   font-weight: 500;
   border-radius: var(--xs);
   outline: none;
   opacity: 0.35;
-  transition: opacity 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  transition: opacity var(--fast), background var(--fast), transform var(--fast);
 }
 .check_button:hover {
   cursor: pointer;
@@ -14,7 +13,7 @@
 .check_button:focus {
   background: white;
 }
-.check_button[data-checked='true'] {
+.check_button[data-checked="true"] {
   opacity: 1;
 }
 .check_button i {

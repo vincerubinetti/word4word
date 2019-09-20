@@ -3,6 +3,9 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { CheckButton } from '../components/check-button.js';
+import { Input } from '../components/input.js';
+
+import './table.css';
 
 export class Table extends Component {
   constructor() {
@@ -13,6 +16,7 @@ export class Table extends Component {
     this.state.showSpecial = false;
     this.state.sortField = 'text';
     this.state.sortDirection = 'down';
+    this.state.search = '';
   }
 
   changeSort = (sortField) => {
@@ -44,6 +48,10 @@ export class Table extends Component {
       return 0;
   };
 
+  changeSearch = (event) => {
+    this.setState({ search: event.target.value.toLowerCase() });
+  };
+
   render() {
     const data = this.props.data;
     if (!data)
@@ -63,8 +71,17 @@ export class Table extends Component {
 
     list.sort(this.sortFunction);
 
+    list = list.filter((word) => word.text.includes(this.state.search));
+
     list = list.map((word, index) => (
-      <div key={index} className="table_row">
+      <button
+        key={index}
+        className="table_row"
+        onClick={() => this.props.changeSelected(word)}
+        data-active={
+          this.props.selectedWord.text === word.text ? 'true' : undefined
+        }
+      >
         <div>
           {word.type === 'standard' ? (
             <i className="fas fa-paragraph"></i>
@@ -74,7 +91,7 @@ export class Table extends Component {
         </div>
         <div>{word.text.toUpperCase()}</div>
         <div>{word.type === 'standard' ? word.links.length : '-'}</div>
-      </div>
+      </button>
     ));
 
     const sortArrow = (
@@ -91,9 +108,8 @@ export class Table extends Component {
     return (
       <>
         <div className="dictionary_details">
-          <div className="semibold">{list.length} words</div>
           <CheckButton
-            text={<>standard words</>}
+            text={<>standard</>}
             icon="fa-paragraph"
             checked={this.state.showStandard}
             onClick={() =>
@@ -101,15 +117,17 @@ export class Table extends Component {
             }
           />
           <CheckButton
-            text={<>special words</>}
+            text={<>special</>}
             icon="fa-star-of-life"
             checked={this.state.showSpecial}
             onClick={() =>
               this.setState({ showSpecial: !this.state.showSpecial })
             }
           />
+          <Input className="dictionary_search" onInput={this.changeSearch} />
+          <div className="dictionary_count semibold">{list.length} words</div>
         </div>
-        <div className="table_container">
+        <div className="dictionary_table">
           <div className="table_row">
             <button onClick={() => this.changeSort('type')}>
               Type{this.state.sortField === 'type' && sortArrow}
@@ -121,9 +139,7 @@ export class Table extends Component {
               Links{this.state.sortField === 'links' && sortArrow}
             </button>
           </div>
-        </div>
-        <div className="table_container" data-overflow>
-          {list}
+          <div data-table-overflow>{list}</div>
         </div>
       </>
     );

@@ -1,0 +1,70 @@
+.dictionary_details,
+.dictionary_table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: var(--xxl);
+}
+.dictionary_details {
+  flex-wrap: wrap;
+  max-width: var(--xxl);
+  margin-bottom: var(--sm);
+}
+.dictionary_details > * {
+  width: 20%;
+}
+.dictionary_search {
+  width: calc(var(--md) + var(--sm));
+  padding: var(--xs) calc(2 * var(--xs));
+}
+.dictionary_count {
+  text-align: center;
+}
+.dictionary_table {
+  justify-content: flex-start;
+  flex-direction: column;
+  flex-grow: 1;
+}
+*[data-table-overflow] {
+  width: 100%;
+  height: var(--xl);
+  max-height: calc(100vh - 240px);
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.table_row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+*[data-table-overflow],
+.table_row {
+  width: calc(3 * var(--lg));
+}
+.table_row > * {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  height: calc(var(--xs) + var(--sm));
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.table_row > *:not(:first-child) {
+  border-left: solid var(--line) var(--slate);
+}
+.table_row > button > i {
+  margin-left: var(--xs);
+}
+.table_row[data-active] {
+  background: var(--slate);
+}
+
+@media screen and (max-width: 500px) {
+  .dictionary_details > * {
+    width: 40%;
+  }
+}
