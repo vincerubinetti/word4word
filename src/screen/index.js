@@ -14,11 +14,15 @@ const PosedDiv = posed.div({
   enter: {
     opacity: 1,
     transform: 'scale(1)',
+    originX: '50%',
+    originY: '50%',
     transition: { type: 'tween', duration: 250 }
   },
   exit: {
     opacity: 0,
-    transform: 'scale(1.1)',
+    transform: 'scale(1.25)',
+    originX: '50%',
+    originY: '50%',
     transition: { type: 'tween', duration: 250 }
   }
 });

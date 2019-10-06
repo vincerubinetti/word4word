@@ -1,0 +1,28 @@
+.big_button {
+  margin: calc(2 * var(--xs)) 0;
+  padding: calc(2 * var(--xs)) calc(3 * var(--xs));
+  font-size: 1.25em;
+}
+.big_button:hover,
+.big_button:focus {
+  transform: scale(1.1);
+}
+.big_button_left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--md);
+}
+.big_button_right {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(var(--lg) + var(--sm));
+}
+.big_button i {
+  transition: transform var(--fast);
+}
+.big_button:hover i,
+.big_button:focus i {
+  transform: rotate(-10deg) scale(1.25);
+}

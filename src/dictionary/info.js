@@ -81,6 +81,9 @@ async function fetchDefinitions(word) {
   const definitions = [];
   try {
     const query = await fetch(googleDictionaryQuery + word);
+    if (!query.ok)
+      return 'no definitions found';
+
     const json = await query.json();
     const response = json[0];
     const meaning = response.meaning;
@@ -96,7 +99,6 @@ async function fetchDefinitions(word) {
 
     return definitions;
   } catch (error) {
-    console.log(error);
     return 'no definitions found';
   }
 }

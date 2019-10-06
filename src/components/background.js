@@ -7,7 +7,9 @@ const division = 360 / 12;
 const alpha = 0.1;
 const spin = 1;
 const offset = 100;
-const dpi = 96 * window.devicePixelRatio;
+const fps = 1000 / 40;
+// const dpi = 96 * window.devicePixelRatio;
+const dpi = 96;
 
 export class Background extends Component {
   constructor() {
@@ -20,14 +22,14 @@ export class Background extends Component {
     this.canvas = this.ref.current;
     this.ctx = this.canvas.getContext('2d');
     this.onResize();
+    this.step();
 
     window.addEventListener('resize', this.onResize);
-    this.interval = window.setInterval(this.step, 20);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
-    window.clearInterval(this.interval);
+    window.clearTimeout(this.timeout);
   }
 
   onResize = () => {
@@ -50,6 +52,10 @@ export class Background extends Component {
 
     this.sun(0 - offset, 0 - offset, time * spin * 2);
     this.sun(this.width + offset, this.height + offset, time * spin);
+
+    this.timeout = window.requestAnimationFrame(() =>
+      window.setTimeout(this.step, fps)
+    );
   };
 
   sun = (x, y, angle) => {

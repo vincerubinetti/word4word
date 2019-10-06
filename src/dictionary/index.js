@@ -2,9 +2,11 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Button } from '../components/button.js';
 import { Wiggle } from '../components/wiggle.js';
 import { Table } from './table.js';
 import { Info } from './info.js';
+import { setScreen } from '../screen/actions.js';
 
 import './index.css';
 
@@ -24,9 +26,19 @@ export class Dictionary extends Component {
     return (
       <>
         <div className="screen_top">
-          <h2 className="wiggle_hitbox">
-            <Wiggle text="Dictionary" />
-          </h2>
+          <div>
+            <Button
+              onClick={() => this.props.dispatch(setScreen({ screen: 'home' }))}
+            >
+              <i className="fas fa-chevron-left"></i>
+            </Button>
+          </div>
+          <div>
+            <h2 className="wiggle_hitbox" data-wiggle>
+              <Wiggle text="Dictionary" />
+            </h2>
+          </div>
+          <div></div>
         </div>
         <div className="screen_middle">
           <Table

@@ -1,0 +1,25 @@
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: var(--xs) calc(2 * var(--xs));
+  border-radius: var(--xs);
+  font-size: 1em;
+  font-weight: 500;
+  outline: none;
+  transition: opacity var(--fast), background var(--fast), transform var(--fast);
+}
+.button:hover,
+.button:focus {
+  background: var(--white);
+}
+.button[data-disabled="true"] {
+  opacity: 0.25;
+}
+.button:hover {
+  cursor: pointer;
+}
+.button > *:nth-child(2) {
+  margin-left: var(--xs);
+}

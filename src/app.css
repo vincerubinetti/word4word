@@ -14,7 +14,7 @@
 
   --black: #000000;
   --white: #ffffff;
-  --slate: #00000010;
+  --slate: #00000020;
   --red: #e91e63;
   --purple: #9c27b0;
   --blue: #03a9f4;
@@ -71,9 +71,13 @@ input {
 .semibold {
   font-weight: 500;
 }
-
 a {
   color: var(--black);
+}
+
+.fa-chevron-left {
+  position: relative;
+  left: -0.1em;
 }
 
 @media screen and (max-height: 500px) {

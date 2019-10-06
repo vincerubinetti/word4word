@@ -6,6 +6,7 @@
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  /* transform-origin: center center !important; */
 }
 .screen_top,
 .screen_middle,
@@ -16,6 +17,7 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
+  max-width: var(--xxl);
   padding: calc(2 * var(--xs));
 }
 .screen_top {
@@ -41,7 +43,18 @@
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  max-width: var(--xxl);
+}
+.screen_top > div:nth-child(1) {
+  width: 25%;
+  text-align: left;
+}
+.screen_top > div:nth-child(2) {
+  width: 50%;
+  text-align: center;
+}
+.screen_top > div:nth-child(3) {
+  width: 25%;
+  text-align: right;
 }
 
 @media screen and (max-width: 600px), screen and (max-height: 600px) {

@@ -1,9 +1,0 @@
-.home_button {
-  margin: calc(2 * var(--xs));
-}
-
-@media screen and (max-height: 500px) {
-  .home_button {
-    margin: 0;
-  }
-}

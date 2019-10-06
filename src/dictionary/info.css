@@ -22,7 +22,7 @@
 .dictionary_definitions {
   width: 100%;
   max-width: var(--xxl);
-  height: 3.5em;
+  height: 3.75em;
   overflow-y: auto;
 }
 .dictionary_definition {
@@ -61,6 +61,6 @@
     overflow-x: auto;
   }
   .dictionary_definitions {
-    height: 2.5em;
+    height: 2.75em;
   }
 }

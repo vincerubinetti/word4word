@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { IconButton } from '../components/icon-button.js';
+import { BigButton } from '../components/big-button.js';
 import { Wiggle } from '../components/wiggle.js';
 import { setScreen } from '../screen/actions.js';
 
@@ -12,36 +12,36 @@ export class Home extends Component {
   render() {
     return (
       <>
-        <h1 className='wiggle_hitbox' data-wiggle>
-          <Wiggle text='WORD4WORD' />
+        <h1 className="wiggle_hitbox" data-wiggle>
+          <Wiggle text="WORD4WORD" />
         </h1>
-        <IconButton
-          className='home_button wiggle_hitbox'
+        <BigButton
+          className="wiggle_hitbox"
           onClick={() => this.props.dispatch(setScreen({ screen: 'new-game' }))}
-          left={<i className='fas fa-bolt' />}
-          right={<Wiggle text='NEW GAME' />}
+          left={<i className="fas fa-bolt" />}
+          right={<Wiggle text="NEW GAME" />}
         />
-        <IconButton
-          className='home_button wiggle_hitbox'
+        <BigButton
+          className="wiggle_hitbox"
           onClick={() => this.props.dispatch(setScreen({ screen: 'continue' }))}
-          left={<i className='fas fa-bookmark' />}
-          right={<Wiggle text='CONTINUE' />}
+          left={<i className="fas fa-bookmark" />}
+          right={<Wiggle text="CONTINUE" />}
         />
-        <IconButton
-          className='home_button wiggle_hitbox'
+        <BigButton
+          className="wiggle_hitbox"
           onClick={() =>
             this.props.dispatch(setScreen({ screen: 'completed' }))
           }
-          left={<i className='fas fa-star' />}
-          right={<Wiggle text='COMPLETED' />}
+          left={<i className="fas fa-star" />}
+          right={<Wiggle text="COMPLETED" />}
         />
-        <IconButton
-          className='home_button wiggle_hitbox'
+        <BigButton
+          className="wiggle_hitbox"
           onClick={() =>
             this.props.dispatch(setScreen({ screen: 'dictionary' }))
           }
-          left={<i className='fas fa-book' />}
-          right={<Wiggle text='DICTIONARY' />}
+          left={<i className="fas fa-book" />}
+          right={<Wiggle text="DICTIONARY" />}
         />
       </>
     );
