@@ -2,8 +2,8 @@
   display: inline-block;
 }
 .wiggle_hitbox[data-wiggle] .wiggle_item,
-.wiggle_hitbox:hover .wiggle_item,
-.wiggle_hitbox:focus .wiggle_item {
+.wiggle_hitbox:not([data-disabled]):hover .wiggle_item,
+.wiggle_hitbox:not([data-disabled]):focus .wiggle_item {
   animation-name: wiggle;
   animation-duration: 2s;
   animation-iteration-count: infinite;

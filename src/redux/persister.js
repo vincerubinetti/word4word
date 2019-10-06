@@ -10,7 +10,7 @@ export const persister = (store) => (next) => (action) => {
   window.localStorage.clear();
   window.localStorage.setItem(
     key,
-    JSON.stringify(filterObject(store.getState(), ['data', 'loading']))
+    JSON.stringify(filterObject(store.getState(), ['data', 'screen']))
   );
   return results;
 };

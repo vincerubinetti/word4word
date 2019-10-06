@@ -3,8 +3,8 @@
   padding: calc(2 * var(--xs)) calc(3 * var(--xs));
   font-size: 1.25em;
 }
-.big_button:hover,
-.big_button:focus {
+.big_button:not([data-disabled]):hover,
+.big_button:not([data-disabled]):focus {
   transform: scale(1.1);
 }
 .big_button_left {
@@ -22,7 +22,7 @@
 .big_button i {
   transition: transform var(--fast);
 }
-.big_button:hover i,
-.big_button:focus i {
+.big_button:not([data-disabled]):hover i,
+.big_button:not([data-disabled]):focus i {
   transform: rotate(-10deg) scale(1.25);
 }

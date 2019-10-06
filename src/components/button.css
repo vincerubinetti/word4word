@@ -10,8 +10,8 @@
   outline: none;
   transition: opacity var(--fast), background var(--fast), transform var(--fast);
 }
-.button:hover,
-.button:focus {
+.button:not([data-disabled]):hover,
+.button:not([data-disabled]):focus {
   background: var(--white);
 }
 .button[data-disabled="true"] {
