@@ -1,8 +1,3 @@
-import axios from 'axios';
-import { store } from '../index.js';
-
-import { setLoading } from '../loading/actions.js';
-
 import standardDictionary from './standard-dictionary.txt';
 import specialDictionary from './special-dictionary.txt';
 import par3 from './par3.dat';
@@ -51,50 +46,43 @@ async function fetchData() {
 }
 
 async function fetchStandardDictionary() {
-  return (await axios.get(standardDictionary)).data;
+  return await (await fetch(standardDictionary)).text();
 }
 
 async function fetchSpecialDictionary() {
-  return (await axios.get(specialDictionary)).data;
+  return await (await fetch(specialDictionary)).text();
 }
 
 async function fetchPars() {
-  const options = {
-    responseType: 'arraybuffer',
-    onDownloadProgress: (event) => {
-      store.dispatch(
-        setLoading({
-          id: event.currentTarget.responseURL,
-          loaded: event.loaded,
-          total: event.total
-        })
-      );
-    }
-  };
+  const responses = await Promise.all([
+    Promise.resolve(null),
+    Promise.resolve(null),
+    Promise.resolve(null),
+    fetch(par3),
+    fetch(par4),
+    fetch(par5),
+    fetch(par6),
+    fetch(par7),
+    fetch(par8),
+    fetch(par9),
+    fetch(par10),
+    fetch(par11),
+    fetch(par12),
+    fetch(par13),
+    fetch(par14),
+    fetch(par15),
+    fetch(par16),
+    fetch(par17),
+    fetch(par18),
+    fetch(par19),
+    fetch(par20),
+    fetch(par21)
+  ]);
   const pars = await Promise.all([
-    Promise.resolve(null),
-    Promise.resolve(null),
-    Promise.resolve(null),
-    axios.get(par3, options),
-    axios.get(par4, options),
-    axios.get(par5, options),
-    axios.get(par6, options),
-    axios.get(par7, options),
-    axios.get(par8, options),
-    axios.get(par9, options),
-    axios.get(par10, options),
-    axios.get(par11, options),
-    axios.get(par12, options),
-    axios.get(par13, options),
-    axios.get(par14, options),
-    axios.get(par15, options),
-    axios.get(par16, options),
-    axios.get(par17, options),
-    axios.get(par18, options),
-    axios.get(par19, options),
-    axios.get(par20, options),
-    axios.get(par21, options)
+    ...responses.map((response) =>
+      response ? response.arrayBuffer() : Promise.resolve(null)
+    )
   ]);
 
-  return pars.map((response) => (response ? response.data : null));
+  return pars;
 }

@@ -15,9 +15,8 @@
 .icon_button:hover,
 .icon_button:focus {
   transform: scale(1.1);
-  background: white;
+  background: var(--white);
 }
-
 .icon_button_left {
   display: flex;
   justify-content: center;
@@ -29,4 +28,11 @@
   justify-content: flex-start;
   align-items: center;
   width: 70%;
+}
+.icon_button i {
+  transition: transform var(--fast);
+}
+.icon_button:hover i,
+.icon_button:focus i {
+  transform: rotate(-10deg) scale(1.25);
 }

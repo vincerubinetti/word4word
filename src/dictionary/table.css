@@ -12,10 +12,11 @@
   margin-bottom: var(--sm);
 }
 .dictionary_details > * {
+  margin: 0 var(--xs);
   width: 20%;
 }
 .dictionary_search {
-  width: calc(var(--md) + var(--sm));
+  /* width: calc(var(--md) + var(--sm)); */
   padding: var(--xs) calc(2 * var(--xs));
 }
 .dictionary_count {

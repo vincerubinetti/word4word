@@ -29,10 +29,7 @@ export class Table extends Component {
   };
 
   sortFunction = (a, b) => {
-    if (a.type !== b.type) {
-      a = a['type'];
-      b = b['type'];
-    } else if (this.state.sortField === 'links') {
+    if (this.state.sortField === 'links') {
       a = a[this.state.sortField].length;
       b = b[this.state.sortField].length;
     } else {

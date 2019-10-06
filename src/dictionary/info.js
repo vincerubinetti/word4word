@@ -29,7 +29,7 @@ export class Info extends Component {
   }
 
   getDefinitions(word) {
-    this.setState({ definitions: [] }, () =>
+    this.setState({ definitions: 'looking up definitions...' }, () =>
       fetchDefinitions(word).then((results) =>
         this.setState({ definitions: results })
       )
@@ -44,14 +44,17 @@ export class Info extends Component {
       </span>
     ));
 
-    let definitions = [];
-    definitions = this.state.definitions.map((definition, index) => (
-      <div key={index} className="dictionary_definition">
-        <span>{index + 1}.</span>
-        <span>{definition[0]}</span>
-        <span>{definition[1]}</span>
-      </div>
-    ));
+    let definitions = this.state.definitions;
+    if (Array.isArray(definitions)) {
+      definitions = definitions.map((definition, index) => (
+        <div key={index} className="dictionary_definition">
+          <span>{index + 1}.</span>
+          <span>{definition[0]}</span>
+          <span>{definition[1]}</span>
+        </div>
+      ));
+    } else
+      definitions = <div className="dictionary_definition">{definitions}</div>;
 
     return (
       <>
@@ -94,6 +97,6 @@ async function fetchDefinitions(word) {
     return definitions;
   } catch (error) {
     console.log(error);
+    return 'no definitions found';
   }
-  return definitions;
 }

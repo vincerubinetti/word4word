@@ -12,6 +12,7 @@
 .dictionary_links {
   width: 100%;
   max-width: var(--xxl);
+  text-align: center;
 }
 .dictionary_links > * {
   display: inline-block;
@@ -21,7 +22,7 @@
 .dictionary_definitions {
   width: 100%;
   max-width: var(--xxl);
-  max-height: var(--md);
+  height: 3.5em;
   overflow-y: auto;
 }
 .dictionary_definition {
@@ -60,6 +61,6 @@
     overflow-x: auto;
   }
   .dictionary_definitions {
-    max-height: 10vh;
+    height: 2.5em;
   }
 }

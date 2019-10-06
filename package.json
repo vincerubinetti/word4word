@@ -3,18 +3,17 @@
   "version": "0.1.0",
   "homepage": "./",
   "dependencies": {
-    "axios": "^0.19.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
     "react-pose": "^4.0.8",
     "react-redux": "^7.1.1",
-    "react-scripts": "3.1.2",
+    "react-scripts": "3.2.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "node ./scripts/build-non-split.js",
+    "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
@@ -36,7 +35,7 @@
   "devDependencies": {
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-html": "^6.0.0",
-    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react": "^7.16.0",
     "rewire": "^4.0.1"
   }
 }

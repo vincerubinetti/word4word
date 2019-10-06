@@ -12,7 +12,7 @@ export class Home extends Component {
   render() {
     return (
       <>
-        <h1 className='wiggle_hitbox'>
+        <h1 className='wiggle_hitbox' data-wiggle>
           <Wiggle text='WORD4WORD' />
         </h1>
         <IconButton
