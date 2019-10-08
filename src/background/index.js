@@ -1,7 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
+import { connect } from 'react-redux';
 
-import './background.css';
+import './index.css';
 
 const division = 360 / 12;
 const alpha = 0.1;
@@ -80,9 +81,12 @@ export class Background extends Component {
 
   render() {
     return (
-      <div className="background">
+      <div className="background" data-color={this.props.background}>
         <canvas ref={this.ref}></canvas>
       </div>
     );
   }
 }
+Background = connect((state) => ({
+  background: state.background
+}))(Background);

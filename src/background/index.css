@@ -1,0 +1,25 @@
+.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -99;
+  background: linear-gradient(45deg, var(--green), var(--blue));
+  transition: background var(--fast);
+}
+canvas {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: overlay;
+}
+.background[data-color="1"] {
+  background: linear-gradient(45deg, var(--blue), var(--purple));
+}
+.background[data-color="2"] {
+  background: linear-gradient(45deg, var(--indigo), var(--red));
+}
+.background[data-color="3"] {
+  background: linear-gradient(45deg, var(--pink), var(--yellow));
+}
+.background[data-color="4"] {
+  background: linear-gradient(45deg, var(--white), var(--gray));
+}

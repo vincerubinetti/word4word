@@ -54,14 +54,29 @@ export class Tooltip extends Component {
     if (!this.props.text)
       return <>{this.props.children}</>;
 
-    const props = {
-      onMouseEnter: this.onEnter,
-      onMouseLeave: this.onLeave,
-      onFocus: this.onEnter,
-      onBlur: this.onLeave
-    };
-
     const children = React.Children.map(this.props.children, (element) => {
+      const props = {
+        onMouseEnter: (event) => {
+          this.onEnter(event);
+          if (element.props.onMouseEnter)
+            element.props.onMouseEnter(event);
+        },
+        onMouseLeave: (event) => {
+          this.onLeave(event);
+          if (element.props.onMouseLeave)
+            element.props.onMouseLeave(event);
+        },
+        onFocus: (event) => {
+          this.onEnter(event);
+          if (element.props.onFocus)
+            element.props.onFocus(event);
+        },
+        onBlur: (event) => {
+          this.onLeave(event);
+          if (element.props.onBlur)
+            element.props.onBlur(event);
+        }
+      };
       if (React.isValidElement(element))
         return React.cloneElement(element, props);
       else if (typeof element === 'string')

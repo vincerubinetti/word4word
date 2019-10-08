@@ -15,8 +15,10 @@
   --black: #000000;
   --white: #ffffff;
   --slate: #00000020;
-  --red: #e91e63;
+  --red: #f44336;
+  --pink: #e91e63;
   --purple: #9c27b0;
+  --indigo: #673ab7;
   --blue: #03a9f4;
   --green: #4caf50;
   --yellow: #ffeb3b;
@@ -25,6 +27,7 @@
   --small: 0.85em;
 
   --fast: 0.25s ease;
+  --quick: 1s ease;
 }
 
 html,

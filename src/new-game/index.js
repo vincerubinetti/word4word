@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Wiggle } from '../components/wiggle.js';
 import { Button } from '../components/button.js';
 import { BigButton } from '../components/big-button.js';
+import { setBackground } from '../background/actions.js';
 import { setScreen } from '../screen/actions.js';
 
 import './index.css';
@@ -47,6 +48,9 @@ export class NewGame extends Component {
                 className="new_game_button"
                 left={<i className="fas fa-play" />}
                 right={difficulty.name}
+                onClick={() =>
+                  this.props.dispatch(setBackground({ background: index }))
+                }
                 tooltip={
                   <>
                     Par {difficulty.pars.join(', ')}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Background } from './components/background.js';
+import { Background } from './background/index.js';
 import { Loading } from './loading/index.js';
 import { Screen } from './screen/index.js';
 
