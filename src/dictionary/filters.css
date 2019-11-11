@@ -1,0 +1,7 @@
+.dictionary_filters > * {
+  margin: 5px;
+  width: 100px;
+}
+.dictionary_count {
+  text-align: center;
+}

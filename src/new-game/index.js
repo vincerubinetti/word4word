@@ -22,22 +22,17 @@ export class NewGame extends Component {
   render() {
     return (
       <>
-        <div className="screen_top">
-          <div>
-            <Button
-              onClick={() => this.props.dispatch(setScreen({ screen: 'home' }))}
-            >
-              <i className="fas fa-chevron-left"></i>
-            </Button>
-          </div>
-          <div>
-            <h2 className="wiggle_hitbox" data-wiggle>
-              <Wiggle text="New Game" />
-            </h2>
-          </div>
-          <div></div>
+        <div className='section section_h'>
+          <Button
+            onClick={() => this.props.dispatch(setScreen({ screen: 'home' }))}
+          >
+            <i className='fas fa-lg fa-chevron-left'></i>
+          </Button>
+          <h2 className='wiggle_hitbox' data-wiggle>
+            <Wiggle text='New Game' />
+          </h2>
         </div>
-        <div className="screen_middle">
+        <div className='section section_v'>
           {difficulties.map((difficulty, index) => {
             let total = 0;
             for (const par of difficulty.pars)
@@ -45,8 +40,8 @@ export class NewGame extends Component {
             return (
               <BigButton
                 key={index}
-                className="new_game_button"
-                left={<i className="fas fa-play" />}
+                className='new_game_button'
+                left={<i className='fas fa-play' />}
                 right={difficulty.name}
                 onClick={() =>
                   this.props.dispatch(setBackground({ background: index }))

@@ -2,9 +2,9 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  padding: var(--xs) calc(2 * var(--xs));
-  border-radius: var(--xs);
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
   font-size: 1em;
   font-weight: 500;
   outline: none;
@@ -14,12 +14,9 @@
 .button:focus {
   background: var(--white);
 }
-.button[data-disabled="true"] {
+.button[data-disabled='true'] {
   opacity: 0.25;
 }
 .button:hover {
   cursor: pointer;
-}
-.button > *:nth-child(2) {
-  margin-left: var(--xs);
 }

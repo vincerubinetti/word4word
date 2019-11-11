@@ -1,6 +1,7 @@
 .big_button {
-  margin: calc(2 * var(--xs)) 0;
-  padding: calc(2 * var(--xs)) calc(3 * var(--xs));
+  width: 200px;
+  margin: 10px 0;
+  padding: 15px 10px;
   font-size: 1.25em;
 }
 .big_button:not([data-disabled]):hover,
@@ -11,13 +12,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--md);
+  width: 50px;
 }
 .big_button_right {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: calc(var(--lg) + var(--sm));
+  flex-grow: 1;
 }
 .big_button i {
   transition: transform var(--fast);

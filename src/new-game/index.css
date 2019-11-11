@@ -1,3 +1,3 @@
-.new_game_button .big_button_right {
-  width: var(--lg);
+.new_game_button {
+  width: 160px;
 }

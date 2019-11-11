@@ -12,12 +12,12 @@ export class Info extends Component {
     super();
 
     this.state = {};
-    this.state.definitions = [];
+    this.state.definition = [];
   }
 
   componentDidMount() {
     if (this.props.selectedWord.text)
-      this.getDefinitions(this.props.selectedWord.text);
+      this.getDefinition(this.props.selectedWord.text);
   }
 
   componentDidUpdate(prevProps) {
@@ -25,66 +25,57 @@ export class Info extends Component {
       this.props.selectedWord.text !== prevProps.selectedWord.text &&
       this.props.selectedWord
     )
-      this.getDefinitions(this.props.selectedWord.text);
+      this.getDefinition(this.props.selectedWord.text);
   }
 
-  getDefinitions(word) {
-    this.setState({ definitions: 'looking up definitions...' }, () =>
-      fetchDefinitions(word).then((results) =>
-        this.setState({ definitions: results })
+  getDefinition(word) {
+    this.setState({ definition: 'looking up definition...' }, () =>
+      fetchDefinition(word).then((results) =>
+        this.setState({ definition: results })
       )
     );
   }
 
   render() {
-    let links = [];
-    links = this.props.selectedWord.links.map((link, index) => (
-      <span key={index} className="link">
-        {link.text.toUpperCase()}
-      </span>
-    ));
-
-    let definitions = this.state.definitions;
-    if (Array.isArray(definitions)) {
-      definitions = definitions.map((definition, index) => (
-        <div key={index} className="dictionary_definition">
-          <span>{index + 1}.</span>
-          <span>{definition[0]}</span>
-          <span>{definition[1]}</span>
-        </div>
-      ));
-    } else
-      definitions = <div className="dictionary_definition">{definitions}</div>;
-
     return (
       <>
-        <div className="dictionary_info dictionary_word">
-          {this.props.selectedWord.text.toUpperCase()}
+        <div className='section section_v section_sm'>
+          <div className='dictionary_word semibold'>
+            {this.props.selectedWord.text.toUpperCase()}
+          </div>
+        </div>
+        <div className='section section_sm'>
+          <div className='dictionary_links'>
+            {this.props.selectedWord.links.map((link, index) => (
+              <span key={index} className='dictionary_link'>
+                {link.text.toUpperCase()}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className='section section_sm dictionary_definition'>
+          <span>{this.state.definition}</span>
           <a
             href={
               googleDefineQuery + ((this.props.selectedWord || {}).text || '')
             }
           >
-            <i className="fas fa-external-link-alt fa-xs"></i>
+            <i className='fas fa-external-link-alt fa-xs'></i>
           </a>
-        </div>
-        <div className="dictionary_info dictionary_links">{links}</div>
-        <div className="dictionary_info dictionary_definitions">
-          {definitions}
         </div>
       </>
     );
   }
 }
 
-async function fetchDefinitions(word) {
-  const definitions = [];
+async function fetchDefinition(word) {
   try {
     const query = await fetch(googleDictionaryQuery + word);
     if (!query.ok)
-      return 'no definitions found';
+      return 'no definition found';
 
     const json = await query.json();
+
     const response = json[0];
     const meaning = response.meaning;
 
@@ -92,13 +83,13 @@ async function fetchDefinitions(word) {
       const part = meaning[partKey];
       for (const entryKey of Object.keys(part)) {
         const definition = part[entryKey].definition;
-        if (partKey && definition)
-          definitions.push([partKey, definition]);
+        if (definition)
+          return definition;
       }
     }
 
-    return definitions;
+    return 'no definition found';
   } catch (error) {
-    return 'no definitions found';
+    return 'no definition found';
   }
 }

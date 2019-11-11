@@ -1,6 +1,6 @@
 .input {
   position: relative;
-  border-radius: var(--xs);
+  border-radius: 5px;
   overflow: hidden;
 }
 .input input {
@@ -16,7 +16,7 @@
   left: 50%;
   right: 50%;
   bottom: 0;
-  height: calc(2 * var(--line));
+  height: 2px;
   background: transparent;
   transition: background var(--fast), left var(--fast), right var(--fast);
 }

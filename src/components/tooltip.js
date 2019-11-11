@@ -4,7 +4,7 @@ import { Component } from 'react';
 
 import './tooltip.css';
 
-const delay = 500;
+const delay = 100;
 
 export class Tooltip extends Component {
   constructor() {
