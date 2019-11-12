@@ -1,4 +1,7 @@
 .dictionary_table_row {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -10,5 +13,6 @@
   outline: none;
 }
 .dictionary_table {
+  flex-grow: 1;
   overflow-y: auto;
 }
