@@ -31,6 +31,7 @@ h1 {
 }
 h2 {
   margin: 0;
+  margin-right: 20px;
   font-size: 1.75em;
   text-align: center;
 }

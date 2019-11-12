@@ -19,7 +19,7 @@ export class Header extends Component {
           <i className='fas fa-lg fa-chevron-left'></i>
         </Button>
         <h2 className='wiggle_hitbox' data-wiggle>
-          <Wiggle text='Dictionary' />
+          <Wiggle text='New Game' />
         </h2>
       </div>
     );
