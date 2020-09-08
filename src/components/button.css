@@ -16,7 +16,7 @@ button {
   transition: opacity var(--fast), background var(--fast), transform var(--fast);
 }
 
-button i {
+button .button_icon {
   transition: transform var(--fast);
 }
 button:disabled {
@@ -25,11 +25,6 @@ button:disabled {
 button:not(:disabled):hover,
 button:not(:disabled):focus {
   background: var(--white);
-  transform: scale(1.1);
-}
-button:not(:disabled):hover i,
-button:not(:disabled):focus i {
-  transform: scale(1.25);
 }
 
 .button_icon,

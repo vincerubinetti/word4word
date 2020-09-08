@@ -20,10 +20,12 @@ export const Header = ({ setScreen }) => (
 export const Main = () => {
   const { standardDictionary } = useContext(DataContext);
   return standardDictionary.map((word, index) => (
-    <DictionaryRow key={index} {...{ word }} />
+    <DictionaryRow key={index} word={word}>
+      {word.text}
+    </DictionaryRow>
   ));
 };
 
-const DictionaryRow = ({ word }) => (
-  <button className='dictionary_row'>{word.text}</button>
-);
+const DictionaryRow = ({ word }) => {
+  return <button className='dictionary_row'>{word.text}</button>;
+};
