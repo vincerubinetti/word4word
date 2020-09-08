@@ -1,0 +1,19 @@
+.dictionary_word {
+  margin-top: 10px;
+}
+.dictionary_links {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.dictionary_link {
+  margin: 0 5px;
+}
+.dictionary_definition {
+  flex-wrap: nowrap;
+}
+.dictionary_definition > span {
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

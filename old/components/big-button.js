@@ -13,11 +13,11 @@ export class BigButton extends Component {
     return (
       <Tooltip text={tooltip}>
         <Button
-          className={'big_button wiggle_hitbox ' + (className || '')}
+          className={'button wiggle_hitbox ' + (className || '')}
           {...props}
         >
-          <div className="big_button_left">{left}</div>
-          <div className="big_button_right">
+          <div className="button_left">{left}</div>
+          <div className="button_right">
             <Wiggle text={right} />
           </div>
         </Button>

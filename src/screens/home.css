@@ -1,0 +1,11 @@
+.home_button {
+  width: 150px;
+  margin: 10px 0;
+}
+.home_button .button_icon {
+  padding-right: 10px;
+}
+.home_button:not(:disabled):hover i,
+.home_button:not(:disabled):focus i {
+  transform: rotate(-10deg) scale(1.25);
+}
