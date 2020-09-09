@@ -1,9 +1,10 @@
 export class Word {
   constructor(word, index, type) {
-    this.text = word;
     this.index = index;
-    this.links = [];
     this.type = type;
+    this.text = word;
+    this.links = [];
+    this.linkCount = [];
   }
 
   oneDifferent(otherWord) {
@@ -15,6 +16,7 @@ export class Word {
       if (this.text[index] !== otherWord.text[index])
         diff++;
     }
+
 
     return diff === 1;
   }

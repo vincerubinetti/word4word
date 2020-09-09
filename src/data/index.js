@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
 
-import { ReactComponent as Loading } from './loading.svg';
+import { ReactComponent as Loading } from '../loading.svg';
 
 import standardDictionary from './standard-dictionary.txt';
 import specialDictionary from './special-dictionary.txt';
@@ -67,7 +67,7 @@ export default ({ children }) => {
         !specialDictionary.length ||
         !pars.length) && (
         <div className='loading flex_row wiggle_hitbox'>
-          <Loading />
+          <Loading width='40px' />
         </div>
       )}
     </DataContext.Provider>

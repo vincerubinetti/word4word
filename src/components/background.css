@@ -4,7 +4,7 @@
   height: 100%;
   z-index: -99;
   background: linear-gradient(45deg, #ffc107, #ff5722, #e91e63);
-  opacity: 0.9;
+  opacity: 0.8;
   transition: background var(--fast);
 }
 canvas {

@@ -1,30 +1,40 @@
 import React from 'react';
 
+import Dictionary from './dictionary';
 import Wiggle from '../components/wiggle';
 import Button from '../components/button';
 
 import './home.css';
 
-export const Main = ({ setScreen }) => (
+export default ({ setScreen }) => (
   <>
-    <h1 className='wiggle_hitbox' data-wiggle>
-      <Wiggle text='WORD4WORD' />
-    </h1>
-    <div className='flex_column'>
+    <header>
+      <h1 className='wiggle_hitbox' data-wiggle>
+        <Wiggle text='WORD4WORD' />
+      </h1>
+    </header>
+    <main>
       <Button
         className='home_button'
-        icon='fas fa-bolt'
+        icon='fas fa-bolt fa-fw'
         text='NEW GAME'
-        disabled
       />
-      <Button className='home_button' icon='fas fa-bookmark' text='CONTINUE' />
-      <Button className='home_button' icon='fas fa-star' text='COMPLETED' />
       <Button
         className='home_button'
-        icon='fas fa-book'
-        text='DICTIONARY'
-        onClick={() => setScreen('dictionary')}
+        icon='fas fa-bookmark fa-fw'
+        text='CONTINUE'
       />
-    </div>
+      <Button
+        className='home_button'
+        icon='fas fa-star fa-fw'
+        text='COMPLETED'
+      />
+      <Button
+        className='home_button'
+        icon='fas fa-book fa-fw'
+        text='DICTIONARY'
+        onClick={() => setScreen(<Dictionary />)}
+      />
+    </main>
   </>
 );

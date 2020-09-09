@@ -1,7 +1,6 @@
 {
   "name": "word4word",
   "version": "0.1.0",
-  "homepage": "https://vincerubinetti.github.io/word4word/",
   "dependencies": {
     "framer-motion": "^2.6.6",
     "react": "^16.13.1",

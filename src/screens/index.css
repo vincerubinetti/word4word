@@ -14,12 +14,16 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   max-width: 600px;
   padding: 20px;
+  text-align: center;
+}
+header,
+footer {
+  flex-wrap: wrap;
 }
 main {
-  flex-direction: column;
   justify-content: flex-start;
+  flex-direction: column;
   overflow-y: auto;
 }
