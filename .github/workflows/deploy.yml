@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  ci:
+  deploy-to-gh-pages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,5 +27,5 @@ jobs:
         with:
           keep_files: false
           publish_branch: gh-pages
-          publish_dir: /build
+          publish_dir: build
           github_token: ${{ secrets.GITHUB_TOKEN }}
