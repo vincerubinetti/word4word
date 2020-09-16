@@ -3,7 +3,10 @@ name: ci
 env:
   CI: false
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   ci:
