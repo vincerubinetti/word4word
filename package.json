@@ -1,5 +1,6 @@
 {
   "name": "word4word",
+  "homepage": ".",
   "version": "0.1.0",
   "dependencies": {
     "framer-motion": "^2.6.6",

@@ -3,9 +3,13 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { createContext } from 'react';
 
+import { Word } from '../util/word';
+import { oneLetterDifferent } from '../util/word';
+import { linkWords } from '../util/word';
+
 import { ReactComponent as Loading } from '../loading.svg';
 
-import standardDictionary from './standard-dictionary.txt';
+import regularDictionary from './regular-dictionary.txt';
 import specialDictionary from './special-dictionary.txt';
 import par3 from './par3.dat';
 import par4 from './par4.dat';
@@ -29,25 +33,23 @@ import par21 from './par21.dat';
 
 import './index.css';
 
-import { Word } from '../util/word.js';
-
 export const DataContext = createContext({});
 
 export default ({ children }) => {
-  const [standardDictionary, setStandardDictionary] = useState([]);
+  const [regularDictionary, setRegularDictionary] = useState([]);
   const [specialDictionary, setSpecialDictionary] = useState([]);
   const [pars, setPars] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
-      let standardDictionary = await getStandardDictionary();
-      standardDictionary = parseDictionary(standardDictionary, 'standard');
-      standardDictionary = linkDictionary(standardDictionary);
+      let regularDictionary = await getRegularDictionary();
+      regularDictionary = parseDictionary(regularDictionary, 'regular');
       let specialDictionary = await getSpecialDictionary();
       specialDictionary = parseDictionary(specialDictionary, 'special');
+      linkDictionary([...regularDictionary, ...specialDictionary]);
       let pars = await getPars();
-      pars = parsePars(pars, standardDictionary);
-      setStandardDictionary(standardDictionary);
+      pars = parsePars(pars, regularDictionary);
+      setRegularDictionary(regularDictionary);
       setSpecialDictionary(specialDictionary);
       setPars(pars);
     };
@@ -57,13 +59,13 @@ export default ({ children }) => {
   return (
     <DataContext.Provider
       value={{
-        standardDictionary,
+        regularDictionary,
         specialDictionary,
         pars
       }}
     >
       {children}
-      {(!standardDictionary.length ||
+      {(!regularDictionary.length ||
         !specialDictionary.length ||
         !pars.length) && (
         <div className='loading flex_row wiggle_hitbox'>
@@ -74,8 +76,8 @@ export default ({ children }) => {
   );
 };
 
-const getStandardDictionary = async () =>
-  (await fetch(standardDictionary)).text();
+const getRegularDictionary = async () =>
+  (await fetch(regularDictionary)).text();
 
 const getSpecialDictionary = async () =>
   (await fetch(specialDictionary)).text();
@@ -119,14 +121,10 @@ const parseDictionary = (dictionary, type) =>
     .map((word, index) => new Word(word, index, type));
 
 const linkDictionary = (dictionary) => {
-  for (let a = 0; a < dictionary.length; a++) {
-    for (let b = 0; b < dictionary.length; b++) {
-      if (a > b) {
-        if (dictionary[a].oneDifferent(dictionary[b])) {
-          dictionary[a].link(dictionary[b]);
-          dictionary[b].link(dictionary[a]);
-        }
-      }
+  for (const wordA of dictionary) {
+    for (const wordB of dictionary) {
+      if (oneLetterDifferent(wordA, wordB))
+        linkWords(wordA, wordB);
     }
   }
   return dictionary;

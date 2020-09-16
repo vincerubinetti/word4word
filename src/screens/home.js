@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Dictionary from './dictionary';
 import Wiggle from '../components/wiggle';
 import Button from '../components/button';
 
@@ -33,7 +32,7 @@ export default ({ setScreen }) => (
         className='home_button'
         icon='fas fa-book fa-fw'
         text='DICTIONARY'
-        onClick={() => setScreen(<Dictionary />)}
+        onClick={() => setScreen({ name: 'dictionary' })}
       />
     </main>
   </>

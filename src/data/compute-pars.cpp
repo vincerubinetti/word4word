@@ -1,13 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////
-// This C++ program pre-computes the "par distance" between each pair of words in the standard dictionary.
-// The par number is the length of the shortest path possible between the start and end words using only words in the standard dictionary.
+// This C++ program pre-computes the "par distance" between each pair of words in the regular dictionary.
+// The par number is the length of the shortest path possible between the start and end words using only words in the regular dictionary.
 // The Floyd-Warshall algorithm to compute the pars is too slow to be used in real time, or to be implemented in JavaScript at all.
 // Therefore, the distances must be pre-computed and loaded with the game.
 // This program exports files with the name parXX.dat, where XX is the par length.
 // The exported files are sequences of short ints (2 bytes), to be read 2 at a time.
 // The first short is the line number of the start word in the input dictionary text file, and the second is the index of the end word.
 // Shorts were used because saving all ~10 million pars as plain text would the size of the data by 4.
-// Shorts were the smallest data type usuable for the ~2000 distinct words in the standard dictionary.
+// Shorts were the smallest data type usuable for the ~2000 distinct words in the regular dictionary.
 ////////////////////////////////////////////////////////////////////////////////
 
 // includes
@@ -111,7 +111,7 @@ int main ()
 
   vector<Word*> Dictionary;
   vector<Word*>::size_type DictionarySize;
-  ifstream dictionaryFile("standard-dictionary.txt");
+  ifstream dictionaryFile("regular-dictionary.txt");
   string line;
   while (getline(dictionaryFile, line))
     Dictionary.push_back(new Word(line));

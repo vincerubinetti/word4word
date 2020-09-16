@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-import Dictionary from './dictionary';
 import Button from '../components/button';
 import Wiggle from '../components/wiggle';
 
@@ -28,7 +27,7 @@ export default ({ word, setScreen }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => setScreen(<Dictionary />)}
+            onClick={() => setScreen({ name: 'dictionary' })}
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text={word.text.toUpperCase()} />
@@ -46,10 +45,10 @@ export default ({ word, setScreen }) => {
       </header>
       <main>
         <h3>Type</h3>
-        {word.type === 'standard' && (
+        {word.type === 'regular' && (
           <p>
             <i className='fas fa-paragraph icon'></i>
-            <span>Standard</span>
+            <span>Regular</span>
           </p>
         )}
         {word.type === 'special' && (
@@ -58,8 +57,20 @@ export default ({ word, setScreen }) => {
             <span>Special</span>
           </p>
         )}
-        <h3>Linked Words</h3>
-        <p>{word.links.map((link) => link.text).join(', ') || 'no words'}</p>
+        <h3>Regular Links</h3>
+        <p>
+          {word.links
+            .filter((link) => link.type === 'regular')
+            .map((link) => link.text)
+            .join(', ') || 'no words'}
+        </p>
+        <h3>Special Links</h3>
+        <p>
+          {word.links
+            .filter((link) => link.type === 'special')
+            .map((link) => link.text)
+            .join(', ') || 'no words'}
+        </p>
         <h3>Definition</h3>
         {definitions === 'loading' && (
           <p>

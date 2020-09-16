@@ -3,8 +3,6 @@ import { memo } from 'react';
 import { useState } from 'react';
 import { useContext } from 'react';
 
-import Home from './home';
-import Definition from './definition';
 import Input from '../components/input';
 import Button from '../components/button';
 import Wiggle from '../components/wiggle';
@@ -14,12 +12,12 @@ import { DataContext } from '../data';
 import './dictionary.css';
 
 export default ({ setScreen }) => {
-  const { standardDictionary, specialDictionary } = useContext(DataContext);
+  const { regularDictionary, specialDictionary } = useContext(DataContext);
 
-  const [showStandard, setShowStandard] = useState(true);
+  const [showRegular, setShowRegular] = useState(true);
   const [showSpecial, setShowSpecial] = useState(false);
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState({ field: 'type', direction: 'down' });
+  const [sortBy, setSortBy] = useState({ field: 'word', direction: 'down' });
 
   const SortButton = ({ field, name }) => (
     <Button
@@ -40,9 +38,9 @@ export default ({ setScreen }) => {
   );
 
   const sortFuncs = {
-    ' ': (a, b) => b.type.localeCompare(a.type),
-    'type down': (a, b) => b.type.localeCompare(a.type),
-    'type up': (b, a) => b.type.localeCompare(a.type),
+    ' ': (a, b) => b.text.localeCompare(a.text),
+    'type down': (b, a) => b.type.localeCompare(a.type),
+    'type up': (a, b) => b.type.localeCompare(a.type),
     'word down': (b, a) => b.text.localeCompare(a.text),
     'word up': (a, b) => b.text.localeCompare(a.text),
     'links down': (a, b) => b.links.length - a.links.length,
@@ -55,8 +53,8 @@ export default ({ setScreen }) => {
     word.text.toLowerCase().includes(search.toLowerCase());
 
   let list = [];
-  if (showStandard)
-    list = list.concat(standardDictionary);
+  if (showRegular)
+    list = list.concat(regularDictionary);
   if (showSpecial)
     list = list.concat(specialDictionary);
   list = list.sort(sortFunc).filter(filterFunc);
@@ -67,7 +65,7 @@ export default ({ setScreen }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => setScreen(<Home />)}
+            onClick={() => setScreen({ name: 'home' })}
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text='Dictionary' />
@@ -86,9 +84,9 @@ export default ({ setScreen }) => {
       </main>
       <footer className='dictionary_footer'>
         <Button
-          text='standard'
-          icon={showStandard ? 'fas fa-check' : ''}
-          onClick={() => setShowStandard(!showStandard)}
+          text='regular'
+          icon={showRegular ? 'fas fa-check' : ''}
+          onClick={() => setShowRegular(!showRegular)}
         />
         <Button
           text='special'
@@ -125,10 +123,10 @@ const DictionaryRow = ({ word, setScreen }) => {
   return (
     <Button
       className='dictionary_row'
-      onClick={() => setScreen(<Definition {...{ word }} />)}
+      onClick={() => setScreen({ name: 'definition', word })}
     >
       <div>
-        {word.type === 'standard' && <i className='fas fa-paragraph'></i>}
+        {word.type === 'regular' && <i className='fas fa-paragraph'></i>}
         {word.type === 'special' && <i className='fas fa-asterisk'></i>}
       </div>
       <div>{word.text}</div>
