@@ -21,4 +21,10 @@
 .button:not(:disabled):hover,
 .button:not(:disabled):focus {
   background: var(--white);
+  transform: scale(1.1);
+}
+.button[data-square='true'] {
+  width: 30px;
+  height: 30px;
+  padding: 0;
 }

@@ -4,17 +4,11 @@
   padding: 10px;
   justify-content: flex-start;
 }
-.home_button:not(:disabled):hover,
-.home_button:not(:disabled):focus {
-  transform: scale(1.1);
-}
 .home_button .button_icon {
+  margin-right: 10px !important;
   transition: transform var(--fast);
 }
 .home_button:not(:disabled):hover .button_icon,
 .home_button:not(:disabled):focus .button_icon {
   transform: rotate(-10deg) scale(1.25);
-}
-.home_button .button_icon {
-  margin-right: 10px !important;
 }

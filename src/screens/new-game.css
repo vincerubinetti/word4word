@@ -1,0 +1,62 @@
+.new_game_button {
+  width: 150px;
+  margin: 10px 0;
+  padding: 5 10px;
+}
+.new_game_slider {
+  max-width: 300px;
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+}
+.new_game_slider_thumb {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: var(--black);
+}
+.new_game_slider_track {
+  position: absolute;
+  height: 5px;
+  top: 50%;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+.new_game_slider_track-1 {
+  background: var(--slate) !important;
+}
+[data-par] {
+  transition: background var(--fast);
+}
+[data-par='3'],
+[data-par='4'],
+[data-par='5'] {
+  background: #00796b;
+}
+[data-par='6'],
+[data-par='7'],
+[data-par='8'] {
+  background: #1976d2;
+}
+[data-par='9'],
+[data-par='10'],
+[data-par='11'] {
+  background: #7b1fa2;
+}
+[data-par='12'],
+[data-par='13'],
+[data-par='14'],
+[data-par='15'] {
+  background: #c2185b;
+}
+[data-par='16'],
+[data-par='17'],
+[data-par='18'],
+[data-par='19'],
+[data-par='20'],
+[data-par='21'] {
+  background: #000000;
+}

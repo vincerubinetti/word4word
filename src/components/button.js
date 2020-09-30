@@ -9,6 +9,7 @@ export default ({
   icon = '',
   text = '',
   flip = false,
+  link = false,
   children = null,
   ...props
 }) => {
@@ -30,8 +31,14 @@ export default ({
     );
   }
 
+  const Component = link ? Link : Button;
+
   return (
-    <button className={'button wiggle_hitbox ' + className} {...props}>
+    <Component
+      className={'button wiggle_hitbox ' + className}
+      {...props}
+      data-square={icon && !text}
+    >
       {!flip && (
         <>
           {Icon}
@@ -45,6 +52,11 @@ export default ({
         </>
       )}
       {children}
-    </button>
+    </Component>
   );
 };
+
+const Button = ({ ...props }) => <button {...props} />;
+
+// eslint-disable-next-line jsx-a11y/anchor-has-content
+const Link = ({ ...props }) => <a {...props} />;

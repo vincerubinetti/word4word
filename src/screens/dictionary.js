@@ -11,6 +11,8 @@ import { DataContext } from '../data';
 
 import './dictionary.css';
 
+let listScroll = 0;
+
 export default ({ setScreen }) => {
   const { regularDictionary, specialDictionary } = useContext(DataContext);
 
@@ -79,7 +81,15 @@ export default ({ setScreen }) => {
           </div>
         </div>
       </header>
-      <main className='dictionary_main'>
+      <main
+        ref={(element) => {
+          if (element)
+            element.scrollTop = listScroll;
+          return element;
+        }}
+        className='dictionary_main'
+        onScroll={(event) => (listScroll = event.target.scrollTop)}
+      >
         <List {...{ list, setScreen }} />
       </main>
       <footer className='dictionary_footer'>

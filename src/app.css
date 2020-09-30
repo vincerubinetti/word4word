@@ -51,6 +51,9 @@ a:hover,
 a:focus {
   background: var(--white);
 }
+strong {
+  font-weight: 600;
+}
 
 .flex_row,
 .flex_column {

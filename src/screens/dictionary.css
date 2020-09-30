@@ -11,6 +11,7 @@
 .dictionary_row {
   width: 240px;
   max-width: 100%;
+  transform: none !important;
 }
 .dictionary_row > *:nth-child(1) {
   width: 30%;
