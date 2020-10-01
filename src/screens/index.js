@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import Home from './home';
 import NewGame from './new-game';
+import Game from './game';
 import Dictionary from './dictionary';
 import Definition from './definition';
 
@@ -13,6 +14,7 @@ import './index.css';
 const screens = {
   home: Home,
   newGame: NewGame,
+  game: Game,
   dictionary: Dictionary,
   definition: Definition
 };
@@ -33,7 +35,7 @@ export default () => {
         exit={{ x: -300, opacity: 0 }}
         transition={{ ease: 'easeInOut' }}
       >
-        <Screen {...rest} {...{ setScreen }} />
+        <Screen {...rest} goToScreen={setScreen} />
       </motion.div>
     </AnimatePresence>
   );

@@ -4,10 +4,7 @@
   justify-content: center;
   align-items: center;
   max-width: 100%;
-  border-radius: 5px;
-  overflow: hidden;
   cursor: pointer;
-  transition: opacity var(--fast), background var(--fast), transform var(--fast);
 }
 .input:after {
   content: '';
@@ -16,6 +13,7 @@
   right: 0;
   bottom: 0;
   height: 2px;
+  border-radius: 1px;
   background: var(--black);
 }
 .input_box {
@@ -24,6 +22,7 @@
   padding: 5px;
   background: none;
   border: none;
+  border-radius: 5px 5px 1px 1px;
   outline: none;
   font-weight: 500;
   font-size: 1rem;
@@ -31,9 +30,10 @@
   min-width: 0;
   flex-grow: 1;
   cursor: pointer;
+  transition: background var(--fast);
 }
-.input:not(:disabled):hover,
-.input:not(:disabled)[data-focused='true'] {
+.input:hover .input_box:not(:disabled),
+.input[data-focused='true'] .input_box:not(:disabled) {
   background: var(--white);
 }
 .input_icon {

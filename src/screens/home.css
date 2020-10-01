@@ -1,6 +1,6 @@
 .home_button {
   width: 150px;
-  margin: 10px 0;
+  margin: 8px 0;
   padding: 10px;
   justify-content: flex-start;
 }
@@ -11,4 +11,43 @@
 .home_button:not(:disabled):hover .button_icon,
 .home_button:not(:disabled):focus .button_icon {
   transform: rotate(-10deg) scale(1.25);
+}
+.title {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  font-weight: 600;
+}
+.title > * {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.title_number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: -2px;
+  top: -2px;
+  font-size: 3rem;
+}
+.title_circle {
+  font-size: 1.4rem;
+  animation: title_spin 10s forwards linear infinite;
+}
+@keyframes title_spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.title_spoke {
+  position: absolute;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
 }

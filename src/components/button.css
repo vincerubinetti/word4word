@@ -26,5 +26,6 @@
 .button[data-square='true'] {
   width: 30px;
   height: 30px;
+  flex-shrink: 0;
   padding: 0;
 }

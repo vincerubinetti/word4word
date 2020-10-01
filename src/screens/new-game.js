@@ -12,7 +12,7 @@ import './new-game.css';
 const minPar = 3;
 const maxPar = 21;
 
-export default ({ setScreen }) => {
+export default ({ goToScreen }) => {
   const [par, setPar] = useState(minPar);
   const { pars } = useContext(DataContext);
 
@@ -22,7 +22,7 @@ export default ({ setScreen }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => setScreen({ name: 'home' })}
+            onClick={() => goToScreen({ name: 'home' })}
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text='New Game' />
@@ -52,6 +52,14 @@ export default ({ setScreen }) => {
           <strong>{pars[par].length.toLocaleString()}</strong> games played
         </p>
       </main>
+      <footer>
+        <Button
+          className='new_game_button'
+          text='Play'
+          icon='fas fa-play'
+          onClick={() => goToScreen({ name: 'game', par })}
+        />
+      </footer>
     </>
   );
 };

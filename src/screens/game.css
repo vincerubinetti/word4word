@@ -1,0 +1,21 @@
+.top_word_container {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 30px;
+}
+.top_word {
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-transform: uppercase;
+}
+.top_word_left {
+  text-align: right;
+  margin-right: 15px;
+}
+.top_word_right {
+  text-align: left;
+  margin-left: 15px;
+}

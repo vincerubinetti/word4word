@@ -1,23 +1,23 @@
 import React from 'react';
 
-import Wiggle from '../components/wiggle';
 import Button from '../components/button';
 
 import './home.css';
 
-export default ({ setScreen }) => (
+export default ({ goToScreen }) => (
   <>
     <header>
-      <h1 className='wiggle_hitbox' data-wiggle>
-        <Wiggle text='WORD4WORD' />
-      </h1>
+      <div className='title'>
+        <Spin />
+        <div className='title_number'>4</div>
+      </div>
     </header>
     <main>
       <Button
         className='home_button'
         icon='fas fa-bolt fa-fw'
         text='NEW GAME'
-        onClick={() => setScreen({ name: 'newGame' })}
+        onClick={() => goToScreen({ name: 'newGame' })}
       />
       <Button
         className='home_button'
@@ -33,7 +33,7 @@ export default ({ setScreen }) => (
         className='home_button'
         icon='fas fa-book fa-fw'
         text='DICTIONARY'
-        onClick={() => setScreen({ name: 'dictionary' })}
+        onClick={() => goToScreen({ name: 'dictionary' })}
       />
       <Button
         className='home_button'
@@ -41,7 +41,29 @@ export default ({ setScreen }) => (
         text='HOW 2 PLAY'
         link={true}
         href='https://github.com/vincerubinetti/word4word'
+        target='_blank'
       />
     </main>
   </>
+);
+
+const text = 'WORD WORD '.split('');
+
+const Spin = () => (
+  <div className='title_circle'>
+    {text.map((char, index) => (
+      <span
+        key={index}
+        className='title_spoke'
+        style={{
+          transform:
+            'translate(-50%,-50%) rotate(' +
+            (index - 1.5) * (360 / text.length) +
+            'deg)'
+        }}
+      >
+        {char}
+      </span>
+    ))}
+  </div>
 );

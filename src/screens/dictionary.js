@@ -13,7 +13,7 @@ import './dictionary.css';
 
 let listScroll = 0;
 
-export default ({ setScreen }) => {
+export default ({ goToScreen }) => {
   const { regularDictionary, specialDictionary } = useContext(DataContext);
 
   const [showRegular, setShowRegular] = useState(true);
@@ -67,7 +67,7 @@ export default ({ setScreen }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => setScreen({ name: 'home' })}
+            onClick={() => goToScreen({ name: 'home' })}
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text='Dictionary' />
@@ -90,7 +90,7 @@ export default ({ setScreen }) => {
         className='dictionary_main'
         onScroll={(event) => (listScroll = event.target.scrollTop)}
       >
-        <List {...{ list, setScreen }} />
+        <List {...{ list, goToScreen }} />
       </main>
       <footer className='dictionary_footer'>
         <Button
@@ -119,9 +119,9 @@ export default ({ setScreen }) => {
 };
 
 const List = memo(
-  ({ list, setScreen }) =>
+  ({ list, goToScreen }) =>
     list.map((word, index) => (
-      <DictionaryRow key={index} {...{ word, setScreen }}>
+      <DictionaryRow key={index} {...{ word, goToScreen }}>
         {word.text}
       </DictionaryRow>
     )),
@@ -129,11 +129,11 @@ const List = memo(
 );
 const listCode = (list) => JSON.stringify(list.map((word) => word.text));
 
-const DictionaryRow = ({ word, setScreen }) => {
+const DictionaryRow = ({ word, goToScreen }) => {
   return (
     <Button
       className='dictionary_row'
-      onClick={() => setScreen({ name: 'definition', word })}
+      onClick={() => goToScreen({ name: 'definition', word })}
     >
       <div>
         {word.type === 'regular' && <i className='fas fa-paragraph'></i>}

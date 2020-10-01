@@ -9,7 +9,7 @@ import { ReactComponent as Loading } from '../loading.svg';
 
 import './definition.css';
 
-export default ({ word, setScreen }) => {
+export default ({ word, goToScreen }) => {
   const [definitions, setDefinitions] = useState('loading');
   const [audio, setAudio] = useState('');
 
@@ -27,7 +27,7 @@ export default ({ word, setScreen }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => setScreen({ name: 'dictionary' })}
+            onClick={() => goToScreen({ name: 'dictionary' })}
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text={word.text.toUpperCase()} />
