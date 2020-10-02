@@ -1,11 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
 import { useContext } from 'react';
 import ReactSlider from 'react-slider';
 
 import Button from '../components/button';
 import Wiggle from '../components/wiggle';
 import { DataContext } from '../data';
+import { useStorage } from '../util/hooks';
 
 import './new-game.css';
 
@@ -13,7 +13,7 @@ const minPar = 3;
 const maxPar = 21;
 
 export default ({ goToScreen }) => {
-  const [par, setPar] = useState(minPar);
+  const [par, setPar] = useStorage(minPar, 'newGamePar');
   const { pars } = useContext(DataContext);
 
   return (

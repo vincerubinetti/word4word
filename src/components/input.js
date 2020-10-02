@@ -15,9 +15,9 @@ export default ({
     onChange(event.target.value.replace(/[^A-Za-z]/g, '').toLowerCase());
 
   return (
-    <div className='input' data-focused={focus}>
+    <div className={'input ' + className} data-focused={focus}>
       <input
-        className={'input_box ' + className}
+        className='input_box'
         {...props}
         value={value}
         onChange={lettersOnly}

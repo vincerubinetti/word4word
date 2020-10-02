@@ -13,10 +13,12 @@ import Input from '../components/input';
 import './game.css';
 
 let delay = 10;
+const maxDelay = 200;
 
 export default ({ goToScreen, par }) => {
+  const [spinning, setSpinning] = useState(true);
   const { pars } = useContext(DataContext);
-  const [{ wordA = {}, wordB = {} }, setPair] = useState({});
+  const [{ wordA = null, wordB = null }, setPair] = useState({});
 
   const randomPair = useCallback(() => {
     let [wordA, wordB] = rand(pars[par]);
@@ -28,6 +30,7 @@ export default ({ goToScreen, par }) => {
   const newGame = useCallback(() => {
     delay = 10;
     setPair(randomPair());
+    setSpinning(true);
   }, [randomPair]);
 
   useEffect(() => {
@@ -36,23 +39,27 @@ export default ({ goToScreen, par }) => {
 
   useEffect(() => {
     let timer;
-    if (delay < 200) {
+    if (delay < maxDelay) {
       delay *= 1.1;
       const newPair = () => {
         let pair = randomPair();
-        while (pair.wordA.text === wordA.text || pair.wordB.text === wordB.text)
+        while (
+          pair.wordA?.text === wordA?.text ||
+          pair.wordB?.text === wordB?.text
+        )
           pair = randomPair();
         setPair(pair);
       };
       timer = window.setTimeout(newPair, delay);
-    }
+    } else
+      setSpinning(false);
     return () => window.clearTimeout(timer);
-  });
+  }, [randomPair, wordA, wordB]);
 
   return (
     <>
       <Header {...{ goToScreen, newGame, wordA, wordB, par }} />
-      <Main />
+      <Main {...{ wordA, wordB, spinning }} />
       <Footer {...{ par }} />
     </>
   );
@@ -81,23 +88,51 @@ const TopWord = ({ word, align }) => (
   <div className={'top_word_container top_word_' + align}>
     <AnimatePresence>
       <motion.div
-        key={word.text}
+        key={word?.text}
         className='top_word'
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
         transition={{ ease: 'easeInOut', duration: 0.1 }}
       >
-        {word.text || ''}
+        {word?.text || ''}
       </motion.div>
     </AnimatePresence>
   </div>
 );
 
-const Main = () => (
-  <main>
-    <Input />
-  </main>
+const Main = ({ wordA, wordB, spinning }) => {
+  const [word, setWord] = useState('');
+  const [aChain, setAChain] = useState([]);
+  const [bChain, setBChain] = useState([]);
+
+  useEffect(() => {
+    setWord('');
+    setAChain([wordA]);
+    setBChain([wordB]);
+  }, [wordA, wordB]);
+
+  return (
+    <main>
+      {aChain.map((word, index) => (
+        <WordRow key={index} word={word} />
+      ))}
+      <Input
+        className='game_word_row'
+        value={word}
+        onChange={setWord}
+        maxLength='4'
+        disabled={spinning}
+      />
+      {bChain.map((word, index) => (
+        <WordRow key={index} word={word} />
+      ))}
+    </main>
+  );
+};
+
+const WordRow = ({ word }) => (
+  <div className='game_word_row'>{word?.text || word || ''}</div>
 );
 
 const Footer = ({ par }) => <>Par: {par}</>;

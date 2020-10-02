@@ -87,8 +87,8 @@ export default ({ goToScreen }) => {
             element.scrollTop = listScroll;
           return element;
         }}
-        className='dictionary_main'
         onScroll={(event) => (listScroll = event.target.scrollTop)}
+        className='dictionary_main'
       >
         <List {...{ list, goToScreen }} />
       </main>

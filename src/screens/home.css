@@ -1,8 +1,10 @@
 .home_button {
-  width: 150px;
-  margin: 8px 0;
+  width: 145px;
   padding: 10px;
   justify-content: flex-start;
+}
+.home_button:not(:last-child) {
+  margin-bottom: 15px;
 }
 .home_button .button_icon {
   margin-right: 10px !important;

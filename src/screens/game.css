@@ -19,3 +19,14 @@
   text-align: left;
   margin-left: 15px;
 }
+.game_word_row {
+  width: 120px;
+  margin: 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 10px;
+  text-indent: 10px;
+}
+.game_word_row input {
+  letter-spacing: 10px;
+  text-indent: 10px;
+}

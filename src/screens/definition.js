@@ -44,7 +44,7 @@ export default ({ word, goToScreen }) => {
         </div>
       </header>
       <main>
-        <h3>Type</h3>
+        <h4>Type</h4>
         {word.type === 'regular' && (
           <p>
             <i className='fas fa-paragraph icon'></i>
@@ -57,21 +57,21 @@ export default ({ word, goToScreen }) => {
             <span>Special</span>
           </p>
         )}
-        <h3>Regular Links</h3>
+        <h4>Regular Links</h4>
         <p>
           {word.links
             .filter((link) => link.type === 'regular')
             .map((link) => link.text)
             .join(', ') || 'no words'}
         </p>
-        <h3>Special Links</h3>
+        <h4>Special Links</h4>
         <p>
           {word.links
             .filter((link) => link.type === 'special')
             .map((link) => link.text)
             .join(', ') || 'no words'}
         </p>
-        <h3>Definition</h3>
+        <h4>Definition</h4>
         {definitions === 'loading' && (
           <p>
             <Loading width='30px' />

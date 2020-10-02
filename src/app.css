@@ -34,6 +34,13 @@ h2 {
   text-align: center;
 }
 h3 {
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+h4 {
   margin: 20px 0 5px 0;
   font-size: 1.1rem;
   font-weight: 600;
@@ -52,7 +59,7 @@ a:focus {
   background: var(--white);
 }
 strong {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .flex_row,
