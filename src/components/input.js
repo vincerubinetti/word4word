@@ -8,6 +8,7 @@ export default ({
   icon = '',
   onChange = () => null,
   className = '',
+  disabled = false,
   ...props
 }) => {
   const [focus, setFocus] = useState(false);
@@ -15,10 +16,15 @@ export default ({
     onChange(event.target.value.replace(/[^A-Za-z]/g, '').toLowerCase());
 
   return (
-    <div className={'input ' + className} data-focused={focus}>
+    <div
+      className={'input ' + className}
+      data-disabled={disabled}
+      data-focused={focus}
+    >
       <input
         className='input_box'
         {...props}
+        disabled={disabled}
         value={value}
         onChange={lettersOnly}
         onFocus={() => setFocus(true)}

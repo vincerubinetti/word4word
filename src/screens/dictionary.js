@@ -137,7 +137,7 @@ const DictionaryRow = ({ word, goToScreen }) => {
     >
       <div>
         {word.type === 'regular' && <i className='fas fa-paragraph'></i>}
-        {word.type === 'special' && <i className='fas fa-asterisk'></i>}
+        {word.type === 'special' && <i className='fas fa-star'></i>}
       </div>
       <div>{word.text}</div>
       <div>{word.links.length}</div>

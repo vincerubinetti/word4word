@@ -1,32 +1,67 @@
-.top_word_container {
+.game_main[data-show='false'] {
+  opacity: 0;
+  transition: none;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.game_main[data-show='true'] {
+  opacity: 1;
+  transition: opacity var(--slow);
+}
+.game_top {
   position: relative;
   display: inline-block;
   width: 80px;
   height: 30px;
 }
-.top_word {
+.game_top_left {
+  text-align: right;
+  margin-right: 15px;
+}
+.game_top_right {
+  text-align: left;
+  margin-left: 15px;
+}
+.game_top_word {
   box-sizing: border-box;
   position: absolute;
   width: 100%;
   height: 100%;
   text-transform: uppercase;
 }
-.top_word_left {
-  text-align: right;
-  margin-right: 15px;
+.game_row_side {
+  width: 30px;
+  height: 30px;
 }
-.top_word_right {
-  text-align: left;
-  margin-left: 15px;
+.game_row_side .fa-star {
+  animation: game_icon_sway forwards 2s ease-in-out infinite;
 }
-.game_word_row {
-  width: 120px;
-  margin: 10px 0;
+.game_row_center {
+  margin: 0 20px;
+}
+.game_row_char {
+  width: 20px;
+  height: 30px;
   text-transform: uppercase;
-  letter-spacing: 10px;
-  text-indent: 10px;
 }
-.game_word_row input {
-  letter-spacing: 10px;
-  text-indent: 10px;
+.game_input {
+  box-sizing: border-box;
+  width: 100px;
+  margin: 10px 0;
+}
+.game_input input {
+  letter-spacing: 9px;
+  text-indent: 9px;
+  text-transform: uppercase !important;
+}
+@keyframes game_icon_sway {
+  0% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(-20deg);
+  }
 }

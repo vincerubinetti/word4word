@@ -53,7 +53,7 @@ export default ({ word, goToScreen }) => {
         )}
         {word.type === 'special' && (
           <p>
-            <i className='fas fa-asterisk icon'></i>
+            <i className='fas fa-star icon'></i>
             <span>Special</span>
           </p>
         )}

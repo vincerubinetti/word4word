@@ -19,6 +19,13 @@ const screens = {
   definition: Definition
 };
 
+const screenAnimation = {
+  initial: { x: 300, opacity: 0 },
+  animate: { x: 0, opacity: 1 },
+  exit: { x: -300, opacity: 0 },
+  transition: { ease: 'easeInOut', duration: 0.3 }
+};
+
 export default () => {
   const [screen, setScreen] = useState({ name: 'home' });
   const { name, ...rest } = screen;
@@ -29,11 +36,8 @@ export default () => {
     <AnimatePresence>
       <motion.div
         key={name}
-        className='screen'
-        initial={{ x: 300, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: -300, opacity: 0 }}
-        transition={{ ease: 'easeInOut' }}
+        className='screen flex_column'
+        {...screenAnimation}
       >
         <Screen {...rest} goToScreen={setScreen} />
       </motion.div>

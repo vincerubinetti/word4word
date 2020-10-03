@@ -8,6 +8,9 @@ export class Word {
 }
 
 export const oneLetterDifferent = (wordA, wordB) => {
+  if (!wordA?.text || !wordB?.text)
+    return false;
+
   let diff = 0;
   for (let index = 0; index < 4; index++) {
     if (wordA.text[index] !== wordB.text[index])

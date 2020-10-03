@@ -14,31 +14,28 @@
 .home_button:not(:disabled):focus .button_icon {
   transform: rotate(-10deg) scale(1.25);
 }
-.title {
+.home_title {
   position: relative;
   width: 120px;
   height: 120px;
   font-weight: 600;
 }
-.title > * {
+.home_title > * {
   position: absolute;
   width: 100%;
   height: 100%;
 }
-.title_number {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.home_title_number {
   position: relative;
   left: -2px;
   top: -2px;
   font-size: 3rem;
 }
-.title_circle {
+.home_title_circle {
   font-size: 1.4rem;
-  animation: title_spin 10s forwards linear infinite;
+  animation: home_title_spin 10s forwards linear infinite;
 }
-@keyframes title_spin {
+@keyframes home_title_spin {
   0% {
     transform: rotate(0deg);
   }
@@ -46,7 +43,7 @@
     transform: rotate(360deg);
   }
 }
-.title_spoke {
+.home_title_spoke {
   position: absolute;
   height: 100%;
   left: 50%;

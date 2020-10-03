@@ -11,8 +11,6 @@
   outline: none;
   border-radius: 5px;
   font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
   transition: opacity var(--fast), background var(--fast), transform var(--fast);
 }
 .button:disabled {
@@ -22,6 +20,7 @@
 .button:not(:disabled):focus {
   background: var(--white);
   transform: scale(1.1);
+  cursor: pointer;
 }
 .button[data-square='true'] {
   width: 30px;

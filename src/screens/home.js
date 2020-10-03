@@ -7,9 +7,9 @@ import './home.css';
 export default ({ goToScreen }) => (
   <>
     <header>
-      <div className='title'>
+      <div className='home_title'>
         <Spin />
-        <div className='title_number'>4</div>
+        <div className='home_title_number flex_row'>4</div>
       </div>
     </header>
     <main>
@@ -50,11 +50,11 @@ export default ({ goToScreen }) => (
 const text = 'WORD WORD '.split('');
 
 const Spin = () => (
-  <div className='title_circle'>
+  <div className='home_title_circle'>
     {text.map((char, index) => (
       <span
         key={index}
-        className='title_spoke'
+        className='home_title_spoke'
         style={{
           transform:
             'translate(-50%,-50%) rotate(' +

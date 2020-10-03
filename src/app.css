@@ -9,6 +9,7 @@
 
 * {
   font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
 }
 
 html,
@@ -58,8 +59,14 @@ a:hover,
 a:focus {
   background: var(--white);
 }
+b {
+  font-weight: 700;
+}
 strong {
-  font-weight: 500;
+  font-weight: 600;
+}
+form {
+  margin: 0;
 }
 
 .flex_row,
@@ -67,7 +74,6 @@ strong {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
 }
 .flex_column {
   flex-direction: column;
