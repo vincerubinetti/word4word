@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
 import { AnimateSharedLayout } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 
 import { DataContext } from '../data';
 import { oneLetterDifferent } from '../util/word';
@@ -17,7 +18,7 @@ import './game.css';
 let delay;
 const startDelay = 10;
 const maxDelay = 150;
-const delayMultiplier = 1.2;
+const delayMultiplier = 1.1;
 
 const sectionAnimation = {
   transition: { ease: 'easeInOut', duration: 0.1 }
@@ -38,9 +39,14 @@ const topWordAnimation = {
 };
 
 export default ({ goToScreen, par }) => {
+  const [word, setWord] = useState('');
+  const [chain, setChain] = useState({ a: [], b: [] });
+  const { regularDictionary, specialDictionary, pars } = useContext(
+    DataContext
+  );
+  const [strokes, setStrokes] = useState(2);
   const [spinning, setSpinning] = useState(true);
-  const { pars } = useContext(DataContext);
-  const [{ wordA, wordB }, setPair] = useState({});
+  const [complete, setComplete] = useState(false);
 
   const randomPair = useCallback(() => {
     let [wordA, wordB] = rand(pars[par]);
@@ -49,11 +55,77 @@ export default ({ goToScreen, par }) => {
     return { wordA, wordB };
   }, [par, pars]);
 
+  const newPair = useCallback(() => {
+    let { wordA, wordB } = randomPair();
+    while (
+      wordA?.text === chain.a[0]?.text ||
+      wordB?.text === chain.b[0]?.text
+    ) {
+      const pair = randomPair();
+      wordA = pair.wordA;
+      wordB = pair.wordB;
+    }
+    setChain({ a: [wordA], b: [wordB] });
+    setWord('');
+  }, [chain.a, chain.b, randomPair]);
+
   const newGame = useCallback(() => {
     delay = startDelay;
-    setPair(randomPair());
+    const { wordA, wordB } = randomPair();
+    setChain({ a: [wordA], b: [wordB] });
     setSpinning(true);
+    setWord('');
+    setComplete(false);
   }, [randomPair]);
+
+  const swapWords = useCallback(() => {
+    setChain({ a: chain.b, b: chain.a });
+  }, [chain.a, chain.b]);
+
+  const submitWord = useCallback((event) => {
+    event.preventDefault();
+
+    const foundWord =
+      regularDictionary.find((entry) => entry.text === word) ||
+      specialDictionary.find((entry) => entry.text === word) ||
+      null;
+
+    const { a, b } = chain;
+    let success = true;
+    if (!foundWord)
+      success = false;
+    else if (oneLetterDifferent(foundWord, a[a.length - 1]))
+      setChain({ a: [...a, foundWord], b });
+    else if (oneLetterDifferent(foundWord, b[b.length - 1]))
+      setChain({ a, b: [...b, foundWord] });
+    else
+      success = false;
+
+    setWord('');
+    return success;
+  }, [chain, regularDictionary, specialDictionary, word]);
+
+  const undo = useCallback((chain) => {
+    const { a, b } = chain;
+    if (chain === 'a')
+      setChain({ a: a.slice(0, -1), b });
+    if (chain === 'b')
+      setChain({ a, b: b.slice(0, -1) });
+  }, []);
+
+  const randomLink = useCallback(() => {
+    const randChain = Math.random() < 0.5 ? chain.a : chain.b;
+    let links = randChain[randChain.length - 1].links;
+    links = links.filter((link) => link.type === 'regular');
+    return rand(links);
+  }, [chain.a, chain.b]);
+
+  const getHint = useCallback(() => {
+    let newWord = randomLink();
+    while (newWord.text === word)
+      newWord = randomLink();
+    setWord(newWord.text);
+  }, [randomLink, word]);
 
   useEffect(() => {
     newGame();
@@ -61,47 +133,72 @@ export default ({ goToScreen, par }) => {
 
   useEffect(() => {
     let timer;
-    if (delay < maxDelay) {
+    if (spinning && delay < maxDelay) {
       delay *= delayMultiplier;
-      const newPair = () => {
-        let pair = randomPair();
-        while (
-          pair.wordA?.text === wordA?.text ||
-          pair.wordB?.text === wordB?.text
-        )
-          pair = randomPair();
-        setPair(pair);
-      };
       timer = window.setTimeout(newPair, delay);
     } else
       setSpinning(false);
     return () => window.clearTimeout(timer);
-  }, [randomPair, wordA, wordB]);
+  }, [spinning, newPair, randomPair]);
+
+  useEffect(() => {
+    const { a, b } = chain;
+    if (
+      a.length &&
+      b.length &&
+      oneLetterDifferent(a[a.length - 1], b[b.length - 1])
+    )
+      setComplete(true);
+  }, [chain]);
+
+  useEffect(() => {
+    setStrokes(chain.a.length + chain.b.length);
+  }, [chain.a.length, chain.b.length, setStrokes]);
 
   return (
     <AnimateSharedLayout>
-      <Header {...{ goToScreen, newGame, wordA, wordB, par }} />
-      <Main {...{ wordA, wordB, spinning }} />
-      <Footer {...{ par }} />
+      <Header {...{ goToScreen, chain, newGame, swapWords }} />
+      <Main
+        {...{
+          chain,
+          spinning,
+          complete,
+          word,
+          setWord,
+          submitWord,
+          getHint,
+          undo
+        }}
+      />
+      <Footer {...{ par, strokes }} />
     </AnimateSharedLayout>
   );
 };
 
 const rand = (array) => array[Math.floor(Math.random() * array.length)];
 
-const Header = ({ goToScreen, newGame, wordA, wordB }) => (
+const Header = ({ goToScreen, chain, newGame, swapWords }) => (
   <motion.header layout {...sectionAnimation}>
     <div className='flex_row'>
       <Button
         icon='fas fa-arrow-left'
         onClick={() => goToScreen({ name: 'home' })}
+        tooltip='Back to home'
       />
       <h2 className='flex_row'>
-        <TopWord word={wordA} align='left' />{' '}
-        <i className='fas fa-arrows-alt-h'></i>{' '}
-        <TopWord word={wordB} align='right' />
+        <TopWord word={chain.a[0]} align='left' />
+        <Button
+          icon='fas fa-arrows-alt-h'
+          onClick={swapWords}
+          tooltip='Swap start and end words'
+        />
+        <TopWord word={chain.b[0]} align='right' />
       </h2>
-      <Button icon='fas fa-sync-alt' onClick={newGame} />
+      <Button
+        icon='fas fa-sync-alt'
+        onClick={newGame}
+        tooltip='Start new game of same par'
+      />
     </div>
   </motion.header>
 );
@@ -120,112 +217,103 @@ const TopWord = ({ word, align }) => (
   </div>
 );
 
-const Main = ({ wordA, wordB, spinning }) => {
-  const [word, setWord] = useState('');
-  const [aChain, setAChain] = useState([]);
-  const [bChain, setBChain] = useState([]);
-  const { regularDictionary, specialDictionary } = useContext(DataContext);
+const Main = ({
+  chain,
+  spinning,
+  complete,
+  word,
+  setWord,
+  submitWord,
+  getHint,
+  undo
+}) => (
+  <motion.main
+    layout
+    {...sectionAnimation}
+    className='game_main'
+    data-show={!spinning}
+  >
+    {chain.a.map((word, index) => (
+      <WordRow
+        key={word.text + index}
+        last={index > 0 && index === chain.a.length - 1}
+        chain='a'
+        {...{ complete, undo, word }}
+      />
+    ))}
+    {!complete && (
+      <WordInput {...{ word, setWord, spinning, submitWord, getHint }} />
+    )}
+    {chain.b
+      .map((word, index) => (
+        <WordRow
+          key={word.text + index}
+          last={index > 0 && index === chain.b.length - 1}
+          chain='b'
+          {...{ undo, word }}
+        />
+      ))
+      .reverse()}
+  </motion.main>
+);
 
-  useEffect(() => {
-    if (!wordA || !wordB)
-      return;
-    setWord('');
-    setAChain([wordA]);
-    setBChain([wordB]);
-  }, [wordA, wordB]);
+const WordInput = ({ word, setWord, spinning, submitWord, getHint }) => {
+  const animate = useAnimation();
 
-  useEffect(() => {
-    if (
-      aChain.length &&
-      bChain.length &&
-      oneLetterDifferent(aChain[aChain.length - 1], bChain[bChain.length - 1])
-    )
-      console.log('game over');
-  }, [aChain, bChain]);
-
-  console.log(
-    (aChain[aChain.length - 1]?.links || []).find(
-      (link) => link.type === 'special'
-    )?.text
-  );
-
-  const submitWord = (event) => {
-    event.preventDefault();
-
-    const foundWord =
-      regularDictionary.find((entry) => entry.text === word) ||
-      specialDictionary.find((entry) => entry.text === word) ||
-      null;
-
-    if (!foundWord)
-      console.log('invalid word');
-    else if (oneLetterDifferent(foundWord, aChain[aChain.length - 1])) {
-      setAChain([...aChain, foundWord]);
-      console.log('valid word');
-    } else if (oneLetterDifferent(foundWord, bChain[bChain.length - 1]))
-      setBChain([...bChain, foundWord]);
-    else
-      console.log('word doesnt connect');
-
-    setWord('');
-  };
-
-  const undo = (chain) => {
-    if (chain === 'a')
-      setAChain(aChain.slice(0, -1));
-    if (chain === 'b')
-      setBChain(bChain.slice(0, -1));
+  const wiggle = async () => {
+    await animate.start({
+      x: -5,
+      transition: { ease: 'easeInOut', duration: 0.1 }
+    });
+    await animate.start({
+      x: 5,
+      transition: { ease: 'easeInOut', duration: 0.1 }
+    });
+    await animate.start({
+      x: 0,
+      transition: { ease: 'easeInOut', duration: 0.1 }
+    });
   };
 
   return (
-    <motion.main
-      layout
-      {...sectionAnimation}
-      className='game_main'
-      data-show={!spinning}
-    >
-      {aChain.map((word, index) => (
-        <WordRow
-          key={word.text + index}
-          last={index > 0 && index === aChain.length - 1}
-          chain='a'
-          undo={undo}
-          word={word}
-        />
-      ))}
-      <motion.div
-        layout
-        {...rowAnimation}
+    <motion.div layout {...rowAnimation} className='flex_row'>
+      <span className='game_row_side flex_row'></span>
+      <motion.form
         className='game_row_center game_input'
+        onSubmit={(event) => {
+          if (!submitWord(event))
+            wiggle();
+        }}
+        animate={animate}
       >
-        <form onSubmit={submitWord}>
-          <Input
-            value={word}
-            onChange={setWord}
-            maxLength='4'
-            disabled={spinning}
-          />
-        </form>
-      </motion.div>
-      {bChain
-        .map((word, index) => (
-          <WordRow
-            key={word.text + index}
-            last={index > 0 && index === bChain.length - 1}
-            chain='b'
-            undo={undo}
-            word={word}
-          />
-        ))
-        .reverse()}
-    </motion.main>
+        <Input
+          value={word}
+          onChange={setWord}
+          maxLength='4'
+          disabled={spinning}
+        />
+      </motion.form>
+      <span className='game_row_side flex_row'>
+        <Button
+          icon='fas fa-lightbulb fa-xs'
+          onClick={getHint}
+          tooltip='Get hint'
+        />
+      </span>
+    </motion.div>
   );
 };
 
-const WordRow = ({ last, chain, undo, word }) => (
+const WordRow = ({ last, chain, complete, undo, word }) => (
   <motion.div layout {...rowAnimation} className='flex_row'>
     <span className='game_row_side flex_row'>
-      {word.type === 'special' && <i className='fas fa-star fa-xs'></i>}
+      {word.type === 'special' && (
+        <i
+          className='fas fa-star fa-xs'
+          title='Special word'
+          aria-label='Special word'
+        ></i>
+      )}
     </span>
     <span className='game_row_center flex_row'>
       {(word?.text || '').split('').map((char, index) => (
@@ -235,13 +323,20 @@ const WordRow = ({ last, chain, undo, word }) => (
       ))}
     </span>
     <span className='game_row_side flex_row'>
-      {last && <Button icon='fas fa-undo fa-xs' onClick={() => undo(chain)} />}
+      {last && !complete && (
+        <Button
+          icon='fas fa-undo fa-xs'
+          onClick={() => undo(chain)}
+          tooltip='Undo this word'
+        />
+      )}
     </span>
   </motion.div>
 );
 
-const Footer = ({ par }) => (
+const Footer = ({ par, strokes }) => (
   <motion.footer layout {...sectionAnimation}>
-    Par: {par}
+    <p>{strokes > 2 && <>Strokes: {strokes}</>}</p>
+    <p>Par: {par}</p>
   </motion.footer>
 );

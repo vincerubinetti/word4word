@@ -9,6 +9,7 @@ export default ({
   onChange = () => null,
   className = '',
   disabled = false,
+  tooltip = '',
   ...props
 }) => {
   const [focus, setFocus] = useState(false);
@@ -29,6 +30,8 @@ export default ({
         onChange={lettersOnly}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
+        title={tooltip}
+        aria-label={tooltip}
       />
       {icon && <i className={icon + ' input_icon'} data-show={!focus} />}
     </div>

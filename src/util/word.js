@@ -31,7 +31,8 @@ export const findPath = (wordA, wordB) => {
 
   while (list.length > 0) {
     let word = list.shift();
-    for (const link of word.links) {
+    const links = word.links.filter((link) => link.type === 'regular');
+    for (const link of links) {
       if (link === wordB) {
         const path = [link];
         while (word) {

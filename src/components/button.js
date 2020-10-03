@@ -11,6 +11,7 @@ export default ({
   flip = false,
   link = false,
   children = null,
+  tooltip = '',
   ...props
 }) => {
   let Icon = <></>;
@@ -38,6 +39,8 @@ export default ({
       className={'button wiggle_hitbox ' + className}
       {...props}
       data-square={icon && !text}
+      title={tooltip}
+      aria-label={tooltip}
     >
       {!flip && (
         <>

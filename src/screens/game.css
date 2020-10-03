@@ -47,7 +47,7 @@
 .game_input {
   box-sizing: border-box;
   width: 100px;
-  margin: 10px 0;
+  margin: 10px;
 }
 .game_input input {
   letter-spacing: 9px;

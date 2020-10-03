@@ -68,6 +68,7 @@ export default ({ goToScreen }) => {
           <Button
             icon='fas fa-arrow-left'
             onClick={() => goToScreen({ name: 'home' })}
+            tooltip='Back to home'
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text='Dictionary' />
@@ -97,11 +98,13 @@ export default ({ goToScreen }) => {
           text='regular'
           icon={showRegular ? 'fas fa-check' : ''}
           onClick={() => setShowRegular(!showRegular)}
+          tooltip={(showRegular ? 'Hide' : 'Show') + ' regular words'}
         />
         <Button
           text='special'
           icon={showSpecial ? 'fas fa-check' : ''}
           onClick={() => setShowSpecial(!showSpecial)}
+          tooltip={(showSpecial ? 'Hide' : 'Show') + ' special words'}
         />
         <Input
           className='dictionary_search'
@@ -109,6 +112,7 @@ export default ({ goToScreen }) => {
           maxLength='4'
           value={search}
           onChange={setSearch}
+          tooltip='Search for a word'
         />
         <span>
           {list.length} word{list.length > 1 ? 's' : ''}
@@ -134,6 +138,7 @@ const DictionaryRow = ({ word, goToScreen }) => {
     <Button
       className='dictionary_row'
       onClick={() => goToScreen({ name: 'definition', word })}
+      tooltip='Back to home'
     >
       <div>
         {word.type === 'regular' && <i className='fas fa-paragraph'></i>}

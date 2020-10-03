@@ -23,6 +23,7 @@ export default ({ goToScreen }) => {
           <Button
             icon='fas fa-arrow-left'
             onClick={() => goToScreen({ name: 'home' })}
+            tooltip='Back to home'
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text='New Game' />
@@ -58,6 +59,7 @@ export default ({ goToScreen }) => {
           text='Play'
           icon='fas fa-play'
           onClick={() => goToScreen({ name: 'game', par })}
+          tooltip='Play new game'
         />
       </footer>
     </>
