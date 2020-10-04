@@ -1,0 +1,39 @@
+.game_complete_main {
+  align-items: flex-start;
+  flex-direction: row;
+}
+.game_complete_column {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100px;
+}
+.game_complete_row {
+  margin: 3px;
+  text-transform: uppercase;
+}
+.game_complete_header {
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.game_complete_row_side {
+  width: 30px;
+  height: 30px;
+}
+.game_complete_row_side .fa-star {
+  animation: icon_sway forwards 2s ease-in-out infinite;
+}
+.game_complete_char {
+  width: 15px;
+  height: 30px;
+  text-transform: uppercase;
+}
+.game_complete_table td {
+  padding: 5px 10px;
+}
+.game_complete_table tr:last-child td {
+  padding-top: 10px;
+  font-weight: 600;
+}

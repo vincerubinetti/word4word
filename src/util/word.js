@@ -17,12 +17,13 @@ export const oneLetterDifferent = (wordA, wordB) => {
       diff++;
   }
 
+
   return diff === 1;
 };
 
 export const linkWords = (wordA, wordB) => wordA.links.push(wordB);
 
-export const findPath = (wordA, wordB) => {
+export const findPath = (wordA, wordB, regular = true) => {
   const explored = {};
   const previous = {};
 
@@ -31,7 +32,9 @@ export const findPath = (wordA, wordB) => {
 
   while (list.length > 0) {
     let word = list.shift();
-    const links = word.links.filter((link) => link.type === 'regular');
+    let links = word.links;
+    if (regular)
+      links = links.filter((link) => link.type === 'regular');
     for (const link of links) {
       if (link === wordB) {
         const path = [link];

@@ -46,11 +46,11 @@ export default ({ goToScreen }) => {
           renderTrack={(props) => <div {...props} data-par={par} />}
         />
         <p>
-          <strong>Par: {par}</strong>
+          <b>Par: {par}</b>
         </p>
         <p>
-          <strong>0</strong> of{' '}
-          <strong>{pars[par].length.toLocaleString()}</strong> games played
+          <b>0</b> of{' '}
+          <b>{pars[par].length.toLocaleString()}</b> games played
         </p>
       </main>
       <footer>

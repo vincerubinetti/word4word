@@ -34,7 +34,7 @@
   height: 30px;
 }
 .game_row_side .fa-star {
-  animation: game_icon_sway forwards 2s ease-in-out infinite;
+  animation: icon_sway forwards 2s ease-in-out infinite;
 }
 .game_row_center {
   margin: 0 20px;
@@ -54,14 +54,20 @@
   text-indent: 9px;
   text-transform: uppercase !important;
 }
-@keyframes game_icon_sway {
+.game_main[data-complete='true'] .game_row_center {
+  animation: complete_glow 2s ease-in-out forwards;
+}
+@keyframes complete_glow {
   0% {
-    transform: rotate(-20deg);
+    transform: scale(1);
+    color: var(--black);
   }
-  50% {
-    transform: rotate(20deg);
+  20% {
+    transform: scale(1.35);
+    color: var(--white);
   }
-  100% {
-    transform: rotate(-20deg);
+  40% {
+    transform: scale(1);
+    color: var(--black);
   }
 }

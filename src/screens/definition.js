@@ -28,6 +28,7 @@ export default ({ word, goToScreen }) => {
           <Button
             icon='fas fa-arrow-left'
             onClick={() => goToScreen({ name: 'dictionary' })}
+            tooltip='Back to dictionary'
           />
           <h2 className='wiggle_hitbox' data-wiggle>
             <Wiggle text={word.text.toUpperCase()} />
@@ -38,6 +39,7 @@ export default ({ word, goToScreen }) => {
               <Button
                 icon='fas fa-volume-up'
                 onClick={() => document.querySelector('audio').play()}
+                tooltip='Hear the English pronunciation of this word from Google'
               />
             </>
           )}

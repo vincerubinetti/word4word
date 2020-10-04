@@ -18,6 +18,7 @@
   position: relative;
   width: 120px;
   height: 120px;
+  margin-bottom: 20px;
   font-weight: 600;
 }
 .home_title > * {
@@ -49,4 +50,18 @@
   left: 50%;
   top: 50%;
   transform-origin: center;
+}
+.home_title:hover .home_title_spoke {
+  animation: home_title_grow 2s forwards ease-in-out infinite;
+}
+@keyframes home_title_grow {
+  0% {
+    height: 100%;
+  }
+  50% {
+    height: 125%;
+  }
+  100% {
+    height: 100%;
+  }
 }

@@ -60,13 +60,13 @@ a:focus {
   background: var(--white);
 }
 b {
-  font-weight: 700;
-}
-strong {
   font-weight: 600;
 }
 form {
   margin: 0;
+}
+table {
+  border-collapse: collapse;
 }
 
 .flex_row,
@@ -85,3 +85,14 @@ form {
   margin-right: 5px;
 }
 
+@keyframes icon_sway {
+  0% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(-20deg);
+  }
+}

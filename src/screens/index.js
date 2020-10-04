@@ -6,6 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import Home from './home';
 import NewGame from './new-game';
 import Game from './game';
+import GameComplete from './game-complete';
 import Dictionary from './dictionary';
 import Definition from './definition';
 
@@ -15,6 +16,7 @@ const screens = {
   home: Home,
   newGame: NewGame,
   game: Game,
+  gameComplete: GameComplete,
   dictionary: Dictionary,
   definition: Definition
 };
