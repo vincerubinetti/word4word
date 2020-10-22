@@ -29,3 +29,4 @@ jobs:
           publish_branch: gh-pages
           publish_dir: build
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: ${{ github.event_name == 'pull_request' }}
