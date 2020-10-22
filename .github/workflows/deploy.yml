@@ -25,7 +25,7 @@ jobs:
         run: yarn install
       - name: Build app
         run: yarn build
-      - name: Deploy to GitHub Actions
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@41f7401
         with:
           keep_files: false
