@@ -332,7 +332,7 @@ const WordInput = ({ word, setWord, spinning, submitWord, getHint }) => {
         <Button
           icon='fas fa-lightbulb fa-xs'
           onClick={getHint}
-          tooltip='Get hint'
+          tooltip='Get a hint word that connects to the start or end chain'
         />
       </span>
     </motion.div>
