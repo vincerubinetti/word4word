@@ -3,9 +3,36 @@
   width: 100%;
   height: 100%;
   z-index: -99;
-  background: linear-gradient(45deg, #ffc107, #ff5722, #e91e63);
   opacity: 0.8;
-  transition: background var(--fast);
+  background: linear-gradient(45deg, #4dd0e1, #2196f3);
+  transition: background var(--slow);
+}
+[data-par='6'],
+[data-par='7'],
+[data-par='8'] {
+  background: linear-gradient(45deg, #cddc39, #4caf50);
+}
+[data-par='9'],
+[data-par='10'],
+[data-par='11'] {
+  background: linear-gradient(45deg, #ffc107, #ff5722);
+}
+[data-par='12'],
+[data-par='13'],
+[data-par='14'],
+[data-par='15'] {
+  background: linear-gradient(45deg, #ff5722, #e91e63);
+}
+[data-par='16'],
+[data-par='17'],
+[data-par='18']
+{
+  background: linear-gradient(45deg, #e91e63, #9c27b0);
+}
+[data-par='19'],
+[data-par='20'],
+[data-par='21'] {
+  background: linear-gradient(45deg, #d0d0d0, #a0a0a0);
 }
 canvas {
   width: 100%;

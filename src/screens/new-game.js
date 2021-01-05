@@ -16,6 +16,9 @@ export default ({ goToScreen }) => {
   const [par, setPar] = useStorage(minPar, 'newGamePar');
   const { pars } = useContext(DataContext);
 
+  document.querySelector('.background').dataset.par = par;
+  window.localStorage.lastPar = par;
+
   return (
     <>
       <header>

@@ -19,41 +19,10 @@
   top: 50%;
   border-radius: 999px;
   transform: translateY(-50%);
+  background: var(--black) !important;
 }
 .new_game_slider_track-1 {
   background: var(--slate) !important;
-}
-[data-par] {
-  transition: background var(--slow);
-}
-[data-par='3'],
-[data-par='4'],
-[data-par='5'] {
-  background: #00695c;
-}
-[data-par='6'],
-[data-par='7'],
-[data-par='8'] {
-  background: #1565c0;
-}
-[data-par='9'],
-[data-par='10'],
-[data-par='11'] {
-  background: #6a1b9a;
-}
-[data-par='12'],
-[data-par='13'],
-[data-par='14'],
-[data-par='15'] {
-  background: #ad1457;
-}
-[data-par='16'],
-[data-par='17'],
-[data-par='18'],
-[data-par='19'],
-[data-par='20'],
-[data-par='21'] {
-  background: #000000;
 }
 .new_game_button {
   width: 150px;

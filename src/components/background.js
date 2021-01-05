@@ -16,8 +16,10 @@ let width = 0;
 let height = 0;
 let radius = 0;
 
+const lastPar = window.localStorage.lastPar;
+
 export default () => (
-  <div className='background'>
+  <div className='background' data-par={lastPar || 3}>
     <canvas
       ref={(element) => {
         canvas = element;
