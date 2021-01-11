@@ -1,4 +1,8 @@
 import React from 'react';
+import { useEffect } from 'react';
+import { useContext } from 'react';
+
+import { DataContext } from '../data';
 
 import './background.css';
 
@@ -16,24 +20,46 @@ let width = 0;
 let height = 0;
 let radius = 0;
 
-const lastPar = window.localStorage.lastPar;
+// map pars to background gradient colors
+const bgs = [
+  [3, 5, '#4dd0e1', '#1e88e5'],
+  [6, 8, '#cddc39', '#4caf50'],
+  [9, 11, '#ffc107', '#ff5722'],
+  [12, 14, '#ff5722', '#e91e63'],
+  [15, 17, '#e91e63', '#9c27b0'],
+  [18, 21, '#c0c0c0', '#808080']
+];
 
-export default () => (
-  <div className='background' data-par={lastPar || 3}>
-    <canvas
-      ref={(element) => {
-        canvas = element;
-        updateCanvas();
-      }}
-    ></canvas>
-  </div>
-);
+export default () => {
+  const { par } = useContext(DataContext);
+
+  useEffect(() => {
+    updateCanvas();
+  }, []);
+
+  return (
+    <div className='background'>
+      {bgs.map(([startPar, endPar, startColor, endColor], index) => {
+        const active = par >= startPar && par <= endPar;
+        return (
+          <div
+            key={index}
+            className='background_gradient'
+            style={{
+              background: `linear-gradient(45deg, ${startColor}, ${endColor})`,
+              opacity: active ? 1 : 0,
+              transition: `opacity 0.25s ease-${active ? 'out' : 'in'}`
+            }}
+          />
+        );
+      })}
+      <canvas ref={(element) => (canvas = element)} />
+    </div>
+  );
+};
 
 // update canvas properties
 const updateCanvas = () => {
-  if (!canvas)
-    return;
-
   // update dimensions
   width = canvas.clientWidth;
   height = canvas.clientHeight;

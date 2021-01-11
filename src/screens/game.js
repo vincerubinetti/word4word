@@ -39,12 +39,12 @@ const topWordAnimation = {
   transition: { ease: 'easeInOut', duration: 0.1 }
 };
 
-export default ({ goToScreen, par }) => {
+export default ({ goToScreen }) => {
   const [word, setWord] = useState('');
-  const [chain, setChain] = useState({ a: [], b: [] });
-  const { regularDictionary, specialDictionary, pars } = useContext(
+  const { regularDictionary, specialDictionary, pars, par } = useContext(
     DataContext
   );
+  const [chain, setChain] = useState({ a: [], b: [] });
   const [strokes, setStrokes] = useState(2);
   const [spinning, setSpinning] = useState(true);
   const [complete, setComplete] = useState(false);
@@ -68,7 +68,7 @@ export default ({ goToScreen, par }) => {
     }
     setChain({ a: [wordA], b: [wordB] });
     setWord('');
-  }, [chain.a, chain.b, randomPair]);
+  }, [chain.a, chain.b, setChain, randomPair]);
 
   const newGame = useCallback(() => {
     delay = startDelay;
@@ -77,11 +77,11 @@ export default ({ goToScreen, par }) => {
     setSpinning(true);
     setWord('');
     setComplete(false);
-  }, [randomPair]);
+  }, [setChain, randomPair]);
 
   const swapWords = useCallback(() => {
     setChain({ a: chain.b, b: chain.a });
-  }, [chain.a, chain.b]);
+  }, [chain.a, chain.b, setChain]);
 
   const submitWord = useCallback(
     (event) => {
@@ -106,7 +106,7 @@ export default ({ goToScreen, par }) => {
       setWord('');
       return success;
     },
-    [chain, regularDictionary, specialDictionary, word]
+    [regularDictionary, specialDictionary, chain, setChain, word]
   );
 
   const undo = useCallback(
@@ -117,7 +117,7 @@ export default ({ goToScreen, par }) => {
       if (aOrB === 'b')
         setChain({ a, b: b.slice(0, -1) });
     },
-    [chain]
+    [chain, setChain]
   );
 
   const randomLink = useCallback(() => {

@@ -5,7 +5,6 @@ import ReactSlider from 'react-slider';
 import Button from '../components/button';
 import Wiggle from '../components/wiggle';
 import { DataContext } from '../data';
-import { useStorage } from '../util/hooks';
 
 import './new-game.css';
 
@@ -13,11 +12,7 @@ const minPar = 3;
 const maxPar = 21;
 
 export default ({ goToScreen }) => {
-  const [par, setPar] = useStorage(minPar, 'newGamePar');
-  const { pars } = useContext(DataContext);
-
-  document.querySelector('.background').dataset.par = par;
-  window.localStorage.lastPar = par;
+  const { par, setPar, pars } = useContext(DataContext);
 
   return (
     <>
@@ -45,15 +40,12 @@ export default ({ goToScreen }) => {
           pageFn={() => 3}
           thumbClassName='new_game_slider_thumb'
           trackClassName='new_game_slider_track'
-          renderThumb={(props) => <div {...props} data-par={par} />}
-          renderTrack={(props) => <div {...props} data-par={par} />}
         />
         <p>
           <b>Par: {par}</b>
         </p>
         <p>
-          <b>0</b> of{' '}
-          <b>{pars[par].length.toLocaleString()}</b> games played
+          <b>0</b> of <b>{pars[par].length.toLocaleString()}</b> games played
         </p>
       </main>
       <footer>
@@ -61,8 +53,8 @@ export default ({ goToScreen }) => {
           className='new_game_button'
           text='Play'
           icon='fas fa-play'
-          onClick={() => goToScreen({ name: 'game', par })}
-          tooltip='Play new game'
+          onClick={() => goToScreen({ name: 'game' })}
+          tooltip='Start new game'
         />
       </footer>
     </>

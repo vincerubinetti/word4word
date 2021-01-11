@@ -17,7 +17,6 @@ export const oneLetterDifferent = (wordA, wordB) => {
       diff++;
   }
 
-
   return diff === 1;
 };
 

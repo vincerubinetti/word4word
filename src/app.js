@@ -8,8 +8,8 @@ import './app.css';
 
 export default () => (
   <>
-    <Background />
     <Data>
+      <Background />
       <Screen />
     </Data>
   </>

@@ -6,6 +6,7 @@ import { createContext } from 'react';
 import { Word } from '../util/word';
 import { oneLetterDifferent } from '../util/word';
 import { linkWords } from '../util/word';
+import { useStorage } from '../util/hooks';
 
 import { ReactComponent as Loading } from '../loading.svg';
 
@@ -39,6 +40,8 @@ export default ({ children }) => {
   const [regularDictionary, setRegularDictionary] = useState([]);
   const [specialDictionary, setSpecialDictionary] = useState([]);
   const [pars, setPars] = useState([]);
+  const [par, setPar] = useStorage(3, 'par');
+  const [chain, setChain] = useStorage({ a: [], b: [] }, 'chain');
 
   useEffect(() => {
     const loadData = async () => {
@@ -61,7 +64,11 @@ export default ({ children }) => {
       value={{
         regularDictionary,
         specialDictionary,
-        pars
+        pars,
+        par,
+        setPar,
+        chain,
+        setChain
       }}
     >
       {children}
