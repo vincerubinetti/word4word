@@ -1,14 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { createContext } from 'react';
-
 import { Word } from '../util/word';
 import { oneLetterDifferent } from '../util/word';
 import { linkWords } from '../util/word';
-import { useStorage } from '../util/hooks';
-
-import { ReactComponent as Loading } from '../loading.svg';
 
 import regularDictionary from './regular-dictionary.txt';
 import specialDictionary from './special-dictionary.txt';
@@ -32,55 +24,16 @@ import par19 from './par19.dat';
 import par20 from './par20.dat';
 import par21 from './par21.dat';
 
-import './index.css';
-
-export const DataContext = createContext({});
-
-export default ({ children }) => {
-  const [regularDictionary, setRegularDictionary] = useState([]);
-  const [specialDictionary, setSpecialDictionary] = useState([]);
-  const [pars, setPars] = useState([]);
-  const [par, setPar] = useStorage(3, 'par');
-  const [chain, setChain] = useStorage({ a: [], b: [] }, 'chain');
-
-  useEffect(() => {
-    const loadData = async () => {
-      let regularDictionary = await getRegularDictionary();
-      regularDictionary = parseDictionary(regularDictionary, 'regular');
-      let specialDictionary = await getSpecialDictionary();
-      specialDictionary = parseDictionary(specialDictionary, 'special');
-      linkDictionary([...regularDictionary, ...specialDictionary]);
-      let pars = await getPars();
-      pars = parsePars(pars, regularDictionary);
-      setRegularDictionary(regularDictionary);
-      setSpecialDictionary(specialDictionary);
-      setPars(pars);
-    };
-    loadData();
-  }, []);
-
-  return (
-    <DataContext.Provider
-      value={{
-        regularDictionary,
-        specialDictionary,
-        pars,
-        par,
-        setPar,
-        chain,
-        setChain
-      }}
-    >
-      {children}
-      {(!regularDictionary.length ||
-        !specialDictionary.length ||
-        !pars.length) && (
-        <div className='loading flex_row wiggle_hitbox'>
-          <Loading width='40px' />
-        </div>
-      )}
-    </DataContext.Provider>
-  );
+export const loadData = async () => {
+  let regularDictionary = await getRegularDictionary();
+  regularDictionary = parseDictionary(regularDictionary, 'regular');
+  let specialDictionary = await getSpecialDictionary();
+  specialDictionary = parseDictionary(specialDictionary, 'special');
+  linkDictionary([...regularDictionary, ...specialDictionary]);
+  let pars = await getPars();
+  pars = pars.map((par) => parsePar(par, regularDictionary));
+  pars = [null, null, null, ...pars];
+  return { regularDictionary, specialDictionary, pars };
 };
 
 const getRegularDictionary = async () =>
@@ -90,10 +43,7 @@ const getSpecialDictionary = async () =>
   (await fetch(specialDictionary)).text();
 
 const getPars = async () => {
-  let pars = await Promise.all([
-    Promise.resolve(null),
-    Promise.resolve(null),
-    Promise.resolve(null),
+  const pars = await Promise.all([
     fetch(par3),
     fetch(par4),
     fetch(par5),
@@ -114,10 +64,7 @@ const getPars = async () => {
     fetch(par20),
     fetch(par21)
   ]);
-  pars = await Promise.all([
-    ...pars.map((par) => (par ? par.arrayBuffer() : Promise.resolve(null)))
-  ]);
-  return pars;
+  return Promise.all(pars.map((par) => par.arrayBuffer()));
 };
 
 const parseDictionary = (dictionary, type) =>
@@ -137,16 +84,12 @@ const linkDictionary = (dictionary) => {
   return dictionary;
 };
 
-const parsePars = (pars, dictionary) => {
-  const newPars = [];
-  for (const par of pars) {
-    const pairs = [];
-    if (par) {
-      const bytes = new Uint16Array(par);
-      for (let index = 0; index < bytes.length; index += 2)
-        pairs.push([dictionary[bytes[index]], dictionary[bytes[index + 1]]]);
-    }
-    newPars.push(pairs);
+const parsePar = (par, dictionary) => {
+  const pairs = [];
+  if (par) {
+    const bytes = new Uint16Array(par);
+    for (let index = 0; index < bytes.length; index += 2)
+      pairs.push([dictionary[bytes[index]], dictionary[bytes[index + 1]]]);
   }
-  return newPars;
+  return pairs;
 };

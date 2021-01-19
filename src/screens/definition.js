@@ -9,7 +9,7 @@ import { ReactComponent as Loading } from '../loading.svg';
 
 import './definition.css';
 
-export default ({ word, goToScreen }) => {
+export default ({ setScreen, word }) => {
   const [definitions, setDefinitions] = useState('loading');
   const [audio, setAudio] = useState('');
 
@@ -27,7 +27,7 @@ export default ({ word, goToScreen }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => goToScreen({ name: 'dictionary' })}
+            onClick={() => setScreen('dictionary')}
             tooltip='Back to dictionary'
           />
           <h2 className='wiggle_hitbox' data-wiggle>

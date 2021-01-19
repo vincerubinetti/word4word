@@ -22,6 +22,35 @@ body,
   overflow-y: hidden;
 }
 
+.screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+header,
+main,
+footer {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+  max-width: min(600px, 100%);
+  padding: 20px;
+  text-align: center;
+}
+header,
+footer {
+  flex-wrap: wrap;
+}
+main {
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 h1 {
   margin: 10px 0;
   font-size: 2rem;

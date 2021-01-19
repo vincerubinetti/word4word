@@ -1,8 +1,5 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useContext } from 'react';
-
-import { DataContext } from '../data';
 
 import './background.css';
 
@@ -30,9 +27,7 @@ const bgs = [
   [18, 21, '#c0c0c0', '#808080']
 ];
 
-export default () => {
-  const { par } = useContext(DataContext);
-
+export default ({ par }) => {
   useEffect(() => {
     updateCanvas();
   }, []);

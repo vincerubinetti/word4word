@@ -4,7 +4,7 @@ import Button from '../components/button';
 
 import './home.css';
 
-export default ({ goToScreen }) => (
+export default ({ setScreen }) => (
   <>
     <header>
       <div className='home_title'>
@@ -17,7 +17,7 @@ export default ({ goToScreen }) => (
         className='home_button'
         icon='fas fa-bolt fa-fw'
         text='NEW GAME'
-        onClick={() => goToScreen({ name: 'newGame' })}
+        onClick={() => setScreen('newGame')}
       />
       <Button
         className='home_button'
@@ -33,11 +33,11 @@ export default ({ goToScreen }) => (
         className='home_button'
         icon='fas fa-book fa-fw'
         text='DICTIONARY'
-        onClick={() => goToScreen({ name: 'dictionary' })}
+        onClick={() => setScreen('dictionary')}
       />
       <Button
         className='home_button'
-        icon='fas fa-question-circle fa-fw'
+        icon='fas fa-chess-rook fa-fw'
         text='HOW 2 PLAY'
         link={true}
         href='https://github.com/vincerubinetti/word4word'

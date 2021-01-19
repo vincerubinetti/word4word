@@ -1,21 +1,21 @@
 import React from 'react';
 import { memo } from 'react';
 import { useState } from 'react';
-import { useContext } from 'react';
 
 import Input from '../components/input';
 import Button from '../components/button';
 import Wiggle from '../components/wiggle';
 
-import { DataContext } from '../data';
-
 import './dictionary.css';
 
 let listScroll = 0;
 
-export default ({ goToScreen }) => {
-  const { regularDictionary, specialDictionary } = useContext(DataContext);
-
+export default ({
+  regularDictionary,
+  specialDictionary,
+  setScreen,
+  setWord
+}) => {
   const [showRegular, setShowRegular] = useState(true);
   const [showSpecial, setShowSpecial] = useState(false);
   const [search, setSearch] = useState('');
@@ -67,7 +67,7 @@ export default ({ goToScreen }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => goToScreen({ name: 'home' })}
+            onClick={() => setScreen('home')}
             tooltip='Back to home'
           />
           <h2 className='wiggle_hitbox' data-wiggle>
@@ -91,7 +91,7 @@ export default ({ goToScreen }) => {
         onScroll={(event) => (listScroll = event.target.scrollTop)}
         className='dictionary_main'
       >
-        <List {...{ list, goToScreen }} />
+        <List {...{ list, setScreen, setWord }} />
       </main>
       <footer className='dictionary_footer'>
         <Button
@@ -123,9 +123,9 @@ export default ({ goToScreen }) => {
 };
 
 const List = memo(
-  ({ list, goToScreen }) =>
+  ({ list, setScreen, setWord }) =>
     list.map((word, index) => (
-      <DictionaryRow key={index} {...{ word, goToScreen }}>
+      <DictionaryRow key={index} {...{ word, setScreen, setWord }}>
         {word.text}
       </DictionaryRow>
     )),
@@ -133,11 +133,14 @@ const List = memo(
 );
 const listCode = (list) => JSON.stringify(list.map((word) => word.text));
 
-const DictionaryRow = ({ word, goToScreen }) => {
+const DictionaryRow = ({ word, setScreen, setWord }) => {
   return (
     <Button
       className='dictionary_row'
-      onClick={() => goToScreen({ name: 'definition', word })}
+      onClick={() => {
+        setScreen('definition');
+        setWord(word);
+      }}
       tooltip='Back to home'
     >
       <div>

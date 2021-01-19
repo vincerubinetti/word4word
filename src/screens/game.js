@@ -2,13 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useCallback } from 'react';
-import { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
 import { AnimateSharedLayout } from 'framer-motion';
 import { useAnimation } from 'framer-motion';
 
-import { DataContext } from '../data';
 import { oneLetterDifferent } from '../util/word';
 import { findPath } from '../util/word';
 import Button from '../components/button';
@@ -39,11 +37,14 @@ const topWordAnimation = {
   transition: { ease: 'easeInOut', duration: 0.1 }
 };
 
-export default ({ goToScreen }) => {
+export default ({
+  regularDictionary,
+  specialDictionary,
+  pars,
+  setScreen,
+  par
+}) => {
   const [word, setWord] = useState('');
-  const { regularDictionary, specialDictionary, pars, par } = useContext(
-    DataContext
-  );
   const [chain, setChain] = useState({ a: [], b: [] });
   const [strokes, setStrokes] = useState(2);
   const [spinning, setSpinning] = useState(true);
@@ -169,17 +170,10 @@ export default ({ goToScreen }) => {
       oneLetterDifferent(a[a.length - 1], b[b.length - 1])
     ) {
       setComplete(true);
-      timer = window.setTimeout(
-        () =>
-          goToScreen({
-            name: 'gameComplete',
-            chain: [...chain.a, ...chain.b.reverse()]
-          }),
-        3000
-      );
+      timer = window.setTimeout(() => setScreen('gameComplete'), 3000);
     }
     () => window.clearTimeout(timer);
-  }, [goToScreen, chain]);
+  }, [setScreen, chain]);
 
   useEffect(() => {
     setStrokes(chain.a.length + chain.b.length);
@@ -187,7 +181,7 @@ export default ({ goToScreen }) => {
 
   return (
     <AnimateSharedLayout>
-      <Header {...{ goToScreen, chain, newGame, swapWords, complete }} />
+      <Header {...{ setScreen, chain, newGame, swapWords, complete }} />
       <Main
         {...{
           chain,
@@ -207,12 +201,12 @@ export default ({ goToScreen }) => {
 
 const rand = (array) => array[Math.floor(Math.random() * array.length)];
 
-const Header = ({ goToScreen, chain, newGame, swapWords, complete }) => (
+const Header = ({ setScreen, chain, newGame, swapWords, complete }) => (
   <motion.header layout {...sectionAnimation}>
     <div className='flex_row'>
       <Button
         icon='fas fa-arrow-left'
-        onClick={() => goToScreen({ name: 'home' })}
+        onClick={() => setScreen('home')}
         tooltip='Back to home'
       />
       <h2 className='flex_row'>

@@ -6,7 +6,7 @@ import { findPath } from '../util/word';
 
 import './game-complete.css';
 
-export default ({ goToScreen, chain }) => {
+export default ({ setScreen, chain = [] }) => {
   const parChain = findPath(chain[0], chain[chain.length - 1]);
 
   const strokes = chain.length - parChain.length;
@@ -27,7 +27,7 @@ export default ({ goToScreen, chain }) => {
         <div className='flex_row'>
           <Button
             icon='fas fa-arrow-left'
-            onClick={() => goToScreen({ name: 'home' })}
+            onClick={() => setScreen('home')}
             tooltip='Back to home'
           />
           <h2 className='wiggle_hitbox' data-wiggle>
