@@ -21,3 +21,13 @@ export const useStorage = (defaultValue, key = '', delayGet) => {
 
   return [state, setState];
 };
+
+export const useFirst = () => {
+  const [first, setFirst] = useState(true);
+
+  useEffect(() => {
+    setFirst(false);
+  }, []);
+
+  return first;
+};

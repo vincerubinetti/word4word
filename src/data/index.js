@@ -2,8 +2,8 @@ import { Word } from '../util/word';
 import { oneLetterDifferent } from '../util/word';
 import { linkWords } from '../util/word';
 
-import regularDictionary from './regular-dictionary.txt';
-import specialDictionary from './special-dictionary.txt';
+import regular from './regular-dictionary.txt';
+import special from './special-dictionary.txt';
 import par3 from './par3.dat';
 import par4 from './par4.dat';
 import par5 from './par5.dat';
@@ -25,22 +25,23 @@ import par20 from './par20.dat';
 import par21 from './par21.dat';
 
 export const loadData = async () => {
-  let regularDictionary = await getRegularDictionary();
-  regularDictionary = parseDictionary(regularDictionary, 'regular');
-  let specialDictionary = await getSpecialDictionary();
-  specialDictionary = parseDictionary(specialDictionary, 'special');
-  linkDictionary([...regularDictionary, ...specialDictionary]);
+  let regular = await getRegularDictionary();
+  regular = parseDictionary(regular, 'regular');
+  let special = await getSpecialDictionary();
+  special = parseDictionary(special, 'special');
+  const dictionary = [...regular, ...special];
+  linkDictionary(dictionary);
   let pars = await getPars();
-  pars = pars.map((par) => parsePar(par, regularDictionary));
+  pars = pars.map((par) => parsePar(par, regular));
   pars = [null, null, null, ...pars];
-  return { regularDictionary, specialDictionary, pars };
+  return { dictionary, pars };
 };
 
 const getRegularDictionary = async () =>
-  (await fetch(regularDictionary)).text();
+  (await fetch(regular)).text();
 
 const getSpecialDictionary = async () =>
-  (await fetch(specialDictionary)).text();
+  (await fetch(special)).text();
 
 const getPars = async () => {
   const pars = await Promise.all([

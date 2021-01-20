@@ -10,12 +10,7 @@ import './dictionary.css';
 
 let listScroll = 0;
 
-export default ({
-  regularDictionary,
-  specialDictionary,
-  setScreen,
-  setWord
-}) => {
+export default ({ dictionary, setScreen, setDefine }) => {
   const [showRegular, setShowRegular] = useState(true);
   const [showSpecial, setShowSpecial] = useState(false);
   const [search, setSearch] = useState('');
@@ -51,15 +46,12 @@ export default ({
   const { field = '', direction = '' } = sortBy;
   const sortFunc = sortFuncs[field + ' ' + direction] || sortFuncs[' '];
 
-  const filterFunc = (word) =>
-    word.text.toLowerCase().includes(search.toLowerCase());
+  const filterFunc = ({ text, type }) =>
+    text.toLowerCase().includes(search.toLowerCase()) &&
+    (showRegular || type !== 'regular') &&
+    (showSpecial || type !== 'special');
 
-  let list = [];
-  if (showRegular)
-    list = list.concat(regularDictionary);
-  if (showSpecial)
-    list = list.concat(specialDictionary);
-  list = list.sort(sortFunc).filter(filterFunc);
+  const list = dictionary.sort(sortFunc).filter(filterFunc);
 
   return (
     <>
@@ -91,7 +83,7 @@ export default ({
         onScroll={(event) => (listScroll = event.target.scrollTop)}
         className='dictionary_main'
       >
-        <List {...{ list, setScreen, setWord }} />
+        <List {...{ list, setScreen, setDefine }} />
       </main>
       <footer className='dictionary_footer'>
         <Button
@@ -123,9 +115,9 @@ export default ({
 };
 
 const List = memo(
-  ({ list, setScreen, setWord }) =>
+  ({ list, setScreen, setDefine }) =>
     list.map((word, index) => (
-      <DictionaryRow key={index} {...{ word, setScreen, setWord }}>
+      <DictionaryRow key={index} {...{ word, setScreen, setDefine }}>
         {word.text}
       </DictionaryRow>
     )),
@@ -133,13 +125,13 @@ const List = memo(
 );
 const listCode = (list) => JSON.stringify(list.map((word) => word.text));
 
-const DictionaryRow = ({ word, setScreen, setWord }) => {
+const DictionaryRow = ({ word, setScreen, setDefine }) => {
   return (
     <Button
       className='dictionary_row'
       onClick={() => {
         setScreen('definition');
-        setWord(word);
+        setDefine(word);
       }}
       tooltip='Back to home'
     >

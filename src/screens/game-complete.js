@@ -6,20 +6,27 @@ import { findPath } from '../util/word';
 
 import './game-complete.css';
 
-export default ({ setScreen, chain = [] }) => {
+export default ({ dictionary, setScreen, chain = [] }) => {
+  chain = chain.map((text) => dictionary.find((word) => word.text === text));
   const parChain = findPath(chain[0], chain[chain.length - 1]);
 
-  const strokes = chain.length - parChain.length;
-  let strokeScore;
-  if (strokes > 0)
-    strokeScore = 1000 * (parChain.length - strokes);
-  else
-    strokeScore = 1000 * parChain.length * (1 - strokes);
-  if (strokeScore < 0)
-    strokeScore = 0;
-  const specials = chain.filter((word) => word.type === 'special').length;
-  const specialScore = 2000 * specials;
-  const score = strokeScore + specialScore;
+  const strokes = chain.length;
+  const par = parChain.length;
+  const diff = strokes - par;
+
+  let score;
+  let formula;
+  if (diff >= 0) {
+    score = 1000 * (par - diff);
+    formula = (1000).toLocaleString() + ' × (2 × par - strokes)';
+  } else {
+    score = 1000 * par * (1 - diff);
+    formula = (1000).toLocaleString() + ' × par × (1 + par - strokes)';
+  }
+  if (score < 0) {
+    formula = '';
+    score = 0;
+  }
 
   return (
     <>
@@ -37,7 +44,7 @@ export default ({ setScreen, chain = [] }) => {
       </header>
       <main className='game_complete_main'>
         <div className='game_complete_column'>
-          <div className='game_complete_header'>Yours</div>
+          <div className='game_complete_header'>Strokes</div>
           {chain.map((word, index) => (
             <WordRow key={index} word={word} />
           ))}
@@ -53,19 +60,18 @@ export default ({ setScreen, chain = [] }) => {
         <table className='game_complete_table'>
           <tbody>
             <tr>
-              <td>
-                {strokes === 0 && 'Par matched:'}
-                {strokes < 0 && -strokes + ' strokes below par:'}
-                {strokes > 0 && strokes + ' strokes above par:'}
-              </td>
-              <td>{strokeScore.toLocaleString()}</td>
+              <td>Strokes</td>
+              <td>{chain.length}</td>
             </tr>
             <tr>
-              <td>{specials} special words:</td>
-              <td>{specialScore.toLocaleString()}</td>
+              <td>Par</td>
+              <td>{parChain.length}</td>
             </tr>
             <tr>
-              <td>Total:</td>
+              <td colSpan='2'>{formula}</td>
+            </tr>
+            <tr>
+              <td>Score</td>
               <td>{score.toLocaleString()}</td>
             </tr>
           </tbody>
@@ -78,7 +84,7 @@ export default ({ setScreen, chain = [] }) => {
 const WordRow = ({ word }) => (
   <div className='flex_row'>
     <span className='game_complete_row_side flex_row'>
-      {word.type === 'special' && (
+      {word?.type === 'special' && (
         <i
           className='fas fa-star fa-xs'
           title='Special word'

@@ -37,3 +37,6 @@
   padding-top: 10px;
   font-weight: 600;
 }
+.game_complete_table td:last-child {
+  text-align: center;
+}

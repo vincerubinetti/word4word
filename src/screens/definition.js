@@ -9,17 +9,17 @@ import { ReactComponent as Loading } from '../loading.svg';
 
 import './definition.css';
 
-export default ({ setScreen, word }) => {
+export default ({ setScreen, define }) => {
   const [definitions, setDefinitions] = useState('loading');
   const [audio, setAudio] = useState('');
 
   useEffect(() => {
     (async () => {
-      const { definitions, audio } = await loadDefinitions(word.text);
+      const { definitions, audio } = await loadDefinitions(define.text);
       setDefinitions(definitions);
       setAudio(audio);
     })();
-  }, [word.text]);
+  }, [define.text]);
 
   return (
     <>
@@ -31,7 +31,7 @@ export default ({ setScreen, word }) => {
             tooltip='Back to dictionary'
           />
           <h2 className='wiggle_hitbox' data-wiggle>
-            <Wiggle text={word.text.toUpperCase()} />
+            <Wiggle text={define.text.toUpperCase()} />
           </h2>
           {audio && (
             <>
@@ -47,13 +47,13 @@ export default ({ setScreen, word }) => {
       </header>
       <main>
         <h4>Type</h4>
-        {word.type === 'regular' && (
+        {define.type === 'regular' && (
           <p>
             <i className='fas fa-paragraph icon'></i>
             <span>Regular</span>
           </p>
         )}
-        {word.type === 'special' && (
+        {define.type === 'special' && (
           <p>
             <i className='fas fa-star icon'></i>
             <span>Special</span>
@@ -61,14 +61,14 @@ export default ({ setScreen, word }) => {
         )}
         <h4>Regular Links</h4>
         <p>
-          {word.links
+          {define.links
             .filter((link) => link.type === 'regular')
             .map((link) => link.text)
             .join(', ') || 'no words'}
         </p>
         <h4>Special Links</h4>
         <p>
-          {word.links
+          {define.links
             .filter((link) => link.type === 'special')
             .map((link) => link.text)
             .join(', ') || 'no words'}
@@ -81,7 +81,7 @@ export default ({ setScreen, word }) => {
         )}
         {definitions === 'lookup' && (
           <p>
-            <a href={googleDefine + word.text}>Lookup definition on Google</a>
+            <a href={googleDefine + define.text}>Lookup definition on Google</a>
           </p>
         )}
         {Array.isArray(definitions) &&
@@ -99,11 +99,11 @@ export default ({ setScreen, word }) => {
 const googleDefine = 'https://www.google.com/search?q=define%3A+';
 const googleDictionary = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 
-const loadDefinitions = async (word) => {
+const loadDefinitions = async (text) => {
   let definitions = [];
   let audio = '';
   try {
-    const results = await (await fetch(googleDictionary + word)).json();
+    const results = await (await fetch(googleDictionary + text)).json();
     if (!Array.isArray(results))
       throw new Error();
 

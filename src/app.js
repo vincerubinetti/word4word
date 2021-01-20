@@ -35,20 +35,18 @@ const screenAnimation = {
 };
 
 export default () => {
-  const [regularDictionary, setRegularDictionary] = useState([]);
-  const [specialDictionary, setSpecialDictionary] = useState([]);
+  const [dictionary, setDictionary] = useState([]);
   const [pars, setPars] = useState([]);
-  const loaded =
-    regularDictionary.length && specialDictionary.length && pars.length;
+  const loaded = dictionary.length && pars.length;
 
   const [screen, setScreen] = useState('loading');
   const [par, setPar] = useStorage(3, 'par');
-  const [word, setWord] = useState('');
+  const [define, setDefine] = useState('');
+  const [chain, setChain] = useState([]);
 
   useEffect(() => {
-    loadData().then(({ regularDictionary, specialDictionary, pars }) => {
-      setRegularDictionary(regularDictionary);
-      setSpecialDictionary(specialDictionary);
+    loadData().then(({ dictionary, pars }) => {
+      setDictionary(dictionary);
       setPars(pars);
     });
   }, []);
@@ -60,13 +58,14 @@ export default () => {
 
   const Screen = screens[screen];
   const props = {
-    regularDictionary,
-    specialDictionary,
+    dictionary,
     pars,
     par,
     setPar,
-    word,
-    setWord
+    define,
+    setDefine,
+    chain,
+    setChain
   };
 
   return (

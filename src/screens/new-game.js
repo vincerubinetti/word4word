@@ -9,7 +9,7 @@ import './new-game.css';
 const minPar = 3;
 const maxPar = 21;
 
-export default ({ pars, setScreen, par, setPar }) => (
+export default ({ pars, setScreen, par, setPar, setChain }) => (
   <>
     <header>
       <div className='flex_row'>
@@ -48,7 +48,10 @@ export default ({ pars, setScreen, par, setPar }) => (
         className='new_game_button'
         text='Play'
         icon='fas fa-play'
-        onClick={() => setScreen('game')}
+        onClick={() => {
+          setChain([]);
+          setScreen('game');
+        }}
         tooltip='Start new game'
       />
     </footer>
