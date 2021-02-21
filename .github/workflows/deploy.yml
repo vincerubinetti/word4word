@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   deploy-to-gh-pages:
@@ -22,10 +25,11 @@ jobs:
         run: yarn install
       - name: Build app
         run: yarn build
-      - name: Deploy to GitHub Actions
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@41f7401
         with:
           keep_files: false
           publish_branch: gh-pages
           publish_dir: build
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: ${{ github.event_name == 'pull_request' }}
