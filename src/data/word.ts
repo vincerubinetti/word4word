@@ -1,5 +1,10 @@
+import { differenceInCalendarWeeks, getDay, getWeekOfMonth } from "date-fns";
+import { clamp, range } from "lodash";
+import { shuffle } from "@/util/math";
+import { sleep } from "@/util/misc";
 import rawDictionary from "./dictionary.yaml?raw";
-import rawPars from "../../public/pars.dat?url";
+
+const rawPars = "./pars.dat";
 
 export type Word = {
   text: string;
@@ -7,8 +12,14 @@ export type Word = {
   links: Word[];
 };
 
+export type Pars = (undefined | { a: Word; b: Word }[])[];
+
 /** load dictionary and par data */
 export const loadData = async () => {
+  /** DICTIONARY */
+
+  // await sleep(1000);
+
   /** parse raw dictionary yaml */
   const dictionary = rawDictionary
     .split("\n")
@@ -29,13 +40,14 @@ export const loadData = async () => {
     for (const b of regularDictionary)
       if (oneLetterDifferent(a, b)) a.links.push(b);
 
-  /** par: shortest path length between each pair of words in reg dictionary */
+  /** PARS */
+  /** shortest path length between each pair of words in reg dictionary */
 
   /**
    * array where each item holds pars of length equal to index, i.e. pars[5]
    * contains all pairs of words of par 5
    */
-  const pars: (undefined | { a: Word; b: Word }[])[] = [];
+  const pars: Pars = [];
 
   /** read triangular matrix of par lengths */
   const parsMatrix = new Uint8Array(await (await fetch(rawPars)).arrayBuffer());
@@ -66,6 +78,7 @@ export const loadData = async () => {
   return { regularDictionary, specialDictionary, pars };
 };
 
+/** are words 1 letter apart */
 export const oneLetterDifferent = (a: Word | string, b: Word | string) => {
   if (typeof a === "object") a = a.text;
   if (typeof b === "object") b = b.text;
@@ -74,6 +87,7 @@ export const oneLetterDifferent = (a: Word | string, b: Word | string) => {
   return diff === 1;
 };
 
+/** find shortest path between two words, breadth first search */
 export const findPath = (a: Word, b: Word) => {
   const explored: Record<Word["text"], boolean> = {};
   const previous: Record<Word["text"], Word> = {};
@@ -84,6 +98,7 @@ export const findPath = (a: Word, b: Word) => {
   while (list.length > 0) {
     let word = list.shift();
     let links = word?.links ?? [];
+    ``;
     for (const link of links) {
       if (link === b) {
         const path = [link];
@@ -102,4 +117,41 @@ export const findPath = (a: Word, b: Word) => {
   }
 
   return [];
+};
+
+export const getDaily = (pars: Pars) => {
+  /** get date info */
+  const today = new Date();
+  const epoch = new Date(2000, 0, 0, 0, 0);
+  const day = getDay(today);
+  const week = getWeekOfMonth(today);
+  const weeks = differenceInCalendarWeeks(today, epoch);
+
+  /** set difficulty based on day of week, like NYT games */
+  let par = 3;
+  if (day === 1) par = 4;
+  if (day === 2) par = 6;
+  if (day === 3) par = 8;
+  if (day === 4) par = 10;
+  if (day === 5) par = 12;
+  if (day === 6) par = 14;
+  if (day === 0) par = 16;
+
+  /** increase in difficulty over month */
+  par += week;
+  par = clamp(par, 3, pars.length);
+
+  /** number of pairs in chosen par */
+  const pairs = pars[par]?.length ?? 0;
+
+  /** select random but deterministic pair from par */
+  const pair =
+    shuffle(range(0, Math.min(weeks, pairs) + 1))[weeks % pairs] ?? 0;
+
+  /** get word pair */
+  const daily = pars[par]?.[pair];
+
+  if (!daily) throw Error(`Couldn't get daily, par ${par}, pair ${pair}`);
+
+  return daily;
 };
