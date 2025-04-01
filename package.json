@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "compile": "cd data && ./compile.sh && cd ..",
+    "compile": "cd src/data && ./compile.sh && cd ../..",
     "dev": "vite --open",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
