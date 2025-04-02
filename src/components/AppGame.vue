@@ -104,6 +104,7 @@ import { data } from "@/App.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { error } from "@/util/animate";
 import { lerp } from "@/util/math";
+import { sleep } from "@/util/misc";
 
 type Props = {
   a: Word;
@@ -172,7 +173,7 @@ const bAddable = computed(
 );
 
 /** "submit" word to be added to path */
-const add = () => {
+const add = async () => {
   /** add to path */
   if (aAddable.value) aPath.value.push(inputWord.value!);
   else if (bAddable.value) bPath.value.unshift(inputWord.value!);
@@ -180,6 +181,9 @@ const add = () => {
 
   /** reset input */
   input.value = "";
+
+  /** scroll to center */
+  await sleep(100);
   inputElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
 };
 
