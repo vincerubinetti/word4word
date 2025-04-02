@@ -31,8 +31,8 @@ const { VITE_TITLE } = import.meta.env;
 header {
   display: flex;
   align-items: center;
-  padding: 10px;
-  gap: 0 10px;
+  padding: 10px 20px;
+  gap: 10px;
   background: var(--light-gray);
 }
 
@@ -49,25 +49,31 @@ header > :last-child {
   justify-content: flex-end;
 }
 
+h1 {
+  white-space: nowrap;
+}
+
 nav {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0 10px;
-}
-
-h1 {
-  padding: 10px;
+  gap: 10px;
 }
 
 a {
-  padding: 10px;
+  padding: 5px;
   text-decoration: none;
 }
 
 @media (max-width: 800px) {
   header {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 300px) {
+  nav {
     flex-direction: column;
   }
 }
