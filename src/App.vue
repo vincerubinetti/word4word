@@ -1,13 +1,21 @@
 <template>
   <AppHeader />
   <main>
-    <section v-if="status !== 'success'">{{ startCase(status) }}</section>
+    <section
+      v-if="status !== 'success'"
+      :class="{
+        secondary: status === 'loading',
+        error: status === 'error',
+      }"
+    >
+      {{ startCase(status) }}
+    </section>
     <RouterView v-else />
   </main>
 </template>
 
-<script setup lang="ts">
-import { onMounted, provide, watchEffect } from "vue";
+<script lang="ts">
+import { onMounted, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import { loadData } from "@/data/word";
@@ -15,19 +23,31 @@ import { useQuery } from "@/util/composables";
 import AppHeader from "./components/AppHeader.vue";
 
 /** load game data on mount */
-const { status, data, run } = useQuery(loadData);
-onMounted(run);
+const query = useQuery(loadData);
 
-/** provide data to rest of app */
-provide("data", data);
+/** game data */
+export const data = query.data;
+export const status = query.status;
+
+// watchEffect(() => console.log(data.value));
+
+/** page title */
+export const title = ref("");
 
 const { VITE_TITLE } = import.meta.env;
 
 /** update tab title */
-const route = useRoute();
 watchEffect(() => {
-  document.title = [startCase(String(route.name ?? "")), VITE_TITLE]
-    .filter(Boolean)
-    .join(" | ");
+  document.title = [title.value, VITE_TITLE].filter(Boolean).join(" | ");
 });
+</script>
+
+<script setup lang="ts">
+/** load game data on mount */
+onMounted(query.run);
+
+const route = useRoute();
+
+/** update tab title */
+watchEffect(() => (title.value = String(route.name ?? "")));
 </script>

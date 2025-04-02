@@ -4,9 +4,9 @@ import PageCustom from "@/pages/PageCustom.vue";
 import PageGame from "@/pages/PageGame.vue";
 
 const routes = [
-  { name: "Daily", path: "/", component: PageGame },
-  { name: "Custom", path: "/:from/:to", component: PageGame },
-  { name: "Custom", path: "/custom", component: PageCustom },
+  { name: "Daily Game", path: "/", component: PageGame },
+  { name: "", path: "/:a/:b", component: PageGame },
+  { name: "Custom Game", path: "/custom", component: PageCustom },
   { name: "About", path: "/about", component: PageAbout },
 ];
 

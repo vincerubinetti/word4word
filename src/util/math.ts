@@ -9,4 +9,4 @@ export const rand = (min: number, max: number) =>
   Math.round(min + random() * (max - min));
 
 /** deterministic shuffle */
-export const shuffle = createShuffle(31415);
+export const shuffle = <Type>(array: Type[]) => createShuffle(31415)(array);

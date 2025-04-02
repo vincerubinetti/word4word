@@ -1,21 +1,25 @@
 :root {
-  --black: hsl(200, 50%, 5%);
-  --dark-gray: hsl(200, 50%, 25%);
-  --gray: hsl(200, 50%, 50%);
-  --light-gray: hsl(200, 50%, 90%);
-  --white: hsl(200, 50%, 99%);
-  --shadow: hsla(200, 19%, 15%, 0.125);
+  --black: hsl(220, 20%, 5%);
+  --dark-gray: hsl(220, 15%, 25%);
+  --gray: hsl(220, 10%, 75%);
+  --light-gray: hsl(220, 15%, 95%);
+  --white: hsl(220, 20%, 99%);
 
-  --primary: hsl(200, 38%, 46%);
+  --primary: hsl(200, 25%, 50%);
+  --error: hsl(340, 75%, 50%);
 
-  --box-shadow: 2px 2px 2px var(--shadow), 0 0 2px var(--shadow);
+  --bop: bop 3s both infinite ease-in-out;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html {
   background: var(--white);
   color: var(--black);
   font-family: "Quicksand", sans-serif;
-  font-size: 14pt;
+  text-align: center;
 }
 
 body {
@@ -47,10 +51,119 @@ section:last-child {
   flex-grow: 1;
 }
 
+h1,
+h2 {
+  margin: 0;
+  color: var(--dark-gray);
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
 a {
   color: var(--primary);
 }
 
 a:hover {
-  color: var(--black);
+  color: var(--dark-gray);
+}
+
+input {
+  min-height: 35px;
+  padding: 5px 15px;
+  border: solid 1.5px var(--gray);
+  border-radius: 999px;
+  font: inherit;
+  text-align: center;
+}
+
+input:hover {
+  background: var(--light-gray);
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 35px;
+  padding: 5px 15px;
+  gap: 10px;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--white);
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--black);
+}
+
+button.square {
+  width: unset;
+  min-width: 35px;
+  height: unset;
+  min-height: 35px;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  line-height: 2;
+  text-align: justify;
+}
+
+[disabled] {
+  filter: saturate(0);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.secondary {
+  color: var(--gray);
+}
+
+.error {
+  color: var(--error);
+  font-style: italic;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+@keyframes bop {
+  0% {
+    translate: 0 0;
+    filter: drop-shadow(0 0 transparent);
+  }
+
+  10% {
+    translate: 0 -5px;
+    filter: drop-shadow(0 7.5px var(--gray));
+  }
+  20% {
+    translate: 0 0;
+    filter: drop-shadow(0 0 transparent);
+  }
 }
