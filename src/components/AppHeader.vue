@@ -31,7 +31,7 @@ header {
   align-items: center;
   padding: 10px 20px;
   gap: 10px;
-  background: var(--light-gray);
+  background: var(--off-white);
 }
 
 header > * {
@@ -60,14 +60,14 @@ nav {
 }
 
 a {
-  padding: 2px 7px;
+  padding: 5px 10px;
   border-radius: 999px;
   text-decoration: none;
   transition: background var(--fast), color var(--fast);
 }
 
 .active {
-  background: var(--gray);
+  background: var(--light-gray);
 }
 
 @media (max-width: 500px) {

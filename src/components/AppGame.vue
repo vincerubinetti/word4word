@@ -5,23 +5,14 @@
       <div>Yours: {{ aPath.length + bPath.length }}</div>
     </div>
 
-    <div class="path">
+    <div class="path" :style="{ '--middle': aPath.length + 1 }">
       <template v-for="(word, wordIndex) in aPath" :key="wordIndex">
         <Star v-if="word.type === 'special'" class="special filled" />
         <div
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
-          :class="[
-            'char',
-
-            aPath[wordIndex - 1] &&
-              char !== aPath[wordIndex - 1]?.text[charIndex] &&
-              'link',
-          ]"
-          :style="{
-            '--char': charIndex,
-            '--strength': strengths[word.text],
-          }"
+          :class="['char', getLink(char, 'a', wordIndex, charIndex) && 'link']"
+          :style="{ '--char': charIndex, '--dist': dists[word.text] }"
         >
           {{ char }}
         </div>
@@ -36,34 +27,42 @@
       </template>
 
       <template v-if="!won">
-        <div class="spacer"></div>
-
         <input
           ref="inputElement"
           v-model="input"
-          class="middle"
+          class="input"
           maxlength="4"
-          @change="submit"
-          @keydown.enter="submit"
+          placeholder="WORD"
+          @keydown.enter="add"
         />
 
-        <button class="square" title="Reverse path" @click="reverse">
-          <ArrowUpDown />
-        </button>
-
-        <button class="square" title="Get hint" @click="hint">
+        <button class="hint square" title="Get hint" @click="hint">
           <Lightbulb />
         </button>
 
-        <button class="square" title="Clear input" @click="input = ''">
+        <button
+          v-if="input.length > 0"
+          class="clear square"
+          title="Clear input"
+          @click="input = ''"
+        >
           <X />
         </button>
 
-        <button class="primary square" title="Submit word" @click="submit">
-          <Check />
+        <button
+          v-if="aAddable || bAddable"
+          class="add square pulse"
+          title="Add word"
+          @click="add"
+        >
+          <MoveVertical v-if="aAddable && bAddable" />
+          <ArrowUp v-else-if="aAddable" />
+          <ArrowDown v-else-if="bAddable" />
         </button>
 
-        <div class="spacer"></div>
+        <button class="reverse square" title="Reverse path" @click="reverse">
+          <ArrowUpDown />
+        </button>
       </template>
 
       <template v-for="(word, wordIndex) in bPath" :key="wordIndex">
@@ -71,17 +70,8 @@
         <div
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
-          :class="[
-            'char',
-
-            bPath[wordIndex - 1] &&
-              char !== bPath[wordIndex - 1]?.text[charIndex] &&
-              'link',
-          ]"
-          :style="{
-            '--char': charIndex,
-            '--strength': strengths[word.text],
-          }"
+          :class="['char', getLink(char, 'b', wordIndex, charIndex) && 'link']"
+          :style="{ '--char': charIndex, '--dist': dists[word.text] }"
         >
           {{ char }}
         </div>
@@ -100,8 +90,16 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watch } from "vue";
-import { mapValues, sample } from "lodash";
-import { ArrowUpDown, Check, Lightbulb, Star, X } from "lucide-vue-next";
+import { sample } from "lodash";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Lightbulb,
+  MoveVertical,
+  Star,
+  X,
+} from "lucide-vue-next";
 import { data } from "@/App.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { error } from "@/util/animate";
@@ -134,45 +132,71 @@ watch(
 );
 
 /** find shortest path between a/b */
-const par = computed(() => {
-  const par = findPath(a, b);
-  console.log(par);
-  return par;
-});
+const par = computed(() => findPath(a, b));
 
 /** map of word in path to distance from other end */
-const strengths = computed(() => {
+const dists = computed(() => {
   const aOpposite = aPath.value.at(0)!;
   const bOpposite = bPath.value.at(-1)!;
-  const getStrength = (opposite: Word) => (word: Word) =>
-    [word.text, findPath(word, opposite).length] as const;
-  const aStrengths = aPath.value.map(getStrength(bOpposite));
-  const bStrengths = bPath.value.map(getStrength(aOpposite));
-  const strengths = Object.fromEntries(aStrengths.concat(bStrengths));
-  return mapValues(strengths, (value) =>
-    lerp(value, par.value.length, 1, 0, 1),
-  );
+  const getDist =
+    (opposite: Word, min = 0, max = 1) =>
+    (word: Word) => {
+      let dist = findPath(word, opposite).length;
+      dist = lerp(dist, par.value.length, 1, min, max);
+      return [word.text, dist] as const;
+    };
+  const aDists = aPath.value.map(getDist(bOpposite, 0, 1));
+  const bDists = bPath.value.map(getDist(aOpposite, 1, 0));
+  return Object.fromEntries(aDists.concat(bDists));
 });
 
-/** "submit" word to be added to path */
-const submit = () => {
+/** full input word object */
+const inputWord = computed(() => {
   if (!data.value) return;
-
   const { lookupWord } = data.value;
-  /** full word object */
-  const word = lookupWord(input.value);
+  return lookupWord(input.value);
+});
 
-  if (word) {
-    /** add to path */
-    if (oneLetterDifferent(word.text, aPath.value.at(-1)?.text ?? ""))
-      aPath.value.push(word);
-    else if (oneLetterDifferent(word.text, bPath.value.at(0)?.text ?? ""))
-      bPath.value.unshift(word);
-    else error(inputElement.value);
-  } else error(inputElement.value);
+/** is input word addable to path a */
+const aAddable = computed(
+  () =>
+    inputWord.value &&
+    oneLetterDifferent(input.value, aPath.value.at(-1)?.text ?? ""),
+);
+
+/** is input word addable to path b */
+const bAddable = computed(
+  () =>
+    inputWord.value &&
+    oneLetterDifferent(input.value, bPath.value.at(0)?.text ?? ""),
+);
+
+/** "submit" word to be added to path */
+const add = () => {
+  /** add to path */
+  if (aAddable.value) aPath.value.push(inputWord.value!);
+  else if (bAddable.value) bPath.value.unshift(inputWord.value!);
+  else error(inputElement.value);
 
   /** reset input */
   input.value = "";
+  inputElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
+};
+
+/** whether this char should be linked to char above in path */
+const getLink = (
+  char: string,
+  which: "a" | "b",
+  wordIndex: number,
+  charIndex: number,
+) => {
+  const wordAbove =
+    which === "a"
+      ? aPath.value[wordIndex - 1]
+      : bPath.value[wordIndex - 1] ||
+        (won.value ? aPath.value.at(-1) : undefined);
+  const charAbove = wordAbove?.text?.[charIndex] ?? "";
+  return charAbove && char !== charAbove;
 };
 
 /** give player random word linking to middle of path tails */
@@ -214,6 +238,11 @@ const won = computed(() =>
 
 .char {
   --size: 40px;
+  --color: color-mix(
+    in lch,
+    var(--primary),
+    var(--secondary) calc(100% * var(--dist))
+  );
   display: grid;
   z-index: 0;
   position: relative;
@@ -221,17 +250,16 @@ const won = computed(() =>
   place-items: center;
   width: var(--size);
   height: var(--size);
-  background: var(--secondary);
+  background: var(--color);
   color: var(--white);
   font-weight: 900;
   font-size: 1.2rem;
   text-transform: uppercase;
-  filter: saturate(var(--strength));
 }
 
 .link::before {
   --w: 5px;
-  --h: 10px;
+  --h: 5px;
   --top: calc(var(--gap) / -2 - var(--h) / 2);
   --left: calc((var(--size) - var(--w)) / 2);
   position: absolute;
@@ -239,27 +267,51 @@ const won = computed(() =>
   left: var(--left);
   width: var(--w);
   height: var(--h);
-  background: var(--secondary);
+  background: var(--color);
   content: "";
 }
 
-input {
-  grid-column: 2 / -2;
+.input {
+  grid-row: var(--middle);
+  grid-column: 2 / 6;
   width: 100%;
+  margin: 20px 0;
+  font-weight: 600;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
   text-transform: uppercase;
 }
 
-input + * {
+.hint,
+.clear,
+.add,
+.reverse {
+  grid-row: var(--middle);
+}
+
+.clear,
+.add {
+  background: none;
+}
+
+.hint {
+  grid-column: 1;
+}
+
+.clear {
   grid-column: 2;
+}
+
+.add {
+  grid-column: 5;
+}
+
+.reverse {
+  grid-column: 6;
 }
 
 .special {
   grid-column: 1;
   color: var(--secondary);
-}
-
-.spacer {
-  grid-column: 2 / -2;
-  margin: 10px 0;
 }
 </style>

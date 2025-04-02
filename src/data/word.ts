@@ -73,6 +73,7 @@ export const loadData = async () => {
 
 /** are words 1 letter apart */
 export const oneLetterDifferent = (a: string, b: string) => {
+  if (a.length !== 4 || b.length !== 4) return false;
   let diff = 0;
   for (let index = 0; index < 4; index++) if (a[index] !== b[index]) diff++;
   return diff === 1;

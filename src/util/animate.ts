@@ -1,5 +1,5 @@
 export const error = (element?: Element | null) =>
-  element?.animate([{ background: "var(--error)" }, { background: "" }], {
+  element?.animate([{ outlineColor: "var(--error)" }, { outlineColor: "" }], {
     duration: 1000,
     iterations: 1,
   });

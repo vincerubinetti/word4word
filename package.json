@@ -11,7 +11,7 @@
     "date-fns": "^4.1.0",
     "fast-shuffle": "^6.1.1",
     "lodash": "^4.17.21",
-    "lucide-vue-next": "^0.486.0",
+    "lucide-vue-next": "^0.487.0",
     "seedrandom": "^3.0.5",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
