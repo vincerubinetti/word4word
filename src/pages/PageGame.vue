@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { data, title } from "@/App.vue";
 import AppGame from "@/components/AppGame.vue";
@@ -13,8 +13,8 @@ import { getDaily, type Word } from "@/data/word";
 const route = useRoute();
 
 /** start/end words */
-const a = shallowRef<Word>();
-const b = shallowRef<Word>();
+const a = ref<Word>();
+const b = ref<Word>();
 
 /** decide start/end words */
 watchEffect(() => {
@@ -23,8 +23,8 @@ watchEffect(() => {
   const { pars, lookupWord } = data.value;
   const { params } = route;
 
-  /** get custom words from url */
   if (params.a && params.b) {
+    /** get custom words from url */
     a.value = lookupWord(String(params.a));
     b.value = lookupWord(String(params.b));
   } else {
@@ -34,6 +34,16 @@ watchEffect(() => {
     b.value = daily.b;
   }
 
-  if (a.value && b.value) title.value = `${a.value.text} ↔ ${b.value.text}`;
+  if (a.value && b.value) {
+    /** normalize to alphabetical */
+    if (a.value.text > b.value.text) {
+      const temp = a.value;
+      a.value = b.value;
+      b.value = temp;
+    }
+
+    /** update page title */
+    title.value = `${a.value.text} ↔ ${b.value.text}`;
+  }
 });
 </script>

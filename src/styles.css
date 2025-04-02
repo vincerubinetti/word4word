@@ -1,14 +1,15 @@
 :root {
-  --black: hsl(220, 20%, 5%);
-  --dark-gray: hsl(220, 15%, 25%);
-  --gray: hsl(220, 10%, 75%);
-  --light-gray: hsl(220, 15%, 95%);
-  --white: hsl(220, 20%, 99%);
+  --primary: hsl(194, 100%, 33%);
+  --secondary: hsl(10, 82%, 67%);
+  --error: hsl(350, 82%, 67%);
 
-  --primary: hsl(200, 25%, 50%);
-  --error: hsl(340, 75%, 50%);
+  --black: hsl(194, 25%, 10%);
+  --dark-gray: hsl(194, 20%, 25%);
+  --gray: hsl(194, 15%, 85%);
+  --light-gray: hsl(194, 10%, 92%);
+  --white: hsl(194, 5%, 98%);
 
-  --bop: bop 3s both infinite ease-in-out;
+  --fast: 0.1s ease-in-out;
 }
 
 * {
@@ -69,6 +70,7 @@ h2 {
 
 a {
   color: var(--primary);
+  transition: color var(--fast);
 }
 
 a:hover {
@@ -76,12 +78,14 @@ a:hover {
 }
 
 input {
-  min-height: 35px;
-  padding: 5px 15px;
-  border: solid 1.5px var(--gray);
+  min-width: 0;
+  min-height: 40px;
+  padding: 7px 15px;
+  border: solid 2px var(--gray);
   border-radius: 999px;
   font: inherit;
   text-align: center;
+  transition: background var(--fast);
 }
 
 input:hover {
@@ -92,27 +96,39 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 35px;
-  padding: 5px 15px;
+  min-height: 40px;
+  padding: 7px 15px;
   gap: 10px;
   border: none;
   border-radius: 999px;
-  background: var(--primary);
-  color: var(--white);
+  background: var(--light-gray);
+  color: var(--primary);
   font: inherit;
   cursor: pointer;
+  transition:
+    background var(--fast),
+    color var(--fast);
 }
 
 button:hover {
-  background: var(--black);
+  background: var(--gray);
 }
 
 button.square {
   width: unset;
-  min-width: 35px;
+  min-width: 40px;
   height: unset;
-  min-height: 35px;
+  min-height: 40px;
   padding: 0;
+}
+
+button.primary {
+  background: var(--primary);
+  color: var(--white);
+}
+
+button.primary:hover {
+  background: var(--dark-gray);
 }
 
 p {
@@ -152,18 +168,7 @@ p {
   gap: 10px;
 }
 
-@keyframes bop {
-  0% {
-    translate: 0 0;
-    filter: drop-shadow(0 0 transparent);
-  }
-
-  10% {
-    translate: 0 -5px;
-    filter: drop-shadow(0 7.5px var(--gray));
-  }
-  20% {
-    translate: 0 0;
-    filter: drop-shadow(0 0 transparent);
-  }
+.filled {
+  fill: currentColor;
+  stroke: currentColor;
 }

@@ -29,8 +29,6 @@ const query = useQuery(loadData);
 export const data = query.data;
 export const status = query.status;
 
-// watchEffect(() => console.log(data.value));
-
 /** page title */
 export const title = ref("");
 

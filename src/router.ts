@@ -3,11 +3,31 @@ import PageAbout from "@/pages/PageAbout.vue";
 import PageCustom from "@/pages/PageCustom.vue";
 import PageGame from "@/pages/PageGame.vue";
 
-const routes = [
-  { name: "Daily Game", path: "/", component: PageGame },
-  { name: "", path: "/:a/:b", component: PageGame },
-  { name: "Custom Game", path: "/custom", component: PageCustom },
-  { name: "About", path: "/about", component: PageAbout },
-];
+export const routes = [
+  {
+    name: "Daily",
+    path: "/",
+    component: PageGame,
+    meta: { header: true },
+  },
+  {
+    name: "Custom",
+    path: "/custom",
+    component: PageCustom,
+    meta: { header: true },
+  },
+  {
+    name: "About",
+    path: "/about",
+    component: PageAbout,
+    meta: { header: true },
+  },
+  {
+    name: "",
+    path: "/:a/:b",
+    component: PageGame,
+    meta: { header: false },
+  },
+] as const;
 
 export const router = createRouter({ history: createWebHistory(), routes });

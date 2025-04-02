@@ -2,18 +2,8 @@
   <section>
     <div class="col">
       <input v-model="a" placeholder="from word..." maxlength="4" />
-      <button
-        class="square"
-        aria-label="Swap"
-        @click="
-          () => {
-            const temp = a;
-            a = b;
-            b = temp;
-          }
-        "
-      >
-        ↕
+      <button class="square" title="Swap" @click="swap">
+        <ArrowUpDown />
       </button>
       <input v-model="b" placeholder="...to word" maxlength="4" />
     </div>
@@ -25,7 +15,11 @@
       <span class="error">w/ uncommon words</span>
     </div>
     <div v-else class="warning">No path between these words!</div>
-    <button :disabled="!playable" @click="$router.push(`/${a}/${b}`)">
+    <button
+      class="primary"
+      :disabled="!playable"
+      @click="$router.push(`/${a}/${b}`)"
+    >
       Play
     </button>
   </section>
@@ -33,6 +27,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { ArrowUpDown } from "lucide-vue-next";
 import { data } from "@/App.vue";
 import { findPath } from "@/data/word";
 
@@ -56,6 +51,13 @@ const regularPath = computed(() =>
 const anyPath = computed(() =>
   aWord.value && bWord.value ? findPath(aWord.value, bWord.value, true) : [],
 );
+
+/** swap a/b words */
+const swap = () => {
+  const temp = a.value;
+  a.value = b.value;
+  b.value = temp;
+};
 
 /** should user be allowed to play game */
 const playable = computed(

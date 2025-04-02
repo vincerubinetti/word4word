@@ -22,11 +22,24 @@ span {
   display: inline-block;
 }
 
-.always {
-  animation: var(--bop);
+.always,
+:has(> .hover):hover .hover {
+  animation: bounce 3s both infinite cubic-bezier(0.5, 0, 0.5, 1);
 }
 
-:has(> .hover):hover .hover {
-  animation: var(--bop);
+@keyframes bounce {
+  0% {
+    translate: 0 0;
+    filter: drop-shadow(0px 0px transparent);
+  }
+
+  10% {
+    translate: 0 -2.5px;
+    filter: drop-shadow(0px 2.5px var(--gray));
+  }
+  20% {
+    translate: 0 0;
+    filter: drop-shadow(0px 0px transparent);
+  }
 }
 </style>

@@ -1,28 +1,26 @@
 <template>
   <header>
     <h1>
-      <AppBop :text="VITE_TITLE" />
+      <AppBounce :text="VITE_TITLE" />
     </h1>
 
-    <h2>{{ title }}</h2>
-
     <nav>
-      <RouterLink to="/">
-        <AppBop text="Daily" :hover="true" />
-      </RouterLink>
-      <RouterLink to="/custom">
-        <AppBop text="Custom" :hover="true" />
-      </RouterLink>
-      <RouterLink to="/about">
-        <AppBop text="About" :hover="true" />
-      </RouterLink>
+      <template v-for="(route, index) in routes" :key="index">
+        <RouterLink
+          v-if="route.meta.header"
+          :to="route.path"
+          :class="$route.path === route.path && 'active'"
+        >
+          <AppBounce :text="route.name" :hover="true" />
+        </RouterLink>
+      </template>
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-import { title } from "@/App.vue";
-import AppBop from "./AppBop.vue";
+import AppBounce from "@/components/AppBounce.vue";
+import { routes } from "@/router";
 
 const { VITE_TITLE } = import.meta.env;
 </script>
@@ -62,11 +60,17 @@ nav {
 }
 
 a {
-  padding: 5px;
+  padding: 2px 7px;
+  border-radius: 999px;
   text-decoration: none;
+  transition: background var(--fast), color var(--fast);
 }
 
-@media (max-width: 800px) {
+.active {
+  background: var(--gray);
+}
+
+@media (max-width: 500px) {
   header {
     flex-direction: column;
   }
