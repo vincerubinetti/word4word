@@ -10,7 +10,8 @@
   --off-white: hsl(194, 5%, 95%);
   --white: hsl(194, 5%, 98%);
 
-  --fast: 0.1s ease-in-out;
+  --fast: 0.1s;
+  --slow: 0.25s;
 }
 
 * {
@@ -71,7 +72,8 @@ h2 {
 
 a {
   color: var(--primary);
-  transition: color var(--fast);
+  transition-duration: var(--fast);
+  transition-property: color, background;
 }
 
 a:hover {
@@ -87,7 +89,8 @@ input {
   color: inherit;
   font: inherit;
   text-align: center;
-  transition: border-color var(--fast);
+  transition-duration: var(--fast);
+  transition-property: border-color;
 }
 
 input:hover {
@@ -107,9 +110,8 @@ button {
   color: var(--primary);
   font: inherit;
   cursor: pointer;
-  transition:
-    background var(--fast),
-    color var(--fast);
+  transition-duration: var(--fast);
+  transition-property: background, color;
 }
 
 button:hover {
@@ -162,7 +164,7 @@ p {
   font-style: italic;
 }
 
-.row {
+.flex-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -170,7 +172,7 @@ p {
   gap: 20px;
 }
 
-.col {
+.flex-col {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -184,11 +186,58 @@ p {
 }
 
 .pulse {
-  animation: pulse 1s both infinite ease-in-out;
+  animation: pulse 1s var(--delay, 0s) infinite both;
 }
 
 @keyframes pulse {
   50% {
     scale: 1.25;
   }
+}
+
+.wiggle-char {
+  display: inline-block;
+}
+
+.wiggle-always {
+  animation: wiggle 3s var(--delay, 0s) infinite both
+    cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+:has(> .wiggle-hover):hover .wiggle-hover {
+  animation: wiggle 3s var(--delay, 0s) infinite both
+    cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+@keyframes wiggle {
+  0% {
+    translate: 0 0;
+    filter: drop-shadow(0px 0px transparent);
+  }
+
+  10% {
+    translate: 0 -0.25em;
+    filter: drop-shadow(0px 0.25em var(--gray));
+  }
+  20% {
+    translate: 0 0;
+    filter: drop-shadow(0px 0px transparent);
+  }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition-duration: var(--fast);
+  transition-property: translate, opacity;
+  transition-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+.slide-enter-from {
+  translate: 0 10px;
+  opacity: 0;
+}
+
+.slide-leave-to {
+  translate: 0 -10px;
+  opacity: 0;
 }

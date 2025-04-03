@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="col">
+    <div class="flex-col">
       <input v-model="a" placeholder="from word..." maxlength="4" />
       <button class="square" title="Swap" @click="swap">
         <ArrowUpDown />

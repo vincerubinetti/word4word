@@ -1,18 +1,32 @@
 <template>
   <section>
-    <div class="row">
+    <div class="flex-row">
       <div>Par: {{ par.length }}</div>
       <div>Yours: {{ aPath.length + bPath.length }}</div>
     </div>
 
-    <div class="path" :style="{ '--middle': aPath.length + 2 }">
-      <template v-for="(word, wordIndex) in aPath" :key="wordIndex">
+    <div class="grid">
+      <div
+        v-for="(word, wordIndex) in aPath"
+        :key="word.text"
+        class="row"
+        :style="{
+          '--dist': dists[word.text],
+        }"
+      >
         <Star v-if="word.type === 'special'" class="special filled" />
         <div
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
-          :class="['char', getLink(char, 'a', wordIndex, charIndex) && 'link']"
-          :style="{ '--char': charIndex, '--dist': dists[word.text] }"
+          :class="[
+            'char',
+            getLink(char, 'a', wordIndex, charIndex) && 'link',
+            won && 'wiggle-always',
+          ]"
+          :style="{
+            '--col': charIndex,
+            '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',
+          }"
         >
           {{ char }}
         </div>
@@ -24,65 +38,80 @@
         >
           <X />
         </button>
-      </template>
+      </div>
 
       <template v-if="!won">
         <div class="spacer" />
 
-        <input
-          ref="inputElement"
-          v-model="input"
-          class="input"
-          maxlength="4"
-          placeholder="WORD"
-          @keydown.enter="add"
-        />
+        <div class="row">
+          <input
+            ref="inputElement"
+            v-model="input"
+            class="input"
+            maxlength="4"
+            placeholder="WORD"
+            @keydown.enter="add"
+          />
 
-        <aside
-          :class="['message', showMessage && 'message-show']"
-          aria-live="polite"
-        >
-          {{ message }}
-        </aside>
+          <Transition name="slide" mode="out-in">
+            <aside v-if="message" class="message" aria-live="polite">
+              {{ message }}
+            </aside>
+          </Transition>
 
-        <button class="hint square" title="Get hint" @click="hint">
-          <Lightbulb />
-        </button>
+          <button class="hint square" title="Get hint" @click="hint">
+            <Lightbulb />
+          </button>
 
-        <button
-          v-if="input.length > 0"
-          class="clear square"
-          title="Clear input"
-          @click="input = ''"
-        >
-          <X />
-        </button>
+          <button
+            v-if="input.length > 0"
+            class="clear square"
+            title="Clear input"
+            @click="input = ''"
+          >
+            <X />
+          </button>
 
-        <button
-          v-if="inputWord && (aDiff || bDiff)"
-          class="add square pulse"
-          title="Add word"
-          @click="add"
-        >
-          <MoveVertical v-if="aDiff && bDiff" />
-          <ArrowUp v-else-if="aDiff" />
-          <ArrowDown v-else-if="bDiff" />
-        </button>
+          <button
+            v-if="inputWord && (aDiff || bDiff)"
+            class="add square pulse"
+            title="Add word"
+            @click="add"
+          >
+            <MoveVertical v-if="aDiff && bDiff" />
+            <ArrowUp v-else-if="aDiff" />
+            <ArrowDown v-else-if="bDiff" />
+          </button>
 
-        <button class="reverse square" title="Reverse path" @click="reverse">
-          <ArrowUpDown />
-        </button>
+          <button class="reverse square" title="Reverse path" @click="reverse">
+            <ArrowUpDown />
+          </button>
+        </div>
 
         <div class="spacer" />
       </template>
 
-      <template v-for="(word, wordIndex) in bPath" :key="wordIndex">
+      <div
+        v-for="(word, wordIndex) in bPath"
+        :key="word.text"
+        class="row"
+        :style="{
+          '--dist': dists[word.text],
+        }"
+      >
         <Star v-if="word.type === 'special'" class="special filled" />
         <div
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
-          :class="['char', getLink(char, 'b', wordIndex, charIndex) && 'link']"
-          :style="{ '--char': charIndex, '--dist': dists[word.text] }"
+          :class="[
+            'char',
+            getLink(char, 'b', wordIndex, charIndex) && 'link',
+            won && 'wiggle-always',
+          ]"
+          :style="{
+            '--col': charIndex,
+            '--delay': (aPath.length + wordIndex) * 0.4 + charIndex * 0.1 + 's',
+          }"
         >
           {{ char }}
         </div>
@@ -94,7 +123,7 @@
         >
           <X />
         </button>
-      </template>
+      </div>
     </div>
   </section>
 </template>
@@ -134,18 +163,15 @@ const input = ref("");
 
 /** message text */
 const message = ref("");
-/** whether to show message */
-const showMessage = ref(false);
 
 /** show message */
 const setMessage = (text: string) => {
   message.value = text;
-  showMessage.value = true;
   hideMessage();
 };
 
 /** hide message */
-const hideMessage = debounce(() => (showMessage.value = false), 2000);
+const hideMessage = debounce(() => (message.value = ""), 1500);
 
 /** update paths */
 watch(
@@ -200,7 +226,7 @@ const check = () => {
     return false;
   }
   if (!aDiff.value && !bDiff.value) {
-    setMessage("Not 1 letter different from above/below");
+    setMessage("Not 1 letter different");
     return false;
   }
   return true;
@@ -213,8 +239,9 @@ watchEffect(() => {
 /** "submit" word to be added to path */
 const add = async () => {
   if (check()) {
-    if (aDiff.value) aPath.value.push(inputWord.value!);
-    else if (bDiff.value) bPath.value.unshift(inputWord.value!);
+    const word = inputWord.value!;
+    if (aDiff.value) aPath.value.push(word);
+    else if (bDiff.value) bPath.value.unshift(word);
   }
 
   input.value = "";
@@ -265,13 +292,20 @@ const won = computed(() =>
 </script>
 
 <style scoped>
-.path {
-  --cols: 6;
+.grid {
   --gap: 5px;
   display: grid;
-  grid-template-columns: repeat(var(--cols), 40px);
+  grid-template-columns: repeat(6, 40px);
   place-items: center;
   gap: var(--gap);
+}
+
+.row {
+  display: grid;
+  position: relative;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  place-items: center;
 }
 
 .char {
@@ -282,9 +316,8 @@ const won = computed(() =>
     var(--secondary) calc(100% * var(--dist))
   );
   display: grid;
-  z-index: 0;
   position: relative;
-  grid-column: calc(var(--char) + 2);
+  grid-column: calc(var(--col) + 2);
   place-items: center;
   width: var(--size);
   height: var(--size);
@@ -311,11 +344,20 @@ const won = computed(() =>
 
 .spacer {
   grid-column: 1 / -1;
+  width: 100%;
   height: 10px;
 }
 
+.message {
+  z-index: 1;
+  position: absolute;
+  bottom: calc(100% + 10px);
+  padding: 5px 10px;
+  background: var(--black);
+  color: var(--white);
+}
+
 .input {
-  grid-row: var(--middle);
   grid-column: 2 / 6;
   width: 100%;
   font-weight: 600;
@@ -324,43 +366,13 @@ const won = computed(() =>
   text-transform: uppercase;
 }
 
-.message {
-  display: none;
-  z-index: 1;
-  grid-row: var(--middle);
-  grid-column: 1 / -1;
-  align-self: flex-start;
-  padding: 5px 10px;
-  translate: 0 -100%;
-  background: var(--black);
-  color: var(--white);
-  white-space: nowrap;
-  opacity: 0;
-  transition:
-    display var(--fast),
-    opacity var(--fast),
-    translate var(--fast);
-  transition-behavior: allow-discrete;
-}
-
-.message-show {
-  display: block;
-  translate: 0 calc(-100% - 10px);
-  opacity: 1;
-}
-
-@starting-style {
-  .message-show {
-    translate: 0 -100%;
-    opacity: 0;
-  }
-}
-
+.message,
 .hint,
 .clear,
+.input,
 .add,
 .reverse {
-  grid-row: var(--middle);
+  grid-row: 1;
 }
 
 .clear,
@@ -386,6 +398,6 @@ const won = computed(() =>
 
 .special {
   grid-column: 1;
-  color: var(--secondary);
+  color: var(--dark-gray);
 }
 </style>

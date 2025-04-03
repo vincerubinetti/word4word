@@ -1,7 +1,14 @@
 <template>
   <header>
     <h1>
-      <AppBounce :text="VITE_TITLE" />
+      <span
+        v-for="(char, index) in VITE_TITLE"
+        :key="index"
+        class="wiggle-char wiggle-always"
+        :style="{ '--delay': index * 0.1 + 's' }"
+      >
+        {{ char }}
+      </span>
     </h1>
 
     <nav>
@@ -11,7 +18,14 @@
           :to="route.path"
           :class="$route.path === route.path && 'active'"
         >
-          <AppBounce :text="route.name" :hover="true" />
+          <span
+            v-for="(char, index) in route.name"
+            :key="index"
+            class="wiggle-char wiggle-hover"
+            :style="{ '--delay': index * 0.1 + 's' }"
+          >
+            {{ char }}
+          </span>
         </RouterLink>
       </template>
     </nav>
@@ -19,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import AppBounce from "@/components/AppBounce.vue";
 import { routes } from "@/router";
 
 const { VITE_TITLE } = import.meta.env;
@@ -63,7 +76,6 @@ a {
   padding: 5px 10px;
   border-radius: 999px;
   text-decoration: none;
-  transition: background var(--fast), color var(--fast);
 }
 
 .active {
