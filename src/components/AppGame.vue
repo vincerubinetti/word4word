@@ -5,7 +5,7 @@
       <div>Yours: {{ aPath.length + bPath.length }}</div>
     </div>
 
-    <div class="path" :style="{ '--middle': aPath.length + 1 }">
+    <div class="path" :style="{ '--middle': aPath.length + 2 }">
       <template v-for="(word, wordIndex) in aPath" :key="wordIndex">
         <Star v-if="word.type === 'special'" class="special filled" />
         <div
@@ -27,6 +27,8 @@
       </template>
 
       <template v-if="!won">
+        <div class="spacer" />
+
         <input
           ref="inputElement"
           v-model="input"
@@ -35,6 +37,13 @@
           placeholder="WORD"
           @keydown.enter="add"
         />
+
+        <aside
+          :class="['message', showMessage && 'message-show']"
+          aria-live="polite"
+        >
+          {{ message }}
+        </aside>
 
         <button class="hint square" title="Get hint" @click="hint">
           <Lightbulb />
@@ -50,19 +59,21 @@
         </button>
 
         <button
-          v-if="aAddable || bAddable"
+          v-if="inputWord && (aDiff || bDiff)"
           class="add square pulse"
           title="Add word"
           @click="add"
         >
-          <MoveVertical v-if="aAddable && bAddable" />
-          <ArrowUp v-else-if="aAddable" />
-          <ArrowDown v-else-if="bAddable" />
+          <MoveVertical v-if="aDiff && bDiff" />
+          <ArrowUp v-else-if="aDiff" />
+          <ArrowDown v-else-if="bDiff" />
         </button>
 
         <button class="reverse square" title="Reverse path" @click="reverse">
           <ArrowUpDown />
         </button>
+
+        <div class="spacer" />
       </template>
 
       <template v-for="(word, wordIndex) in bPath" :key="wordIndex">
@@ -89,8 +100,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef, watch } from "vue";
-import { sample } from "lodash";
+import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
+import { debounce, sample } from "lodash";
 import {
   ArrowDown,
   ArrowUp,
@@ -102,7 +113,6 @@ import {
 } from "lucide-vue-next";
 import { data } from "@/App.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
-import { error } from "@/util/animate";
 import { lerp } from "@/util/math";
 import { sleep } from "@/util/misc";
 
@@ -121,6 +131,21 @@ const bPath = ref<Word[]>([]);
 
 /** input text */
 const input = ref("");
+
+/** message text */
+const message = ref("");
+/** whether to show message */
+const showMessage = ref(false);
+
+/** show message */
+const setMessage = (text: string) => {
+  message.value = text;
+  showMessage.value = true;
+  hideMessage();
+};
+
+/** hide message */
+const hideMessage = debounce(() => (showMessage.value = false), 2000);
 
 /** update paths */
 watch(
@@ -151,38 +176,48 @@ const dists = computed(() => {
   return Object.fromEntries(aDists.concat(bDists));
 });
 
-/** full input word object */
+/** full input word object, undef if invalid word */
 const inputWord = computed(() => {
   if (!data.value) return;
   const { lookupWord } = data.value;
   return lookupWord(input.value);
 });
 
-/** is input word addable to path a */
-const aAddable = computed(
-  () =>
-    inputWord.value &&
-    oneLetterDifferent(input.value, aPath.value.at(-1)?.text ?? ""),
+/** is input word 1 letter diff from end of path a */
+const aDiff = computed(() =>
+  oneLetterDifferent(input.value, aPath.value.at(-1)?.text ?? ""),
 );
 
-/** is input word addable to path b */
-const bAddable = computed(
-  () =>
-    inputWord.value &&
-    oneLetterDifferent(input.value, bPath.value.at(0)?.text ?? ""),
+/** is input word 1 letter diff from end of path b */
+const bDiff = computed(() =>
+  oneLetterDifferent(input.value, bPath.value.at(0)?.text ?? ""),
 );
+
+/** check if word can be added to path */
+const check = () => {
+  if (!inputWord.value) {
+    setMessage("Not a valid word");
+    return false;
+  }
+  if (!aDiff.value && !bDiff.value) {
+    setMessage("Not 1 letter different from above/below");
+    return false;
+  }
+  return true;
+};
+
+watchEffect(() => {
+  if (input.value.length === 4) check();
+});
 
 /** "submit" word to be added to path */
 const add = async () => {
-  /** add to path */
-  if (aAddable.value) aPath.value.push(inputWord.value!);
-  else if (bAddable.value) bPath.value.unshift(inputWord.value!);
-  else error(inputElement.value);
+  if (check()) {
+    if (aDiff.value) aPath.value.push(inputWord.value!);
+    else if (bDiff.value) bPath.value.unshift(inputWord.value!);
+  }
 
-  /** reset input */
   input.value = "";
-
-  /** scroll to center */
   await sleep(100);
   inputElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
 };
@@ -208,10 +243,9 @@ const hint = () => {
   const links = (
     aPath.value.at(-1)?.links.concat(bPath.value.at(0)?.links ?? []) ?? []
   ).filter(({ type }) => type === "regular");
-  let newText = "";
-  while (!newText || newText === input.value)
-    newText = sample(links)?.text ?? "";
-  input.value = newText;
+  const newText = sample(links)?.text ?? "";
+  if (input.value === newText) hint();
+  else input.value = newText;
 };
 
 /** reverse path direction */
@@ -275,15 +309,51 @@ const won = computed(() =>
   content: "";
 }
 
+.spacer {
+  grid-column: 1 / -1;
+  height: 10px;
+}
+
 .input {
   grid-row: var(--middle);
   grid-column: 2 / 6;
   width: 100%;
-  margin: 20px 0;
   font-weight: 600;
   letter-spacing: 0.5em;
   text-indent: 0.5em;
   text-transform: uppercase;
+}
+
+.message {
+  display: none;
+  z-index: 1;
+  grid-row: var(--middle);
+  grid-column: 1 / -1;
+  align-self: flex-start;
+  padding: 5px 10px;
+  translate: 0 -100%;
+  background: var(--black);
+  color: var(--white);
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    display var(--fast),
+    opacity var(--fast),
+    translate var(--fast);
+  transition-behavior: allow-discrete;
+}
+
+.message-show {
+  display: block;
+  translate: 0 calc(-100% - 10px);
+  opacity: 1;
+}
+
+@starting-style {
+  .message-show {
+    translate: 0 -100%;
+    opacity: 0;
+  }
 }
 
 .hint,

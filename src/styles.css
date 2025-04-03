@@ -4,10 +4,10 @@
   --error: hsl(350, 63%, 57%);
 
   --black: hsl(194, 25%, 25%);
-  --dark-gray: hsl(194, 25%, 40%);
-  --gray: hsl(194, 20%, 70%);
-  --light-gray: hsl(194, 15%, 92%);
-  --off-white: hsl(194, 10%, 95%);
+  --dark-gray: hsl(194, 20%, 35%);
+  --gray: hsl(194, 15%, 70%);
+  --light-gray: hsl(194, 10%, 92%);
+  --off-white: hsl(194, 5%, 95%);
   --white: hsl(194, 5%, 98%);
 
   --fast: 0.1s ease-in-out;
