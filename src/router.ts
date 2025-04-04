@@ -1,14 +1,26 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw,
+} from "vue-router";
 import PageAbout from "@/pages/PageAbout.vue";
 import PageCustom from "@/pages/PageCustom.vue";
 import PageGame from "@/pages/PageGame.vue";
 
-export const routes = [
+export const routes: RouteRecordRaw[] = [
   {
     name: "Daily",
     path: "/",
     component: PageGame,
     meta: { header: true },
+    beforeEnter: () => {
+      const path = window.sessionStorage.redirectPath as string;
+      if (path) {
+        console.debug("Redirecting to:", path);
+        window.sessionStorage.removeItem("redirect");
+        return path;
+      }
+    },
   },
   {
     name: "Custom",
