@@ -32,9 +32,16 @@ export const routes = [
   },
   {
     name: "",
-    path: "/:a/:b",
+    path: "/:a([A-Za-z]{4})/:b([A-Za-z]{4})",
     component: PageGame,
     meta: { header: false },
+  },
+  {
+    name: "404",
+    path: "/:pathMatch(.*)*",
+    component: PageGame,
+    meta: { header: false },
+    beforeEnter: () => "/",
   },
 ] as const;
 
