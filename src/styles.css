@@ -11,7 +11,7 @@
 
   --black: hsl(195, 25%, 25%);
   --dark-gray: hsl(195, 20%, 35%);
-  --gray: hsl(195, 15%, 70%);
+  --gray: hsl(195, 15%, 80%);
   --light-gray: hsl(195, 10%, 92%);
   --off-white: hsl(195, 5%, 95%);
   --white: hsl(195, 5%, 98%);
@@ -234,7 +234,7 @@ p {
 @keyframes wiggle {
   0% {
     translate: 0 0;
-    filter: drop-shadow(0 0 transparent);
+    filter: drop-shadow(0 0 var(--gray));
   }
 
   10% {
@@ -243,7 +243,7 @@ p {
   }
   20% {
     translate: 0 0;
-    filter: drop-shadow(0 0 transparent);
+    filter: drop-shadow(0 0 var(--gray));
   }
 }
 

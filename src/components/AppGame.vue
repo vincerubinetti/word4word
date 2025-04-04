@@ -280,7 +280,7 @@ const hint = () => {
     aPath.value.at(-1)?.links.concat(bPath.value.at(0)?.links ?? []) ?? []
   ).filter(({ type }) => type === "regular");
   const newText = sample(links)?.text ?? "";
-  if (input.value === newText) hint();
+  if (input.value === newText && links.length > 2) hint();
   else input.value = newText;
 };
 
