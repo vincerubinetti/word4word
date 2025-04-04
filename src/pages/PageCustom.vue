@@ -2,15 +2,14 @@
   <section>
     <div class="flex-col">
       <input v-model="a" placeholder="from word..." maxlength="4" />
-      <button class="square" title="Swap" @click="swap">
-        <ArrowUpDown />
-      </button>
       <input v-model="b" placeholder="...to word" maxlength="4" />
+
+      <div v-if="a.length < 4 || b.length < 4">Enter two 4-letter words</div>
+      <div v-else-if="!aWord || !bWord">Enter valid words</div>
+      <div v-else-if="par.length">Par: <AppPar :par="par.length" /></div>
+      <div v-else class="warning">No path between these words!</div>
     </div>
 
-    <div v-if="!aWord || !bWord">Enter two 4-letter words</div>
-    <div v-else-if="par.length">Par: <AppPar :par="par.length" /></div>
-    <div v-else class="warning">No path between these words!</div>
     <button
       class="primary"
       :disabled="!playable"
@@ -23,7 +22,6 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { ArrowUpDown } from "lucide-vue-next";
 import { data } from "@/App.vue";
 import AppPar from "@/components/AppPar.vue";
 import { findPath } from "@/data/word";
@@ -43,13 +41,6 @@ const bWord = computed(() => data.value?.lookupWord(b.value));
 const par = computed(() =>
   aWord.value && bWord.value ? findPath(aWord.value, bWord.value) : [],
 );
-
-/** swap a/b words */
-const swap = () => {
-  const temp = a.value;
-  a.value = b.value;
-  b.value = temp;
-};
 
 /** should user be allowed to play game */
 const playable = computed(

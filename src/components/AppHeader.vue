@@ -16,7 +16,7 @@
         <RouterLink
           v-if="route.meta.header"
           :to="route.path"
-          :class="$route.path === route.path && 'active'"
+          :class="$route.name === route.name && 'active'"
         >
           <span
             v-for="(char, index) in route.name"
