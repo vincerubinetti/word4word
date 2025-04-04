@@ -2,7 +2,8 @@
   --primary: hsl(195, 100%, 35%);
   --secondary: hsl(10, 80%, 65%);
 
-  --error: var(--secondary);
+  --special: hsl(30, 90%, 65%);
+  --error: hsl(340, 90%, 65%);
 
   --easy: hsl(160, 50%, 45%);
   --medium: hsl(220, 50%, 60%);
@@ -268,4 +269,42 @@ form {
 .slide-leave-to {
   translate: 0 -10px;
   opacity: 0;
+}
+
+.particle {
+  --inset: 7%;
+  position: fixed;
+  top: var(--y);
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  rotate: var(--angle);
+  background: var(--special);
+  animation: particle 1s linear;
+  mix-blend-mode: difference;
+  clip-path: polygon(
+    50% 0%,
+    calc(50% + var(--inset)) calc(50% - var(--inset)),
+    100% 50%,
+    calc(50% + var(--inset)) calc(50% + var(--inset)),
+    50% 100%,
+    calc(50% - var(--inset)) calc(50% + var(--inset)),
+    0% 50%,
+    calc(50% - var(--inset)) calc(50% - var(--inset))
+  );
+}
+
+@keyframes particle {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    translate: 0 calc(-1 * var(--size));
+    opacity: 0;
+  }
 }

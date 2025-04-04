@@ -48,7 +48,7 @@
         <thead>
           <tr>
             <th></th>
-            <th style="min-width: 100px;"></th>
+            <th style="min-width: 100px"></th>
             <th colspan="3">Links</th>
           </tr>
           <tr>
@@ -120,9 +120,7 @@
         <span>Regular Links</span>
         <span>
           {{
-            selected.links
-              .filter(({ type }) => type === "regular")
-              .map(({ text }) => text)
+            map(filter(selected.links, { type: "regular" }), "text")
               .join(", ")
               .toUpperCase()
           }}
@@ -130,9 +128,7 @@
         <span>Special Links</span>
         <span>
           {{
-            selected.links
-              .filter(({ type }) => type === "special")
-              .map(({ text }) => text)
+            map(filter(selected.links, { type: "special" }), "text")
               .join(", ")
               .toUpperCase()
           }}
@@ -140,9 +136,7 @@
         <span>Obscure Links</span>
         <span>
           {{
-            selected.links
-              .filter(({ type }) => type === "obscure")
-              .map(({ text }) => text)
+            map(filter(selected.links, { type: "obscure" }), "text")
               .join(", ")
               .toUpperCase()
           }}
@@ -237,7 +231,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watchEffect } from "vue";
-import { clamp, filter, max, orderBy, range } from "lodash";
+import { clamp, filter, map, max, orderBy, range } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
 import { data } from "@/App.vue";
 import { getDifficulty } from "@/components/AppPar.vue";

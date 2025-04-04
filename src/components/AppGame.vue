@@ -149,7 +149,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
-import { debounce, sample } from "lodash";
+import { debounce, filter, random, sample } from "lodash";
 import {
   ArrowDown,
   ArrowUp,
@@ -162,6 +162,7 @@ import {
   User,
   X,
 } from "lucide-vue-next";
+import { useIntervalFn } from "@vueuse/core";
 import { data } from "@/App.vue";
 import AppChar from "@/components/AppChar.vue";
 import AppPar from "@/components/AppPar.vue";
@@ -297,9 +298,10 @@ const getDiff = (
 
 /** give player random word linking to middle of path tails */
 const hint = () => {
-  const links = (
-    aPath.value.at(-1)?.links.concat(bPath.value.at(0)?.links ?? []) ?? []
-  ).filter(({ type }) => type === "regular");
+  const links = filter(
+    aPath.value.at(-1)?.links.concat(bPath.value.at(0)?.links ?? []) ?? [],
+    { type: "regular" },
+  );
   const newText = sample(links)?.text ?? "";
   if (input.value === newText && links.length > 2) hint();
   else input.value = newText;
@@ -319,6 +321,36 @@ const won = computed(() =>
     bPath.value.at(0)?.text ?? "",
   ),
 );
+
+/** did player get a perfect par */
+const perfect = computed(() => won.value && steps.value <= par.value.length);
+
+/** max particles at a time */
+const maxParticles = 10;
+
+/** confetti */
+const { pause, resume } = useIntervalFn(
+  () => {
+    if (document.querySelectorAll(".particle").length > maxParticles) return;
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    const size = random(5, 20);
+    const halfW = window.innerWidth / 2;
+    const halfH = window.innerHeight / 2;
+    let x = halfW;
+    let y = halfH;
+    x += random(-1, 1, true) * (halfW - 100);
+    y += random(-1, 1, true) * (halfH - 100);
+    particle.style.setProperty("--size", size + "px");
+    particle.style.setProperty("--x", x + "px");
+    particle.style.setProperty("--y", y + "px");
+    document.body.append(particle);
+    particle.addEventListener("animationend", particle.remove);
+  },
+  1000 / maxParticles,
+  { immediate: false },
+);
+watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 
 /** should show perfect par path */
 const showPar = ref(false);
@@ -424,6 +456,6 @@ const share = async () => {
 
 .special {
   grid-column: 1;
-  color: var(--primary);
+  color: var(--special);
 }
 </style>

@@ -1,4 +1,4 @@
-import { ref, shallowRef } from "vue";
+import { ref } from "vue";
 
 /** simple async manager/wrapper */
 export const useQuery = <Data, Args extends unknown[]>(
@@ -8,12 +8,12 @@ export const useQuery = <Data, Args extends unknown[]>(
   const status = ref<"" | "loading" | "error" | "success">("");
 
   /** results */
-  const data = shallowRef<Data>();
-  /** https://github.com/vuejs/composition-api/issues/483 */
+  const data = ref<Data>();
 
   /** wrapped async function */
   async function run(...args: Args): Promise<void> {
     try {
+      data.value = undefined;
       status.value = "loading";
       const result = await func(...args);
       data.value = result;

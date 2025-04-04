@@ -4,8 +4,11 @@
       <span
         v-for="(char, index) in VITE_TITLE"
         :key="index"
-        class="wiggle-char wiggle-always"
-        :style="{ '--delay': index * 0.1 + 's' }"
+        class="title wiggle-char wiggle-always"
+        :style="{
+          '--delay': index * 0.1 + 's',
+          '--percent': index / (VITE_TITLE.length - 1),
+        }"
       >
         {{ char }}
       </span>
@@ -52,23 +55,24 @@ header > * {
   flex-basis: 0;
 }
 
-header > :first-child {
-  text-align: left;
-}
-
-header > :last-child {
-  justify-content: flex-end;
-}
-
 h1 {
+  text-align: left;
   white-space: nowrap;
+}
+
+h1 > span {
+  --shadow: color-mix(
+    in lch,
+    var(--primary),
+    var(--secondary) calc(100% * var(--percent, 0))
+  );
 }
 
 nav {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 10px 15px;
 }
 

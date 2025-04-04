@@ -1,5 +1,5 @@
 import { differenceInCalendarWeeks, getDate, getDay } from "date-fns";
-import { clamp, range } from "lodash";
+import { clamp, filter, range } from "lodash";
 import { shuffle } from "@/util/math";
 import rawDictionary from "./dictionary.yaml?raw";
 
@@ -37,7 +37,7 @@ export const loadData = async () => {
   const pars: Pars = [];
 
   /** get words in regular dictionary */
-  const regularWords = dictionary.filter(({ type }) => type === "regular");
+  const regularWords = filter(dictionary, { type: "regular" });
   /** get words corresponding to pars matrix */
   const matrixWords: { a: Word; b: Word }[] = [];
   regularWords.forEach((a, aIndex) =>
@@ -89,7 +89,7 @@ export const findPath = (a: Word, b: Word, anyType = false) => {
   while (list.length > 0) {
     let word = list.shift();
     let links = word?.links ?? [];
-    if (!anyType) links = links.filter(({ type }) => type === "regular");
+    if (!anyType) links = filter(links, { type: "regular" });
     for (const link of links) {
       if (link === b) {
         const path = [link];
