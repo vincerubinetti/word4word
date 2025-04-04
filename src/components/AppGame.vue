@@ -1,11 +1,31 @@
 <template>
   <section>
-    <div class="flex-row">
-      <div>Par: <AppPar :par="par.length" /></div>
-      <div>Yours: {{ steps }}</div>
+    <div class="info">
+      <button
+        :class="won && showPar && 'secondary'"
+        :disabled="!won"
+        @click="showPar = true"
+      >
+        <LandPlot />
+        <span>Par</span>
+        <b v-if="won">{{ par.length }}</b>
+        <AppPar v-else :par="par.length" />
+      </button>
+
+      <button
+        :class="won && !showPar && 'secondary'"
+        :disabled="!won"
+        @click="showPar = false"
+      >
+        <User />
+        <span>Yours</span>
+        <b>{{ steps }}</b>
+      </button>
     </div>
 
-    <div class="grid">
+    <AppPath v-if="won && showPar" :path="par" />
+
+    <div v-else class="grid">
       <div
         v-for="(word, wordIndex) in aPath"
         :key="word.text"
@@ -29,7 +49,7 @@
         </AppChar>
         <button
           v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
-          class="square right"
+          class="square"
           title="Delete word"
           @click="aPath = aPath.slice(0, -1)"
         >
@@ -114,7 +134,7 @@
         </AppChar>
         <button
           v-if="!won && wordIndex === 0 && bPath.length > 1"
-          class="square right"
+          class="square"
           title="Delete word"
           @click="bPath = bPath.slice(1)"
         >
@@ -123,7 +143,7 @@
       </div>
     </div>
 
-    <button v-if="won" class="primary" @click="share">Share</button>
+    <button v-if="won" class="primary" @click="share"><Share />Share</button>
   </section>
 </template>
 
@@ -134,9 +154,12 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
+  LandPlot,
   Lightbulb,
   MoveVertical,
+  Share,
   Star,
+  User,
   X,
 } from "lucide-vue-next";
 import { data } from "@/App.vue";
@@ -145,6 +168,7 @@ import AppPar from "@/components/AppPar.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { lerp } from "@/util/math";
 import { sleep } from "@/util/misc";
+import AppPath from "./AppPath.vue";
 
 const { VITE_TITLE } = import.meta.env;
 
@@ -296,6 +320,9 @@ const won = computed(() =>
   ),
 );
 
+/** should show perfect par path */
+const showPar = ref(false);
+
 /** share results */
 const share = async () => {
   try {
@@ -315,6 +342,21 @@ const share = async () => {
 </script>
 
 <style scoped>
+.info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+[disabled] {
+  background: none;
+  color: unset;
+  filter: none;
+  opacity: 1;
+}
+
 .grid {
   --gap: 5px;
   display: grid;
@@ -362,11 +404,6 @@ const share = async () => {
 .add,
 .reverse {
   grid-row: 1;
-}
-
-.clear,
-.add {
-  background: none;
 }
 
 .hint {

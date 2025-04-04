@@ -10,26 +10,7 @@
       {{ example?.b.text.toUpperCase() }}:
     </p>
 
-    <div class="grid">
-      <template v-for="(word, wordIndex) in example?.par" :key="wordIndex">
-        <AppChar
-          v-for="(char, charIndex) in word.text"
-          :key="charIndex"
-          :class="[
-            'flip',
-            wordIndex > 0 &&
-              example?.par[wordIndex - 1]?.text[charIndex] !== char &&
-              'highlight',
-          ]"
-          :style="{
-            '--dist': wordIndex / ((example?.par.length ?? 1) - 1),
-            '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',
-          }"
-        >
-          {{ char }}
-        </AppChar>
-      </template>
-    </div>
+    <AppPath :path="example?.par ?? []" />
 
     <p>
       That's it! Try to connect the words in as few steps as you can. The
@@ -66,7 +47,8 @@
       <table>
         <thead>
           <tr>
-            <th colspan="2"></th>
+            <th></th>
+            <th style="min-width: 100px;"></th>
             <th colspan="3">Links</th>
           </tr>
           <tr>
@@ -83,7 +65,10 @@
         </thead>
         <tbody>
           <tr
-            v-for="(word, index) in filteredDictionary"
+            v-for="(word, index) in filteredDictionary.slice(
+              0,
+              showAll ? 9999 : limit,
+            )"
             :key="index"
             :class="selected?.text === word.text && 'selected'"
             tabindex="0"
@@ -96,7 +81,7 @@
             </td>
           </tr>
 
-          <tr>
+          <tr v-if="filteredDictionary.length > limit">
             <td colspan="5">
               <button @click="showAll = !showAll">
                 Show {{ showAll ? "Less" : "All" }}
@@ -108,16 +93,7 @@
     </div>
 
     <template v-if="selected">
-      <div ref="infoElement" class="flex-row">
-        <b>
-          {{ selected.text.toUpperCase() }}
-        </b>
-        <a
-          :href="`https://www.google.com/search?q=define%3A+${selected.text}`"
-          target="_blank"
-          >Look up<ExternalLink
-        /></a>
-
+      <div ref="infoElement" class="details">
         <button
           v-if="info?.audio"
           class="square"
@@ -126,9 +102,21 @@
         >
           <Volume2 />
         </button>
+
+        <b>
+          {{ selected.text.toUpperCase() }}
+        </b>
+
+        <a
+          :href="`https://www.google.com/search?q=define%3A+${selected.text}`"
+          target="_blank"
+        >
+          Look up
+          <ExternalLink />
+        </a>
       </div>
 
-      <div class="info">
+      <div class="info" style="width: 100%">
         <span>Regular Links</span>
         <span>
           {{
@@ -252,8 +240,8 @@ import { computed, ref, useTemplateRef, watchEffect } from "vue";
 import { clamp, filter, max, orderBy, range } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
 import { data } from "@/App.vue";
-import AppChar from "@/components/AppChar.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
+import AppPath from "@/components/AppPath.vue";
 import { getWordInfo } from "@/data/info";
 import { findPath, type Word } from "@/data/word";
 import { useQuery } from "@/util/composables";
@@ -324,15 +312,18 @@ const cols: { key: keyof (typeof dictionary.value)[number]; name: string }[] = [
   { key: "obscureLinks", name: "obsc." },
 ];
 
+/** table row limit */
+const limit = 100;
+
 /** show all table entries */
 const showAll = ref(false);
 
 /** sorted and searched dictionary */
 const filteredDictionary = computed(() => {
   const _search = search.value.toLowerCase();
-  return orderBy(dictionary.value, sortKey.value, sortDir.value)
-    .filter((word) => word.text.includes(_search))
-    .slice(0, showAll.value ? 9999 : 100);
+  return orderBy(dictionary.value, sortKey.value, sortDir.value).filter(
+    (word) => word.text.includes(_search),
+  );
 });
 
 /** selected word */
@@ -465,11 +456,12 @@ thead tr {
 
 th button {
   position: relative;
+  min-width: unset;
 }
 
 th button svg {
   position: absolute;
-  right: -5px;
+  right: 0;
 }
 
 tbody tr {
@@ -488,9 +480,16 @@ td {
   font-weight: var(--bold);
 }
 
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
 .info {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: max-content 1fr;
   justify-items: flex-start;
   gap: 10px 20px;
   text-align: left;
@@ -498,6 +497,11 @@ td {
 
 .info > :nth-child(odd) {
   font-weight: var(--bold);
+}
+
+.info > :empty {
+  content: "-";
+  color: var(--gray);
 }
 
 .chart {
