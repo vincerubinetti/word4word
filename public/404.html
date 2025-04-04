@@ -2,10 +2,12 @@
 <html>
   <body>
     <script type="text/javascript">
+      const baseurl = "/word4word";
       console.debug("Redirecting from:", location);
-      const { origin, pathname, search, hash } = location;
+      let { origin, pathname, search, hash } = location;
+      pathname = pathname.replace(baseurl, "");
       sessionStorage.redirectPath = pathname + search + hash;
-      location = "/word4word";
+      location = baseurl;
     </script>
   </body>
 </html>
