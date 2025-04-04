@@ -2,7 +2,6 @@
   --primary: hsl(195, 100%, 35%);
   --secondary: hsl(10, 80%, 65%);
 
-  --warning: var(--primary);
   --error: var(--secondary);
 
   --easy: hsl(160, 50%, 45%);
@@ -21,7 +20,7 @@
   --extra-bold: 900;
 
   --fast: 0.1s;
-  --slow: 0.25s;
+  --slow: 0.5s;
 }
 
 * {
@@ -178,7 +177,6 @@ p {
 
 .error {
   color: var(--error);
-  font-weight: var(--bold);
 }
 
 .flex-row {
@@ -194,8 +192,12 @@ p {
   stroke: currentColor;
 }
 
+.lucide {
+  height: 1em;
+}
+
 .pulse {
-  animation: pulse 1s var(--delay) infinite both;
+  animation: pulse 1s var(--delay, 0s) infinite both;
 }
 
 @keyframes pulse {
@@ -204,16 +206,29 @@ p {
   }
 }
 
+.flip {
+  animation: flip var(--slow) var(--delay, 0s) both;
+}
+
+@keyframes flip {
+  0% {
+    scale: 1 0;
+    filter: drop-shadow(0 30px var(--gray));
+  }
+}
+
 .wiggle-char {
   display: inline-block;
 }
 
 .wiggle-always {
-  animation: wiggle 3s var(--delay) infinite both cubic-bezier(0.5, 0, 0.5, 1);
+  animation: wiggle 3s var(--delay, 0s) infinite both
+    cubic-bezier(0.5, 0, 0.5, 1);
 }
 
 :has(> .wiggle-hover):hover .wiggle-hover {
-  animation: wiggle 3s var(--delay) infinite both cubic-bezier(0.5, 0, 0.5, 1);
+  animation: wiggle 3s var(--delay, 0s) infinite both
+    cubic-bezier(0.5, 0, 0.5, 1);
 }
 
 @keyframes wiggle {
@@ -247,8 +262,4 @@ p {
 .slide-leave-to {
   translate: 0 -10px;
   opacity: 0;
-}
-
-.lucide {
-  height: 1em;
 }

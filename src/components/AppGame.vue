@@ -18,12 +18,13 @@
           :key="charIndex"
           :class="[
             'char',
+            'flip',
             getLink(char, 'a', wordIndex, charIndex) && 'link',
             won && 'wiggle-always',
           ]"
           :style="{
             '--col': charIndex,
-            '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',
+            '--delay': (won ? wordIndex * 0.4 : 0) + charIndex * 0.1 + 's',
           }"
         >
           {{ char }}
@@ -101,12 +102,16 @@
           :key="charIndex"
           :class="[
             'char',
+            'flip',
             getLink(char, 'b', wordIndex, charIndex) && 'link',
             won && 'wiggle-always',
           ]"
           :style="{
             '--col': charIndex,
-            '--delay': (aPath.length + wordIndex) * 0.4 + charIndex * 0.1 + 's',
+            '--delay':
+              (won ? (aPath.length + wordIndex) * 0.4 : 0) +
+              charIndex * 0.1 +
+              's',
           }"
         >
           {{ char }}
@@ -347,7 +352,7 @@ const share = async () => {
 }
 
 .link {
-  outline: solid 2px var(--black);
+  box-shadow: inset 0 0 0 2px var(--black);
 }
 
 .spacer {
@@ -406,6 +411,6 @@ const share = async () => {
 
 .special {
   grid-column: 1;
-  color: var(--warning);
+  color: var(--primary);
 }
 </style>

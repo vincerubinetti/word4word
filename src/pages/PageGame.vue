@@ -1,5 +1,6 @@
 <template>
   <AppGame v-if="a && b" :a="a" :b="b" />
+  <section v-else class="error">Couldn't get words</section>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +21,6 @@ watchEffect(() => {
   if (!data.value) return;
 
   const { pars, lookupWord } = data.value;
-  console.log(pars);
   const { params } = route;
 
   // for (let i = 0; i < 100; i++) {
@@ -42,7 +42,7 @@ watchEffect(() => {
       a.value = daily.a;
       b.value = daily.b;
     } catch (error) {
-      window.alert(error);
+      console.error(error);
     }
   }
 
