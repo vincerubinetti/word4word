@@ -4,7 +4,7 @@
     <section
       v-if="status !== 'success'"
       :class="{
-        secondary: status === 'loading',
+        gray: status === 'loading',
         error: status === 'error',
       }"
     >

@@ -1,6 +1,5 @@
 <template>
   <AppGame v-if="a && b" :a="a" :b="b" />
-  <section v-else class="error">No words</section>
 </template>
 
 <script setup lang="ts">
@@ -22,6 +21,14 @@ watchEffect(() => {
 
   const { pars, lookupWord } = data.value;
   const { params } = route;
+
+  // for (let i = 0; i < 100; i++) {
+  //   const today = new Date(new Date().getTime() + i * 1000 * 60 * 60 * 24);
+  //   console.time("getDaily");
+  //   const { a, b } = getDaily(pars, today);
+  //   console.timeEnd("getDaily");
+  //   console.debug(a.text, b.text);
+  // }
 
   if (params.a && params.b) {
     /** get custom words from url */

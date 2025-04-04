@@ -1,8 +1,8 @@
 <template>
   <section>
     <div class="flex-row">
-      <div>Par: {{ par.length }}</div>
-      <div>Yours: {{ aPath.length + bPath.length }}</div>
+      <div>Par: <AppPar :par="par.length" /></div>
+      <div>Yours: {{ steps }}</div>
     </div>
 
     <div class="grid">
@@ -10,9 +10,7 @@
         v-for="(word, wordIndex) in aPath"
         :key="word.text"
         class="row"
-        :style="{
-          '--dist': dists[word.text],
-        }"
+        :style="{ '--dist': dists[word.text] }"
       >
         <Star v-if="word.type === 'special'" class="special filled" />
         <div
@@ -95,9 +93,7 @@
         v-for="(word, wordIndex) in bPath"
         :key="word.text"
         class="row"
-        :style="{
-          '--dist': dists[word.text],
-        }"
+        :style="{ '--dist': dists[word.text] }"
       >
         <Star v-if="word.type === 'special'" class="special filled" />
         <div
@@ -125,6 +121,8 @@
         </button>
       </div>
     </div>
+
+    <button v-if="won" class="primary" @click="share">Share</button>
   </section>
 </template>
 
@@ -144,6 +142,9 @@ import { data } from "@/App.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { lerp } from "@/util/math";
 import { sleep } from "@/util/misc";
+import AppPar from "./AppPar.vue";
+
+const { VITE_TITLE } = import.meta.env;
 
 type Props = {
   a: Word;
@@ -185,6 +186,9 @@ watch(
 
 /** find shortest path between a/b */
 const par = computed(() => findPath(a, b));
+
+/** length of players path */
+const steps = computed(() => aPath.value.length + bPath.value.length);
 
 /** map of word in path to distance from other end */
 const dists = computed(() => {
@@ -289,6 +293,23 @@ const won = computed(() =>
     bPath.value.at(0)?.text ?? "",
   ),
 );
+
+/** share results */
+const share = async () => {
+  try {
+    await window.navigator.share({
+      url: window.location.href,
+      text: [
+        VITE_TITLE,
+        `${a.text} ↔ ${b.text}`,
+        `Par: ${par.value.length}`,
+        `Mine: ${steps.value}`,
+      ].join("\n"),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style scoped>
@@ -309,37 +330,24 @@ const won = computed(() =>
 }
 
 .char {
-  --size: 40px;
-  --color: color-mix(
+  display: grid;
+  grid-column: calc(var(--col) + 2);
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: color-mix(
     in lch,
     var(--primary),
     var(--secondary) calc(100% * var(--dist))
   );
-  display: grid;
-  position: relative;
-  grid-column: calc(var(--col) + 2);
-  place-items: center;
-  width: var(--size);
-  height: var(--size);
-  background: var(--color);
   color: var(--white);
   font-weight: 900;
   font-size: 1.2rem;
   text-transform: uppercase;
 }
 
-.link::before {
-  --w: 5px;
-  --h: 5px;
-  --top: calc(var(--gap) / -2 - var(--h) / 2);
-  --left: calc((var(--size) - var(--w)) / 2);
-  position: absolute;
-  top: var(--top);
-  left: var(--left);
-  width: var(--w);
-  height: var(--h);
-  background: var(--color);
-  content: "";
+.link {
+  outline: solid 2px var(--black);
 }
 
 .spacer {

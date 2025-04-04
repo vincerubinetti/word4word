@@ -1,4 +1,4 @@
-import { differenceInCalendarWeeks, getDay, getWeekOfMonth } from "date-fns";
+import { differenceInCalendarWeeks, getDate, getDay } from "date-fns";
 import { clamp, range } from "lodash";
 import { shuffle } from "@/util/math";
 import rawDictionary from "./dictionary.yaml?raw";
@@ -113,39 +113,47 @@ export const findPath = (a: Word, b: Word, anyType = false) => {
   return [];
 };
 
-export const getDaily = (pars: Pars) => {
+/** get daily challenge */
+export const getDaily = (pars: Pars, today = new Date()) => {
   /** get date info */
-  const today = new Date();
   const epoch = new Date(2000, 0, 0, 0, 0);
   const day = getDay(today);
-  const week = getWeekOfMonth(today);
+  const date = getDate(today);
   const weeks = differenceInCalendarWeeks(today, epoch);
 
   /** set difficulty based on day of week, like NYT games */
-  let par = 3;
-  if (day === 1) par = 4;
-  if (day === 2) par = 6;
-  if (day === 3) par = 8;
-  if (day === 4) par = 10;
-  if (day === 5) par = 12;
-  if (day === 6) par = 14;
-  if (day === 0) par = 16;
+  let dayPar = 3;
+  if (day === 1) dayPar = 4;
+  if (day === 2) dayPar = 6;
+  if (day === 3) dayPar = 8;
+  if (day === 4) dayPar = 10;
+  if (day === 5) dayPar = 12;
+  if (day === 6) dayPar = 14;
+  if (day === 0) dayPar = 16;
 
   /** increase in difficulty over month */
-  par += week;
-  par = clamp(par, 3, pars.length);
+  let datePar = 0;
+  if (date <= 7) datePar = 1;
+  else if (date <= 14) datePar = 2;
+  else if (date <= 21) datePar = 3;
+  else if (date <= 28) datePar = 4;
+  else datePar = 5;
+
+  /** final par */
+  const par = clamp(dayPar + datePar, 3, pars.length);
 
   /** number of pairs in chosen par */
   const pairs = pars[par]?.length ?? 0;
 
   /** select random but deterministic pair from par */
-  const pair =
-    shuffle(range(0, Math.min(weeks, pairs) + 1))[weeks % pairs] ?? 0;
+  const pair = shuffle(range(0, pairs))[weeks % pairs] ?? 0;
 
   /** get word pair */
   const daily = pars[par]?.[pair];
 
-  if (!daily) throw Error(`Couldn't get daily, par ${par}, pair ${pair}`);
+  console.debug({ day, date, dayPar, datePar, par, pairs, pair });
+
+  if (!daily) throw Error("Couldn't get daily");
 
   return daily;
 };

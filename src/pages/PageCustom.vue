@@ -9,11 +9,7 @@
     </div>
 
     <div v-if="!aWord || !bWord">Enter two 4-letter words</div>
-    <div v-else-if="regularPath.length">Par: {{ regularPath.length }}</div>
-    <div v-else-if="anyPath.length">
-      Par: {{ anyPath.length }}
-      <span class="error">w/ uncommon words</span>
-    </div>
+    <div v-else-if="par.length">Par: <AppPar :par="par.length" /></div>
     <div v-else class="warning">No path between these words!</div>
     <button
       class="primary"
@@ -29,6 +25,7 @@
 import { computed, ref } from "vue";
 import { ArrowUpDown } from "lucide-vue-next";
 import { data } from "@/App.vue";
+import AppPar from "@/components/AppPar.vue";
 import { findPath } from "@/data/word";
 
 /** start word text */
@@ -42,14 +39,9 @@ const aWord = computed(() => data.value?.lookupWord(a.value));
 /** end full word */
 const bWord = computed(() => data.value?.lookupWord(b.value));
 
-/** get path between words */
-const regularPath = computed(() =>
+/** get par path between words */
+const par = computed(() =>
   aWord.value && bWord.value ? findPath(aWord.value, bWord.value) : [],
-);
-
-/** get special path between words */
-const anyPath = computed(() =>
-  aWord.value && bWord.value ? findPath(aWord.value, bWord.value, true) : [],
 );
 
 /** swap a/b words */
@@ -65,7 +57,7 @@ const playable = computed(
     aWord.value &&
     bWord.value &&
     aWord.value.text !== bWord.value.text &&
-    (regularPath.value.length || anyPath.value.length),
+    par.value.length,
 );
 </script>
 
