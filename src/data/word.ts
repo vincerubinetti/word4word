@@ -3,7 +3,7 @@ import { clamp, filter, range } from "lodash";
 import { shuffle } from "@/util/math";
 import rawDictionary from "./dictionary.yaml?raw";
 
-const rawPars = "/pars.dat";
+const rawPars = import.meta.env.BASE_URL + "pars.dat";
 
 export type Word = {
   text: string;
