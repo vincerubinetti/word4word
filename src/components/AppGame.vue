@@ -44,7 +44,7 @@
         <div class="row">
           <input
             ref="inputElement"
-            v-model="input"
+            v-model.trim="input"
             class="input"
             maxlength="4"
             placeholder="WORD"
@@ -406,6 +406,6 @@ const share = async () => {
 
 .special {
   grid-column: 1;
-  color: var(--dark-gray);
+  color: var(--warning);
 }
 </style>

@@ -1,14 +1,21 @@
 :root {
-  --primary: hsl(194, 100%, 33%);
-  --secondary: hsl(10, 82%, 67%);
-  --error: hsl(350, 63%, 57%);
+  --primary: hsl(195, 100%, 35%);
+  --secondary: hsl(10, 80%, 65%);
 
-  --black: hsl(194, 25%, 25%);
-  --dark-gray: hsl(194, 20%, 35%);
-  --gray: hsl(194, 15%, 70%);
-  --light-gray: hsl(194, 10%, 92%);
-  --off-white: hsl(194, 5%, 95%);
-  --white: hsl(194, 5%, 98%);
+  --warning: hsl(45, 85%, 50%);
+  --error: hsl(350, 60%, 50%);
+
+  --easy: hsl(150, 80%, 40%);
+  --medium: hsl(210, 85%, 50%);
+  --hard: hsl(280, 70%, 50%);
+  --expert: hsl(350, 70%, 50%);
+
+  --black: hsl(195, 25%, 25%);
+  --dark-gray: hsl(195, 20%, 35%);
+  --gray: hsl(195, 15%, 70%);
+  --light-gray: hsl(195, 10%, 92%);
+  --off-white: hsl(195, 5%, 95%);
+  --white: hsl(195, 5%, 98%);
 
   --bold: 600;
   --extra-bold: 900;
@@ -50,7 +57,8 @@ section {
   align-items: center;
   justify-content: center;
   padding: 40px max(40px, (100% - 600px) / 2);
-  gap: 40px;
+  gap: 20px;
+  box-shadow: inset 0 20px 20px var(--off-white);
 }
 
 section:last-child {
@@ -106,7 +114,7 @@ input:hover {
 }
 
 button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 40px;
@@ -155,7 +163,7 @@ p {
 }
 
 ::placeholder {
-  color: var(--light-gray);
+  color: var(--gray);
 }
 
 [disabled] {
@@ -181,21 +189,13 @@ p {
   gap: 20px;
 }
 
-.flex-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
 .filled {
   fill: currentColor;
   stroke: currentColor;
 }
 
 .pulse {
-  animation: pulse 1s var(--delay, 0s) infinite both;
+  animation: pulse 1s var(--delay) infinite both;
 }
 
 @keyframes pulse {
@@ -209,13 +209,11 @@ p {
 }
 
 .wiggle-always {
-  animation: wiggle 3s var(--delay, 0s) infinite both
-    cubic-bezier(0.5, 0, 0.5, 1);
+  animation: wiggle 3s var(--delay) infinite both cubic-bezier(0.5, 0, 0.5, 1);
 }
 
 :has(> .wiggle-hover):hover .wiggle-hover {
-  animation: wiggle 3s var(--delay, 0s) infinite both
-    cubic-bezier(0.5, 0, 0.5, 1);
+  animation: wiggle 3s var(--delay) infinite both cubic-bezier(0.5, 0, 0.5, 1);
 }
 
 @keyframes wiggle {
@@ -249,4 +247,8 @@ p {
 .slide-leave-to {
   translate: 0 -10px;
   opacity: 0;
+}
+
+.lucide {
+  height: 1em;
 }

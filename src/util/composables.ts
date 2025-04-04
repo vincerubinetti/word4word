@@ -20,6 +20,7 @@ export const useQuery = <Data, Args extends unknown[]>(
       status.value = "success";
     } catch (error) {
       console.error(error);
+      data.value = undefined;
       status.value = "error";
     }
   }

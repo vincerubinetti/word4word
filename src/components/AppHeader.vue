@@ -44,7 +44,6 @@ header {
   align-items: center;
   padding: 10px 20px;
   gap: 10px;
-  background: var(--off-white);
 }
 
 header > * {

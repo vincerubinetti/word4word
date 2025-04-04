@@ -20,6 +20,7 @@ watchEffect(() => {
   if (!data.value) return;
 
   const { pars, lookupWord } = data.value;
+  console.log(pars);
   const { params } = route;
 
   // for (let i = 0; i < 100; i++) {
@@ -36,9 +37,13 @@ watchEffect(() => {
     b.value = lookupWord(String(params.b));
   } else {
     /** get daily challenge */
-    const daily = getDaily(pars);
-    a.value = daily.a;
-    b.value = daily.b;
+    try {
+      const daily = getDaily(pars);
+      a.value = daily.a;
+      b.value = daily.b;
+    } catch (error) {
+      window.alert(error);
+    }
   }
 
   if (a.value && b.value) {

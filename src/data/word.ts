@@ -53,12 +53,9 @@ export const loadData = async () => {
     /** get par, make 1-indexed instead of 0-indexed */
     let par = parsMatrix[index]! + 1;
 
-    /** if 64 (max 8-bit int), par is infinity (i.e. no possible path) */
-    if (par < 64) {
-      pars[par] ??= [];
-      /** add word pair */
-      pars[par]?.push(matrixWords[index]!);
-    }
+    pars[par] ??= [];
+    /** add word pair */
+    pars[par]?.push(matrixWords[index]!);
   }
 
   /** util func */

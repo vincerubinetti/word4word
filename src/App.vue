@@ -1,14 +1,11 @@
 <template>
   <AppHeader />
   <main>
-    <section
-      v-if="status !== 'success'"
-      :class="{
-        gray: status === 'loading',
-        error: status === 'error',
-      }"
-    >
-      {{ startCase(status) }}
+    <section v-if="status === 'loading'" class="gray">
+      Loading game data
+    </section>
+    <section v-else-if="status === 'error'" class="error">
+      Error loading game data
     </section>
     <RouterView v-else />
   </main>
@@ -17,10 +14,9 @@
 <script lang="ts">
 import { onMounted, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
-import { startCase } from "lodash";
+import AppHeader from "@/components/AppHeader.vue";
 import { loadData } from "@/data/word";
 import { useQuery } from "@/util/composables";
-import AppHeader from "@/components/AppHeader.vue";
 
 /** load game data on mount */
 const query = useQuery(loadData);

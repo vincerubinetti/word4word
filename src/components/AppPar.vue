@@ -1,11 +1,24 @@
 <template>
   <span
     class="difficulty"
-    :style="{ color: difficulty.color }"
-    :title="difficulty.text"
-    >{{ par || "???" }}</span
+    :style="{ color: difficulty.color, fill: difficulty.color }"
+    :title="`Difficulty: ${difficulty.text}`"
   >
+    {{ par || "???" }}
+  </span>
 </template>
+
+<script lang="ts">
+export const getDifficulty = (par: number) => {
+  console.log(par);
+  if (par === 0) return { text: "", color: "" };
+  if (par <= 5) return { text: "easy", color: "var(--easy)" };
+  if (par <= 9) return { text: "medium", color: "var(--medium)" };
+  if (par <= 15) return { text: "hard", color: "var(--hard)" };
+  if (par <= 63) return { text: "expert", color: "var(--expert)" };
+  return { text: "impossible", color: "var(--dark-gray)" };
+};
+</script>
 
 <script setup lang="ts">
 import { computed } from "vue";
@@ -16,14 +29,8 @@ type Props = {
 
 const { par } = defineProps<Props>();
 
-const difficulty = computed(() => {
-  if (par === 0) return { text: "", color: "" };
-  if (par <= 7) return { text: "Easy", color: "#059669" };
-  if (par <= 12) return { text: "Medium", color: "#4f46e5" };
-  if (par <= 16) return { text: "Hard", color: "#ea580c" };
-  if (par <= 23) return { text: "Expert", color: "#e11d48" };
-  return { text: "", color: "" };
-});
+/** map par to subjective difficulty */
+const difficulty = computed(() => getDifficulty(par));
 </script>
 
 <style scoped>
