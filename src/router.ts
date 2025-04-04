@@ -10,10 +10,10 @@ export const routes = [
     component: PageGame,
     meta: { header: true },
     beforeEnter: () => {
-      const path = window.sessionStorage.redirectPath as string;
-      if (path) {
+      const path = window.sessionStorage.redirectPath;
+      if (typeof path === "string") {
         console.debug("Redirecting to:", path);
-        window.sessionStorage.removeItem("redirect");
+        window.sessionStorage.removeItem("redirectPath");
         return path;
       }
     },
