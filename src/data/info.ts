@@ -17,12 +17,13 @@ export const getWordInfo = async (word: string) => {
       results[0]?.meanings
         ?.map(
           (meaning) =>
-            meaning?.definitions?.slice(0, 5)?.map((definition) => ({
+            meaning?.definitions?.map((definition) => ({
               description: definition?.definition ?? "",
               part: meaning?.partOfSpeech ?? "",
             })) ?? [],
         )
-        .flat() ?? [],
+        .flat()
+        .slice(0, 5) ?? [],
 
     /** audio pronunciation */
     audio: results[0]?.phonetics?.[0]?.audio ?? "",

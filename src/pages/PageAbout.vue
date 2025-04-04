@@ -72,7 +72,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(word, index) in filteredDictionary" :key="index">
+          <tr
+            v-for="(word, index) in filteredDictionary"
+            :key="index"
+            :class="selected?.text === word.text && 'selected'"
+          >
             <td>
               <button @click="select(word)">
                 {{ word.text }}
@@ -86,8 +90,10 @@
     </div>
 
     <template v-if="selected">
-      <div class="flex-row">
-        {{ selected.text.toUpperCase() }}
+      <div ref="infoElement" class="flex-row">
+        <b>
+          {{ selected.text.toUpperCase() }}
+        </b>
         <a
           :href="`https://www.google.com/search?q=define%3A+${selected.text}`"
           target="_blank"
@@ -104,12 +110,45 @@
         </button>
       </div>
 
+      <div class="info">
+        <span>Regular Links</span>
+        <span>
+          {{
+            selected.links
+              .filter(({ type }) => type === "regular")
+              .map(({ text }) => text)
+              .join(", ")
+              .toUpperCase()
+          }}
+        </span>
+        <span>Special Links</span>
+        <span>
+          {{
+            selected.links
+              .filter(({ type }) => type === "special")
+              .map(({ text }) => text)
+              .join(", ")
+              .toUpperCase()
+          }}
+        </span>
+        <span>Obscure Links</span>
+        <span>
+          {{
+            selected.links
+              .filter(({ type }) => type === "obscure")
+              .map(({ text }) => text)
+              .join(", ")
+              .toUpperCase()
+          }}
+        </span>
+      </div>
+
       <div v-if="info" class="info">
         <template
           v-for="({ part, description }, index) in info.definitions"
           :key="index"
         >
-          <b>{{ part }}</b>
+          <span>{{ part }}</span>
           <span>{{ description }}</span>
         </template>
       </div>
@@ -207,20 +246,23 @@
 
     <p>
       Par ∞ signifies a pair of words that has no possible path between them
-      (using <i>regular words</i>)
-    .</p>
+      (using <i>regular words</i>) .
+    </p>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, useTemplateRef, watchEffect } from "vue";
 import { clamp, max, orderBy, range } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
 import { data } from "@/App.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
-import { getWordInfo } from "@/data/definitions";
+import { getWordInfo } from "@/data/info";
 import { findPath, type Word } from "@/data/word";
 import { useQuery } from "@/util/composables";
+import { sleep } from "@/util/misc";
+
+const infoElement = useTemplateRef("infoElement");
 
 /** dictionary search */
 const search = ref("");
@@ -280,8 +322,14 @@ const filteredDictionary = computed(() => {
 const selected = ref<Word>();
 
 /** select word */
-const select = (word: Word) =>
-  (selected.value = selected.value === word ? undefined : word);
+const select = async (word: Word) => {
+  if (selected.value === word) selected.value = undefined;
+  else {
+    selected.value = word;
+    await sleep();
+    infoElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+};
 
 /** lookup info for selected word */
 const { data: info, status, run } = useQuery(getWordInfo);
@@ -414,12 +462,20 @@ td:first-child button {
   text-transform: uppercase;
 }
 
+.selected {
+  background: var(--light-gray);
+}
+
 .info {
   display: grid;
   grid-template-columns: auto auto;
   justify-items: flex-start;
   gap: 10px 20px;
   text-align: left;
+}
+
+.info > :nth-child(odd) {
+  font-weight: var(--bold);
 }
 
 .chart {

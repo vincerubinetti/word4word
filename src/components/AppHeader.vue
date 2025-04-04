@@ -44,6 +44,7 @@ header {
   align-items: center;
   padding: 10px 20px;
   gap: 10px;
+  background: var(--off-white);
 }
 
 header > * {
@@ -78,7 +79,7 @@ a {
 }
 
 .active {
-  background: var(--light-gray);
+  border: solid 2px var(--light-gray);
 }
 
 @media (max-width: 500px) {

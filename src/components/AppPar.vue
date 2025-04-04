@@ -10,7 +10,6 @@
 
 <script lang="ts">
 export const getDifficulty = (par: number) => {
-  console.log(par);
   if (par === 0) return { text: "", color: "" };
   if (par <= 5) return { text: "easy", color: "var(--easy)" };
   if (par <= 9) return { text: "medium", color: "var(--medium)" };
