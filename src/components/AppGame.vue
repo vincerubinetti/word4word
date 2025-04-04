@@ -7,7 +7,6 @@
         @click="showPar = true"
       >
         <LandPlot />
-        <span>Par</span>
         <b v-if="won">{{ par.length }}</b>
         <AppPar v-else :par="par.length" />
       </button>
@@ -50,7 +49,7 @@
         <button
           v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
           class="square"
-          title="Delete word"
+          v-tooltip="'Delete word'"
           @click="aPath = aPath.slice(0, -1)"
         >
           <X />
@@ -77,14 +76,14 @@
             </aside>
           </Transition>
 
-          <button class="hint square" title="Get hint" @click="hint">
+          <button class="hint square" v-tooltip="'Get hint'" @click="hint">
             <Lightbulb />
           </button>
 
           <button
             v-if="input.length > 0"
             class="clear square"
-            title="Clear input"
+            v-tooltip="'Clear input'"
             @click="input = ''"
           >
             <X />
@@ -93,7 +92,7 @@
           <button
             v-if="inputWord && (aDiff || bDiff)"
             class="add square pulse"
-            title="Add word"
+            v-tooltip="'Add word'"
             @click="add"
           >
             <MoveVertical v-if="aDiff && bDiff" />
@@ -101,7 +100,11 @@
             <ArrowDown v-else-if="bDiff" />
           </button>
 
-          <button class="reverse square" title="Reverse path" @click="reverse">
+          <button
+            class="reverse square"
+            v-tooltip="'Reverse path'"
+            @click="reverse"
+          >
             <ArrowUpDown />
           </button>
         </div>
@@ -136,7 +139,7 @@
         <button
           v-if="!won && wordIndex === 0 && bPath.length > 1"
           class="square"
-          title="Delete word"
+          v-tooltip="'Delete word'"
           @click="bPath = bPath.slice(1)"
         >
           <X />
@@ -379,7 +382,7 @@ const { pause, resume } = useIntervalFn(
     if (document.querySelectorAll(".particle").length > maxParticles) return;
     const particle = document.createElement("div");
     particle.className = "particle";
-    const size = random(5, 20);
+    const size = random(5, 10);
     const halfW = window.innerWidth / 2;
     const halfH = window.innerHeight / 2;
     let x = halfW;

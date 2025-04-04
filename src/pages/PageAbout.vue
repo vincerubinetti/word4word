@@ -77,7 +77,7 @@
             :key="index"
             :class="selected?.text === word.text && 'selected'"
             tabindex="0"
-            title="See info about word"
+            v-tooltip="'See info about word'"
             @click="select(word)"
             @keydown.enter="select(word)"
           >
@@ -101,8 +101,8 @@
       <div ref="infoElement" class="details">
         <button
           v-if="info?.audio"
-          class="square"
-          title="Pronunciation"
+          class="secondary square"
+          v-tooltip="'Pronunciation'"
           @click="audio.play()"
         >
           <Volume2 />
@@ -193,8 +193,9 @@
         :key="index"
         class="bar"
         :d="['M', x, 0, 'v', -y].join(' ')"
-        :title="yLabel"
         :stroke="getDifficulty(par).color"
+        tabindex="0"
+        v-tooltip="yLabel"
       />
 
       <path
@@ -349,9 +350,9 @@ const audio = ref(new Audio(""));
 watchEffect(() => (audio.value.src = info.value?.audio ?? ""));
 
 /** chart settings */
-const chartWidth = 200;
-const chartHeight = 100;
-const chartPadding = 20;
+const chartWidth = 2000;
+const chartHeight = 1000;
+const chartPadding = 300;
 
 /** chart coordinates */
 const chartData = computed(() => {
@@ -509,7 +510,7 @@ td {
 
 .chart text {
   fill: var(--black);
-  font-size: 6px;
+  font-size: 60px;
 }
 
 .axes {
@@ -519,7 +520,7 @@ td {
 
 .bar {
   fill: none;
-  stroke-width: 6px;
+  stroke-width: 50px;
 }
 
 .x-axis {
@@ -531,7 +532,7 @@ td {
 .y-axis {
   dominant-baseline: central;
   text-anchor: middle;
-  translate: -3.5em 0;
+  translate: -4em 0;
 }
 
 .x-label {

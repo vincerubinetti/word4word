@@ -7,8 +7,8 @@
 
   --easy: hsl(160, 50%, 45%);
   --medium: hsl(220, 50%, 60%);
-  --hard: hsl(300, 30%, 55%);
-  --expert: hsl(350, 50%, 60%);
+  --hard: hsl(300, 25%, 55%);
+  --expert: hsl(0, 50%, 60%);
 
   --black: hsl(195, 25%, 25%);
   --dark-gray: hsl(195, 20%, 35%);
@@ -176,9 +176,9 @@ p {
 }
 
 [disabled] {
+  cursor: unset;
   filter: saturate(0);
   opacity: 0.5;
-  pointer-events: none;
 }
 
 form {
@@ -201,6 +201,22 @@ form {
 .lucide {
   width: unset;
   height: 1em;
+}
+
+.tippy-box {
+  padding: 2px !important;
+  border-radius: 0 !important;
+  background: var(--black) !important;
+  color: var(--white) !important;
+  font: inherit !important;
+}
+
+.tippy-arrow {
+  color: var(--black) !important;
+}
+
+.tippy-arrow::before {
+  scale: 0.75 !important;
 }
 
 .pulse {
@@ -272,7 +288,6 @@ form {
 }
 
 .particle {
-  --inset: 7%;
   position: fixed;
   top: var(--y);
   left: var(--x);
@@ -283,14 +298,17 @@ form {
   animation: particle 1s linear;
   mix-blend-mode: difference;
   clip-path: polygon(
+    50% 75%,
+    79% 90%,
+    74% 58%,
+    98% 35%,
+    65% 30%,
     50% 0%,
-    calc(50% + var(--inset)) calc(50% - var(--inset)),
-    100% 50%,
-    calc(50% + var(--inset)) calc(50% + var(--inset)),
-    50% 100%,
-    calc(50% - var(--inset)) calc(50% + var(--inset)),
-    0% 50%,
-    calc(50% - var(--inset)) calc(50% - var(--inset))
+    35% 30%,
+    2% 35%,
+    26% 58%,
+    21% 90%,
+    50% 75%
   );
 }
 
