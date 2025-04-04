@@ -330,7 +330,7 @@ const add = async () => {
 
   input.value = "";
   await sleep(100);
-  inputElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
+  inputElement.value?.scrollIntoView({ block: "nearest", behavior: "smooth" });
 };
 
 /** whether this char should be linked to char above in path */

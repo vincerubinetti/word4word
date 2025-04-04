@@ -516,6 +516,7 @@ td {
 .axes {
   fill: none;
   stroke: var(--black);
+  stroke-width: 5px;
 }
 
 .bar {
