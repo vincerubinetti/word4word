@@ -204,6 +204,11 @@
         {{ text }}
       </text>
     </svg>
+
+    <p>
+      Par ∞ signifies a pair of words that has no possible path between them
+      (using <i>regular words</i>)
+    .</p>
   </section>
 </template>
 

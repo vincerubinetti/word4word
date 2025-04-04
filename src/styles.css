@@ -2,13 +2,13 @@
   --primary: hsl(195, 100%, 35%);
   --secondary: hsl(10, 80%, 65%);
 
-  --warning: hsl(45, 85%, 50%);
-  --error: hsl(350, 60%, 50%);
+  --warning: var(--primary);
+  --error: var(--secondary);
 
-  --easy: hsl(150, 80%, 40%);
-  --medium: hsl(210, 85%, 50%);
-  --hard: hsl(280, 70%, 50%);
-  --expert: hsl(350, 70%, 50%);
+  --easy: hsl(160, 50%, 45%);
+  --medium: hsl(220, 50%, 60%);
+  --hard: hsl(300, 30%, 55%);
+  --expert: hsl(350, 50%, 55%);
 
   --black: hsl(195, 25%, 25%);
   --dark-gray: hsl(195, 20%, 35%);
