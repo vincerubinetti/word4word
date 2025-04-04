@@ -41,7 +41,12 @@
       still be played. <i>Obscure</i> words are not allowed at all.
     </p>
 
-    <input v-model.trim="search" maxlength="4" placeholder="Search" />
+    <input
+      v-model.trim="search"
+      maxlength="4"
+      pattern="[A-Za-z]"
+      placeholder="Search"
+    />
 
     <div class="table">
       <table>

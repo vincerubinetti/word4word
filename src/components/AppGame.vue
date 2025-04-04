@@ -66,6 +66,7 @@
             v-model.trim="input"
             class="input"
             maxlength="4"
+            pattern="[A-Za-z]"
             placeholder="WORD"
             @keydown.enter="add"
           />
@@ -149,7 +150,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
-import { debounce, filter, random, sample } from "lodash";
+import { debounce, filter, map, random, sample } from "lodash";
 import {
   ArrowDown,
   ArrowUp,
@@ -168,7 +169,7 @@ import AppChar from "@/components/AppChar.vue";
 import AppPar from "@/components/AppPar.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { lerp } from "@/util/math";
-import { sleep } from "@/util/misc";
+import { sleep, storage } from "@/util/misc";
 import AppPath from "./AppPath.vue";
 
 const { VITE_TITLE } = import.meta.env;
@@ -182,9 +183,52 @@ const { a, b } = defineProps<Props>();
 
 const inputElement = useTemplateRef("inputElement");
 
-/** paths to connect */
+/** storage key */
+const key = computed(() => a.text + "-" + b.text);
+
+/** word paths to connect */
 const aPath = ref<Word[]>([]);
 const bPath = ref<Word[]>([]);
+
+/** typed storage interface */
+const { load, save } = storage<{ a: string[]; b: string[] }>();
+
+/** look up words from text, when ready */
+const lookup = computed(() => {
+  if (!data.value) return () => [];
+  const { lookupWord } = data.value;
+  return (words: string[]) => {
+    const lookups = words.map(lookupWord);
+    const filtered = lookups.filter((w) => w !== undefined);
+    if (filtered.length !== lookups.length)
+      throw Error("Couldn't look up word from storage");
+    return filtered;
+  };
+});
+
+/** load from storage */
+watchEffect(
+  () => {
+    const loaded = load(key.value);
+    if (!loaded) return;
+    const { a, b } = loaded;
+    aPath.value = lookup.value(a);
+    bPath.value = lookup.value(b);
+  },
+  { flush: "post" },
+);
+
+/** save to storage */
+watchEffect(
+  () => {
+    if (!data.value) return;
+    save(key.value, {
+      a: map(aPath.value, "text"),
+      b: map(bPath.value, "text"),
+    });
+  },
+  { flush: "post" },
+);
 
 /** input text */
 const input = ref("");
@@ -263,6 +307,7 @@ const check = () => {
   return true;
 };
 
+/** auto-check when player has typed all letters */
 watchEffect(() => {
   if (input.value.length === 4) check();
 });

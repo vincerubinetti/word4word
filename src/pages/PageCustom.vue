@@ -1,8 +1,18 @@
 <template>
   <section>
     <form>
-      <input v-model.trim="a" placeholder="from word..." maxlength="4" />
-      <input v-model.trim="b" placeholder="...to word" maxlength="4" />
+      <input
+        v-model.trim="a"
+        maxlength="4"
+        pattern="[A-Za-z]"
+        placeholder="from word..."
+      />
+      <input
+        v-model.trim="b"
+        maxlength="4"
+        pattern="[A-Za-z]"
+        placeholder="...to word"
+      />
 
       <div v-if="a.length < 4 || b.length < 4">Enter two 4-letter words</div>
       <div v-else-if="!aWord || !bWord">Enter valid words</div>
