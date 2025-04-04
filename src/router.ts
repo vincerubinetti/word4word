@@ -1,13 +1,9 @@
-import {
-  createRouter,
-  createWebHistory,
-  type RouteRecordRaw,
-} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import PageAbout from "@/pages/PageAbout.vue";
 import PageCustom from "@/pages/PageCustom.vue";
 import PageGame from "@/pages/PageGame.vue";
 
-export const routes: RouteRecordRaw[] = [
+export const routes = [
   {
     name: "Daily",
     path: "/",
