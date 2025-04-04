@@ -118,7 +118,7 @@ export const getDaily = (pars: Pars, today = new Date()) => {
   const date = getDate(today);
   const weeks = differenceInCalendarWeeks(today, epoch);
 
-  /** set difficulty based on day of week, like NYT games */
+  /** increase difficulty over week, like NYT games */
   let dayPar = 3;
   if (day === 1) dayPar = 4;
   if (day === 2) dayPar = 6;
@@ -128,7 +128,7 @@ export const getDaily = (pars: Pars, today = new Date()) => {
   if (day === 6) dayPar = 14;
   if (day === 0) dayPar = 16;
 
-  /** increase in difficulty over month */
+  /** increase difficulty over month */
   let datePar = 0;
   if (date <= 7) datePar = 1;
   else if (date <= 14) datePar = 2;
@@ -139,7 +139,7 @@ export const getDaily = (pars: Pars, today = new Date()) => {
   /** final par */
   const par = clamp(dayPar + datePar, 3, pars.length);
 
-  /** number of pairs in chosen par */
+  /** number of word pairs in chosen par */
   const pairs = pars[par]?.length ?? 0;
 
   /** select random but deterministic pair from par */

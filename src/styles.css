@@ -7,7 +7,7 @@
   --easy: hsl(160, 50%, 45%);
   --medium: hsl(220, 50%, 60%);
   --hard: hsl(300, 30%, 55%);
-  --expert: hsl(350, 50%, 55%);
+  --expert: hsl(350, 50%, 60%);
 
   --black: hsl(195, 25%, 25%);
   --dark-gray: hsl(195, 20%, 35%);
@@ -83,7 +83,7 @@ h2 {
 a {
   color: var(--primary);
   transition-duration: var(--fast);
-  transition-property: color, background;
+  transition-property: color, background, border-color;
 }
 
 a:hover {
@@ -169,6 +169,10 @@ p {
   filter: saturate(0);
   opacity: 0.5;
   pointer-events: none;
+}
+
+form {
+  display: contents;
 }
 
 .gray {

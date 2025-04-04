@@ -13,14 +13,12 @@
         :style="{ '--dist': dists[word.text] }"
       >
         <Star v-if="word.type === 'special'" class="special filled" />
-        <div
+        <AppChar
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
           :class="[
-            'char',
-            'flip',
-            getLink(char, 'a', wordIndex, charIndex) && 'link',
-            won && 'wiggle-always',
+            won ? 'wiggle-always' : 'flip',
+            getDiff(char, 'a', wordIndex, charIndex) && 'highlight',
           ]"
           :style="{
             '--col': charIndex,
@@ -28,7 +26,7 @@
           }"
         >
           {{ char }}
-        </div>
+        </AppChar>
         <button
           v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
           class="square right"
@@ -97,14 +95,12 @@
         :style="{ '--dist': dists[word.text] }"
       >
         <Star v-if="word.type === 'special'" class="special filled" />
-        <div
+        <AppChar
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
           :class="[
-            'char',
-            'flip',
-            getLink(char, 'b', wordIndex, charIndex) && 'link',
-            won && 'wiggle-always',
+            won ? 'wiggle-always' : 'flip',
+            getDiff(char, 'b', wordIndex, charIndex) && 'highlight',
           ]"
           :style="{
             '--col': charIndex,
@@ -115,7 +111,7 @@
           }"
         >
           {{ char }}
-        </div>
+        </AppChar>
         <button
           v-if="!won && wordIndex === 0 && bPath.length > 1"
           class="square right"
@@ -144,6 +140,7 @@ import {
   X,
 } from "lucide-vue-next";
 import { data } from "@/App.vue";
+import AppChar from "@/components/AppChar.vue";
 import AppPar from "@/components/AppPar.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { lerp } from "@/util/math";
@@ -259,7 +256,7 @@ const add = async () => {
 };
 
 /** whether this char should be linked to char above in path */
-const getLink = (
+const getDiff = (
   char: string,
   which: "a" | "b",
   wordIndex: number,
@@ -332,27 +329,6 @@ const share = async () => {
   grid-template-columns: subgrid;
   grid-column: 1 / -1;
   place-items: center;
-}
-
-.char {
-  display: grid;
-  grid-column: calc(var(--col) + 2);
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  background: color-mix(
-    in lch,
-    var(--primary),
-    var(--secondary) calc(100% * var(--dist))
-  );
-  color: var(--white);
-  font-weight: var(--extra-bold);
-  font-size: 1.2rem;
-  text-transform: uppercase;
-}
-
-.link {
-  box-shadow: inset 0 0 0 2px var(--black);
 }
 
 .spacer {

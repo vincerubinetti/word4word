@@ -4,7 +4,7 @@
 
     <p>
       Get from one 4-letter word to another, changing only
-      <b>one letter at a time</b> and only using valid English words. Take this
+      <b>one letter at a time</b> and using only valid English words. Take this
       <b>par {{ example?.par.length }}</b> example between
       {{ example?.a.text.toUpperCase() }} and
       {{ example?.b.text.toUpperCase() }}:
@@ -12,23 +12,28 @@
 
     <div class="grid">
       <template v-for="(word, wordIndex) in example?.par" :key="wordIndex">
-        <component
+        <AppChar
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
-          :is="
-            example?.par[wordIndex - 1]?.text[charIndex] !== char ||
-            wordIndex === (example?.par.length ?? 0) - 1
-              ? 'b'
-              : 'span'
-          "
-          >{{ char.toUpperCase() }}</component
+          :class="[
+            'flip',
+            wordIndex > 0 &&
+              example?.par[wordIndex - 1]?.text[charIndex] !== char &&
+              'highlight',
+          ]"
+          :style="{
+            '--dist': wordIndex / ((example?.par.length ?? 1) - 1),
+            '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',
+          }"
         >
+          {{ char }}
+        </AppChar>
       </template>
     </div>
 
     <p>
       That's it! Try to connect the words in as few steps as you can. The
-      <b>par</b> is the smallest amount of steps possible using only
+      <b>par</b> is the smallest # of steps possible using only
       <i>regular</i> words, so you have to be very <i>special</i> to beat it.
     </p>
   </section>
@@ -36,34 +41,39 @@
   <section>
     <h2>Dictionary</h2>
 
+    <p>
+      This game has a total of
+      <b>{{ total.toLocaleString() }}</b> 4-letter words:
+    </p>
+
+    <p style="padding-left: 40px">
+      <b>{{ regular.toLocaleString() }}</b> <i>regular</i> words, very commonly
+      known and used<br />
+      <b>{{ special.toLocaleString() }}</b> <i>special</i> words, known but not
+      used every day or misc.<br />
+      <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words, rarely known
+      or used
+    </p>
+
+    <p>
+      <i>Regular</i> words are used to find the par. <i>Special</i> words can
+      still be played. <i>Obscure</i> words are not allowed at all.
+    </p>
+
     <input v-model.trim="search" maxlength="4" placeholder="Search" />
 
     <div class="table">
       <table>
         <thead>
           <tr>
-            <th>
-              <button @click="sort('text')">
-                WORD
-                <template v-if="sortKey === 'text'">
-                  <MoveDown v-if="sortDir === 'desc'" />
-                  <MoveUp v-else />
-                </template>
-              </button>
-            </th>
-            <th>
-              <button @click="sort('type')">
-                TYPE
-                <template v-if="sortKey === 'type'">
-                  <MoveDown v-if="sortDir === 'desc'" />
-                  <MoveUp v-else />
-                </template>
-              </button>
-            </th>
-            <th>
-              <button @click="sort('links.length')">
-                LINKS
-                <template v-if="sortKey === 'links.length'">
+            <th colspan="2"></th>
+            <th colspan="3">Links</th>
+          </tr>
+          <tr>
+            <th v-for="(col, index) in cols" :key="index">
+              <button @click="sort(col.key)">
+                {{ col.name }}
+                <template v-if="sortKey === col.key">
                   <MoveDown v-if="sortDir === 'desc'" />
                   <MoveUp v-else />
                 </template>
@@ -76,14 +86,22 @@
             v-for="(word, index) in filteredDictionary"
             :key="index"
             :class="selected?.text === word.text && 'selected'"
+            tabindex="0"
+            title="See info about word"
+            @click="select(word)"
+            @keydown.enter="select(word)"
           >
-            <td>
-              <button @click="select(word)">
-                {{ word.text }}
+            <td v-for="(col, index) in cols" :key="index">
+              {{ word[col.key] }}
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="5">
+              <button @click="showAll = !showAll">
+                Show {{ showAll ? "Less" : "All" }}
               </button>
             </td>
-            <td>{{ word.type }}</td>
-            <td>{{ word.links.length.toLocaleString() }}</td>
           </tr>
         </tbody>
       </table>
@@ -163,29 +181,12 @@
   </section>
 
   <section>
-    <h2>Fun Facts</h2>
+    <h2>Pars</h2>
 
     <p>
-      This game has a total of
-      <b>{{ total.toLocaleString() }}</b> 4-letter words:
-    </p>
-
-    <p style="padding-left: 40px">
-      <b>{{ regular.toLocaleString() }}</b> <i>regular</i> words, very commonly
-      known and used<br />
-      <b>{{ special.toLocaleString() }}</b> <i>special</i> words, known but not
-      used every day or misc.<br />
-      <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words, rarely known
-      or used
-    </p>
-
-    <p>
-      <i>Regular</i> words are used to find the par. <i>Special</i> words can
-      still be played. <i>Obscure</i> words are not allowed at all.
-    </p>
-
-    <p>
-      Certain <i>pars</i> are more common than others. Here's the distribution:
+      Certain <i>pars</i> are more common than others. Here's the distribution
+      of pars between all unique pairs of <i>regular</i> words. Par ∞ means no
+      possible path.
     </p>
 
     <svg
@@ -220,7 +221,7 @@
         class="y-axis"
         :transform="`translate(0, ${-chartHeight / 2}) rotate(-90)`"
       >
-        # of Pairs
+        # of Word Pairs
       </text>
 
       <text
@@ -243,19 +244,15 @@
         {{ text }}
       </text>
     </svg>
-
-    <p>
-      Par ∞ signifies a pair of words that has no possible path between them
-      (using <i>regular words</i>) .
-    </p>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watchEffect } from "vue";
-import { clamp, max, orderBy, range } from "lodash";
+import { clamp, filter, max, orderBy, range } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
 import { data } from "@/App.vue";
+import AppChar from "@/components/AppChar.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
 import { getWordInfo } from "@/data/info";
 import { findPath, type Word } from "@/data/word";
@@ -267,19 +264,27 @@ const infoElement = useTemplateRef("infoElement");
 /** dictionary search */
 const search = ref("");
 
-/** dictionary */
-const dictionary = computed(() => data.value?.dictionary ?? []);
+/** dictionary, with extra derived props */
+const dictionary = computed(
+  () =>
+    data.value?.dictionary?.map((word) => ({
+      ...word,
+      regularLinks: filter(word.links, { type: "regular" }).length,
+      specialLinks: filter(word.links, { type: "special" }).length,
+      obscureLinks: filter(word.links, { type: "obscure" }).length,
+    })) ?? [],
+);
 
 /** word counts */
 const total = computed(() => dictionary.value.length);
 const regular = computed(
-  () => dictionary.value.filter(({ type }) => type === "regular").length,
+  () => filter(dictionary.value, { type: "regular" }).length,
 );
 const special = computed(
-  () => dictionary.value.filter(({ type }) => type === "special").length,
+  () => filter(dictionary.value, { type: "special" }).length,
 );
 const obscure = computed(
-  () => dictionary.value.filter(({ type }) => type === "obscure").length,
+  () => filter(dictionary.value, { type: "obscure" }).length,
 );
 
 /** example game */
@@ -289,7 +294,7 @@ const example = computed(() => {
   const { lookupWord } = data.value;
 
   const a = lookupWord("pool")!;
-  const b = lookupWord("bush")!;
+  const b = lookupWord("time")!;
   const par = findPath(a, b);
 
   return { a, b, par };
@@ -303,19 +308,31 @@ const sortDir = ref<"asc" | "desc">("asc");
 const sort = (key: string) => {
   if (sortKey.value === key) {
     sortKey.value = key;
-    sortDir.value = sortDir.value === "asc" ? "desc" : "asc";
+    sortDir.value = sortDir.value === "desc" ? "asc" : "desc";
   } else {
     sortKey.value = key;
-    sortDir.value = "asc";
+    sortDir.value = "desc";
   }
 };
+
+/** table cols */
+const cols: { key: keyof (typeof dictionary.value)[number]; name: string }[] = [
+  { key: "text", name: "word" },
+  { key: "type", name: "type" },
+  { key: "regularLinks", name: "reg." },
+  { key: "specialLinks", name: "spec." },
+  { key: "obscureLinks", name: "obsc." },
+];
+
+/** show all table entries */
+const showAll = ref(false);
 
 /** sorted and searched dictionary */
 const filteredDictionary = computed(() => {
   const _search = search.value.toLowerCase();
   return orderBy(dictionary.value, sortKey.value, sortDir.value)
     .filter((word) => word.text.includes(_search))
-    .slice(0, 9999);
+    .slice(0, showAll.value ? 9999 : 100);
 });
 
 /** selected word */
@@ -351,7 +368,7 @@ const chartData = computed(() => {
   if (!data.value) return {};
   const { pars } = data.value;
 
-  /** get max value */
+  /** get max y value */
   const maxPairs = max(pars.map((par) => par?.length ?? 0)) ?? 0;
 
   /** non linear */
@@ -408,8 +425,9 @@ const chartData = computed(() => {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1em);
+  grid-template-columns: repeat(4, auto);
   place-items: center;
+  gap: 5px;
 }
 
 input {
@@ -421,23 +439,22 @@ input {
   max-height: calc(10 * (1lh + 10px));
   overflow-x: auto;
   overflow-y: auto;
-  background: var(--off-white);
-  text-align: center;
 }
 
 table {
   border-collapse: collapse;
+  background: var(--off-white);
+  text-align: center;
+  text-transform: uppercase;
 }
 
 table button {
   min-height: 0;
-  padding: 5px 10px;
+  padding: 5px 15px;
   gap: 0;
   border-radius: 0;
   background: none;
-}
-
-table button svg {
+  text-transform: uppercase;
 }
 
 thead tr {
@@ -446,24 +463,29 @@ thead tr {
   background: var(--light-gray);
 }
 
-th {
-  width: 100px;
+th button {
+  position: relative;
+}
+
+th button svg {
+  position: absolute;
+  right: -5px;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover {
+  background: var(--light-gray);
 }
 
 td {
   padding: 5px 10px;
 }
 
-td:first-child {
-  padding: 0;
-}
-
-td:first-child button {
-  text-transform: uppercase;
-}
-
 .selected {
-  background: var(--light-gray);
+  font-weight: var(--bold);
 }
 
 .info {

@@ -69,17 +69,17 @@ nav {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 10px 15px;
 }
 
 a {
-  padding: 5px 10px;
-  border-radius: 999px;
+  padding: 5px;
+  border-bottom: solid 2px transparent;
   text-decoration: none;
 }
 
 .active {
-  border: solid 2px var(--light-gray);
+  border-color: var(--gray);
 }
 
 @media (max-width: 500px) {

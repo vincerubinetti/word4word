@@ -1,20 +1,23 @@
 <template>
   <section>
-    <input v-model.trim="a" placeholder="from word..." maxlength="4" />
-    <input v-model.trim="b" placeholder="...to word" maxlength="4" />
+    <form>
+      <input v-model.trim="a" placeholder="from word..." maxlength="4" />
+      <input v-model.trim="b" placeholder="...to word" maxlength="4" />
 
-    <div v-if="a.length < 4 || b.length < 4">Enter two 4-letter words</div>
-    <div v-else-if="!aWord || !bWord">Enter valid words</div>
-    <div v-else-if="par.length">Par: <AppPar :par="par.length" /></div>
-    <div v-else class="error">No path between these words!</div>
+      <div v-if="a.length < 4 || b.length < 4">Enter two 4-letter words</div>
+      <div v-else-if="!aWord || !bWord">Enter valid words</div>
+      <div v-else-if="par.length">Par: <AppPar :par="par.length" /></div>
+      <div v-else class="error">No path between these words!</div>
 
-    <button
-      class="primary"
-      :disabled="!playable"
-      @click="$router.push(`/${a}/${b}`)"
-    >
-      Play
-    </button>
+      <button
+        type="submit"
+        class="primary"
+        :disabled="!playable"
+        @click="$router.push(`/${a}/${b}`)"
+      >
+        Play
+      </button>
+    </form>
   </section>
 </template>
 
