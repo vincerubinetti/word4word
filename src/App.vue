@@ -20,7 +20,7 @@ import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import { loadData } from "@/data/word";
 import { useQuery } from "@/util/composables";
-import AppHeader from "./components/AppHeader.vue";
+import AppHeader from "@/components/AppHeader.vue";
 
 /** load game data on mount */
 const query = useQuery(loadData);

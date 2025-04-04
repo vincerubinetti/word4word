@@ -28,6 +28,6 @@ const difficulty = computed(() => {
 
 <style scoped>
 .difficulty {
-  font-weight: 600;
+  font-weight: var(--bold);
 }
 </style>

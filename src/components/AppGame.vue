@@ -139,10 +139,10 @@ import {
   X,
 } from "lucide-vue-next";
 import { data } from "@/App.vue";
+import AppPar from "@/components/AppPar.vue";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { lerp } from "@/util/math";
 import { sleep } from "@/util/misc";
-import AppPar from "./AppPar.vue";
 
 const { VITE_TITLE } = import.meta.env;
 
@@ -341,7 +341,7 @@ const share = async () => {
     var(--secondary) calc(100% * var(--dist))
   );
   color: var(--white);
-  font-weight: 900;
+  font-weight: var(--extra-bold);
   font-size: 1.2rem;
   text-transform: uppercase;
 }
@@ -368,7 +368,7 @@ const share = async () => {
 .input {
   grid-column: 2 / 6;
   width: 100%;
-  font-weight: 600;
+  font-weight: var(--bold);
   letter-spacing: 0.5em;
   text-indent: 0.5em;
   text-transform: uppercase;

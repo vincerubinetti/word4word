@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { data } from "@/App.vue";
 import AppPar from "@/components/AppPar.vue";
 import { findPath } from "@/data/word";
@@ -41,6 +41,12 @@ const bWord = computed(() => data.value?.lookupWord(b.value));
 const par = computed(() =>
   aWord.value && bWord.value ? findPath(aWord.value, bWord.value) : [],
 );
+
+watchEffect(() => {
+  console.groupCollapsed("cheater");
+  for (const { text } of par.value) console.debug(text);
+  console.groupEnd();
+});
 
 /** should user be allowed to play game */
 const playable = computed(
