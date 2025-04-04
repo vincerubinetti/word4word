@@ -7,7 +7,10 @@
         @click="showPar = true"
       >
         <LandPlot />
-        <b v-if="won">{{ par.length }}</b>
+        <template v-if="won">
+          <span>Par</span>
+          <b>{{ par.length }}</b>
+        </template>
         <AppPar v-else :par="par.length" />
       </button>
 
@@ -147,7 +150,9 @@
       </div>
     </div>
 
-    <button v-if="won" class="primary" @click="share"><Share />Share</button>
+    <button :class="won ? 'primary' : 'secondary'" @click="share">
+      <Share />Share
+    </button>
   </section>
 </template>
 
@@ -382,7 +387,7 @@ const { pause, resume } = useIntervalFn(
     if (document.querySelectorAll(".particle").length > maxParticles) return;
     const particle = document.createElement("div");
     particle.className = "particle";
-    const size = random(5, 10);
+    const size = random(3, 12);
     const halfW = window.innerWidth / 2;
     const halfH = window.innerHeight / 2;
     let x = halfW;
@@ -412,8 +417,10 @@ const share = async () => {
         VITE_TITLE,
         `${a.text} ↔ ${b.text}`,
         `Par: ${par.value.length}`,
-        `Mine: ${steps.value}`,
-      ].join("\n"),
+        won.value ? `Mine: ${steps.value}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n"),
     });
   } catch (error) {
     console.error(error);

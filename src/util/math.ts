@@ -36,8 +36,8 @@ export const star = (
       y: y + cos(angle) * (radius * (index % 2 ? 1 : ratio)),
     }));
 
-// console.debug(
-//   star(5, 0.5, 50, 50, 50)
-//     .map(({ x, y }) => `${x.toFixed(0)}% ${y.toFixed(0)}%`)
-//     .join(", "),
-// );
+console.debug(
+  star(5, 0.6, 50, 50, 50)
+    .map(({ x, y }) => `${x.toFixed(0)}% ${y.toFixed(0)}%`)
+    .join(", "),
+);
