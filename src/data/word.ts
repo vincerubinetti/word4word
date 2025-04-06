@@ -62,7 +62,9 @@ export const loadData = async () => {
   const lookupWord = (text: string) => {
     if (!text.trim()) return;
     text = text.toLowerCase();
-    return dictionary.find((word) => word.text === text);
+    return dictionary.find(
+      (word) => word.text === text && word.type !== "obscure",
+    );
   };
 
   return { dictionary, pars, lookupWord };
