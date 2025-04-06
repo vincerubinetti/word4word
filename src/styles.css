@@ -2,7 +2,6 @@
   --primary: hsl(195, 100%, 35%);
   --secondary: hsl(10, 80%, 65%);
 
-  --special: hsl(30, 90%, 65%);
   --error: hsl(340, 90%, 65%);
 
   --easy: hsl(160, 50%, 45%);
@@ -144,6 +143,7 @@ button.secondary {
   min-width: 100px;
   min-height: 40px;
   border-radius: 999px;
+  background: var(--off-white);
   color: var(--primary);
 }
 
@@ -292,7 +292,7 @@ form {
   width: var(--size);
   height: var(--size);
   rotate: var(--angle);
-  background: var(--special);
+  background: var(--secondary);
   animation: particle 1s linear;
   mix-blend-mode: difference;
   clip-path: polygon(

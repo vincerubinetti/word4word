@@ -2,7 +2,7 @@
   <section>
     <div class="info">
       <button
-        :class="won && showPar && 'secondary'"
+        :class="won ? (showPar ? 'primary' : 'secondary') : ''"
         :disabled="!won"
         @click="showPar = true"
       >
@@ -15,7 +15,7 @@
       </button>
 
       <button
-        :class="won && !showPar && 'secondary'"
+        :class="won ? (!showPar ? 'primary' : 'secondary') : ''"
         :disabled="!won"
         @click="showPar = false"
       >
@@ -513,6 +513,6 @@ const share = async () => {
 
 .special {
   grid-column: 1;
-  color: var(--special);
+  color: var(--secondary);
 }
 </style>

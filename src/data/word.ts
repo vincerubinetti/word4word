@@ -1,4 +1,4 @@
-import { differenceInCalendarWeeks, getDate, getDay } from "date-fns";
+import { differenceInCalendarDays, getDate, getDay } from "date-fns";
 import { clamp, filter, range } from "lodash";
 import { shuffle } from "@/util/math";
 import rawDictionary from "./dictionary.yaml?raw";
@@ -116,41 +116,36 @@ export const findPath = (a: Word, b: Word, anyType = false) => {
 export const getDaily = (pars: Pars, today = new Date()) => {
   /** get date info */
   const epoch = new Date(2000, 0, 0, 0, 0);
-  const day = getDay(today);
-  const date = getDate(today);
-  const weeks = differenceInCalendarWeeks(today, epoch);
+  let day = getDay(today);
+  const week = Math.floor(getDate(today) / 7);
+  const days = differenceInCalendarDays(today, epoch);
 
-  /** increase difficulty over week, like NYT games */
-  let dayPar = 3;
-  if (day === 1) dayPar = 4;
-  if (day === 2) dayPar = 6;
-  if (day === 3) dayPar = 8;
-  if (day === 4) dayPar = 10;
-  if (day === 5) dayPar = 12;
-  if (day === 6) dayPar = 14;
-  if (day === 0) dayPar = 16;
+  /** start week on monday */
+  day--;
+  if (day < 0) day += 7;
 
-  /** increase difficulty over month */
-  let datePar = 0;
-  if (date <= 7) datePar = 1;
-  else if (date <= 14) datePar = 2;
-  else if (date <= 21) datePar = 3;
-  else if (date <= 28) datePar = 4;
-  else datePar = 5;
+  /** increase difficulty over day of week (1-7) and week of month (1-5) */
+  const difficulties = [
+    [4, 5, 6, 7, 8, 9, 10],
+    [6, 7, 8, 9, 10, 11, 12],
+    [8, 9, 10, 11, 12, 13, 14],
+    [10, 11, 12, 13, 14, 15, 16],
+    [12, 13, 14, 15, 16, 17, 18],
+  ];
 
-  /** final par */
-  const par = clamp(dayPar + datePar, 3, pars.length);
+  /** get par */
+  const par = clamp(difficulties[week]?.[day] ?? 0, 5, 20);
 
   /** number of word pairs in chosen par */
   const pairs = pars[par]?.length ?? 0;
 
   /** select random but deterministic pair from par */
-  const pair = shuffle(range(0, pairs))[weeks % pairs] ?? 0;
+  const pair = shuffle(range(0, pairs))[days % pairs] ?? 0;
 
   /** get word pair */
   const daily = pars[par]?.[pair];
 
-  console.debug({ day, date, dayPar, datePar, par, pairs, pair });
+  console.debug({ day, week, days, par, pairs, pair });
 
   if (!daily) throw Error("Couldn't get daily");
 
