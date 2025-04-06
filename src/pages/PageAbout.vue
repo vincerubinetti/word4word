@@ -446,7 +446,6 @@ thead tr {
 
 th button {
   position: relative;
-  min-width: unset;
 }
 
 th button svg {

@@ -1,7 +1,8 @@
 <template>
   <input
     ref="element"
-    maxlength="4"
+    pattern="[A-Za-z]*"
+    :maxlength="maxLength"
     autocapitalize="off"
     autocorrect="off"
     spellcheck="false"
@@ -27,9 +28,14 @@ const emit = defineEmits<Emits>();
 
 const element = useTemplateRef("element");
 
+const maxLength = 4;
+
 const onInput = (event: Event) => {
   const element = event.target as HTMLInputElement;
-  const value = element.value.toLowerCase().replaceAll(/[^a-z]*/g, "");
+  const value = element.value
+    .toLowerCase()
+    .replaceAll(/[^a-z]*/g, "")
+    .slice(0, maxLength);
   element.value = value;
   emit("update:modelValue", value);
 };

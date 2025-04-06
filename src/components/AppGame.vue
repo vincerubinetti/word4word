@@ -51,7 +51,7 @@
         </AppChar>
         <button
           v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
-          class="square"
+          class="secondary square"
           v-tooltip="'Delete word'"
           @click="aPath = aPath.slice(0, -1)"
         >
@@ -68,7 +68,7 @@
             v-model="input"
             class="input"
             placeholder="Word"
-            @keydown.enter="add"
+            @keydown.enter.prevent="add"
           />
 
           <Transition name="slide" mode="out-in">
@@ -77,13 +77,17 @@
             </aside>
           </Transition>
 
-          <button class="hint square" v-tooltip="'Get hint'" @click="hint">
+          <button
+            class="hint secondary square"
+            v-tooltip="'Get hint'"
+            @click="hint"
+          >
             <Lightbulb />
           </button>
 
           <button
             v-if="input.length > 0"
-            class="clear square"
+            class="clear secondary square"
             v-tooltip="'Clear input'"
             @click="input = ''"
           >
@@ -92,7 +96,7 @@
 
           <button
             v-if="inputWord && (aDiff || bDiff)"
-            class="add square pulse"
+            class="add secondary square pulse"
             v-tooltip="'Add word'"
             @click="add"
           >
@@ -102,7 +106,7 @@
           </button>
 
           <button
-            class="reverse square"
+            class="reverse secondary square"
             v-tooltip="'Reverse path'"
             @click="reverse"
           >
@@ -139,7 +143,7 @@
         </AppChar>
         <button
           v-if="!won && wordIndex === 0 && bPath.length > 1"
-          class="square"
+          class="secondary square"
           v-tooltip="'Delete word'"
           @click="bPath = bPath.slice(1)"
         >
@@ -440,18 +444,16 @@ const share = async () => {
 }
 
 [disabled] {
-  background: none;
   color: unset;
   filter: none;
   opacity: 1;
 }
 
 .grid {
-  --gap: 5px;
   display: grid;
   grid-template-columns: repeat(6, 40px);
   place-items: center;
-  gap: var(--gap);
+  gap: 5px;
 }
 
 .row {
@@ -477,7 +479,7 @@ const share = async () => {
   color: var(--white);
 }
 
-.input {
+:deep(.input) {
   grid-column: 2 / 6;
   width: 100%;
 }
@@ -485,7 +487,7 @@ const share = async () => {
 .message,
 .hint,
 .clear,
-.input,
+:deep(.input),
 .add,
 .reverse {
   grid-row: 1;
@@ -497,10 +499,12 @@ const share = async () => {
 
 .clear {
   grid-column: 2;
+  background: none !important;
 }
 
 .add {
   grid-column: 5;
+  background: none !important;
 }
 
 .reverse {

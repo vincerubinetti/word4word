@@ -83,7 +83,7 @@ a {
 }
 
 .active {
-  border-color: var(--gray);
+  border-color: var(--primary);
 }
 
 @media (max-width: 500px) {

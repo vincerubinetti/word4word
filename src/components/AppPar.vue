@@ -1,7 +1,7 @@
 <template>
-  <div v-tooltip="`Difficulty: ${difficulty.tooltip}`">
+  <div v-tooltip="`Difficulty: ${difficulty.tooltip}`" tabindex="0">
     <span>Par</span>
-    <span class="difficulty" :style="{ color: difficulty.color }" tabindex="0">
+    <span class="difficulty" :style="{ color: difficulty.color }">
       {{ par || "???" }}
     </span>
   </div>
