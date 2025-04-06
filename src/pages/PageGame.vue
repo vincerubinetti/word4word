@@ -6,8 +6,9 @@
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
-import { data, title } from "@/App.vue";
+import { title } from "@/App.vue";
 import AppGame from "@/components/AppGame.vue";
+import { data } from "@/data";
 import { getDaily, type Word } from "@/data/word";
 
 const route = useRoute();

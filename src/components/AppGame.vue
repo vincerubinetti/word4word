@@ -63,13 +63,11 @@
         <div class="spacer" />
 
         <div class="row">
-          <input
+          <AppInput
             ref="inputElement"
-            v-model.trim="input"
+            v-model="input"
             class="input"
-            maxlength="4"
-            pattern="[A-Za-z]"
-            placeholder="WORD"
+            placeholder="Word"
             @keydown.enter="add"
           />
 
@@ -172,13 +170,14 @@ import {
   X,
 } from "lucide-vue-next";
 import { useIntervalFn } from "@vueuse/core";
-import { data } from "@/App.vue";
 import AppChar from "@/components/AppChar.vue";
+import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
+import AppPath from "@/components/AppPath.vue";
+import { data } from "@/data";
 import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { lerp } from "@/util/math";
 import { sleep, storage } from "@/util/misc";
-import AppPath from "./AppPath.vue";
 
 const { VITE_TITLE } = import.meta.env;
 
@@ -330,7 +329,10 @@ const add = async () => {
 
   input.value = "";
   await sleep(100);
-  inputElement.value?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  inputElement.value?.element?.scrollIntoView({
+    block: "nearest",
+    behavior: "smooth",
+  });
 };
 
 /** whether this char should be linked to char above in path */
@@ -478,10 +480,6 @@ const share = async () => {
 .input {
   grid-column: 2 / 6;
   width: 100%;
-  font-weight: var(--bold);
-  letter-spacing: 0.5em;
-  text-indent: 0.5em;
-  text-transform: uppercase;
 }
 
 .message,

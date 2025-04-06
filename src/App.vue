@@ -12,36 +12,25 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-import AppHeader from "@/components/AppHeader.vue";
-import { loadData } from "@/data/word";
-import { useQuery } from "@/util/composables";
-
-/** load game data on mount */
-const query = useQuery(loadData);
-
-/** game data */
-export const data = query.data;
-export const status = query.status;
-
 /** page title */
 export const title = ref("");
 
 const { VITE_TITLE } = import.meta.env;
 
-/** update tab title */
+/** update tab title from page title */
 watchEffect(() => {
   document.title = [title.value, VITE_TITLE].filter(Boolean).join(" | ");
 });
 </script>
 
 <script setup lang="ts">
-/** load game data on mount */
-onMounted(query.run);
+import { ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
+import AppHeader from "@/components/AppHeader.vue";
+import { status } from "@/data";
 
 const route = useRoute();
 
-/** update tab title */
-watchEffect(() => (title.value = String(route.name ?? "")));
+/** update page title */
+watchEffect(() => (title.value = String(route?.name ?? "")));
 </script>

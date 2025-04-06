@@ -1,18 +1,8 @@
 <template>
   <section>
     <form>
-      <input
-        v-model.trim="a"
-        maxlength="4"
-        pattern="[A-Za-z]"
-        placeholder="from word..."
-      />
-      <input
-        v-model.trim="b"
-        maxlength="4"
-        pattern="[A-Za-z]"
-        placeholder="...to word"
-      />
+      <AppInput v-model.trim="a" placeholder="From" />
+      <AppInput v-model.trim="b" placeholder="To" />
 
       <div v-if="a.length < 4 || b.length < 4">Enter two 4-letter words</div>
       <div v-else-if="!aWord || !bWord">Enter valid words</div>
@@ -33,8 +23,9 @@
 
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
-import { data } from "@/App.vue";
+import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
+import { data } from "@/data";
 import { findPath } from "@/data/word";
 
 /** start word text */
@@ -74,6 +65,5 @@ input,
 button {
   width: 200px;
   max-width: 100%;
-  text-transform: uppercase;
 }
 </style>

@@ -41,19 +41,14 @@
       still be played. <i>Obscure</i> words are not allowed at all.
     </p>
 
-    <input
-      v-model.trim="search"
-      maxlength="4"
-      pattern="[A-Za-z]"
-      placeholder="Search"
-    />
+    <AppInput v-model="search" placeholder="Search" />
 
     <div class="table">
       <table>
         <thead>
           <tr>
             <th></th>
-            <th style="min-width: 100px"></th>
+            <th style="min-width: 90px"></th>
             <th colspan="3">Links</th>
           </tr>
           <tr>
@@ -239,9 +234,10 @@
 import { computed, ref, useTemplateRef, watchEffect } from "vue";
 import { clamp, filter, map, max, orderBy, range } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
-import { data } from "@/App.vue";
+import AppInput from "@/components/AppInput.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
+import { data } from "@/data";
 import { getWordInfo } from "@/data/info";
 import { findPath, type Word } from "@/data/word";
 import { useQuery } from "@/util/composables";
@@ -305,11 +301,11 @@ const sort = (key: string) => {
 
 /** table cols */
 const cols: { key: keyof (typeof dictionary.value)[number]; name: string }[] = [
-  { key: "text", name: "word" },
-  { key: "type", name: "type" },
-  { key: "regularLinks", name: "reg." },
-  { key: "specialLinks", name: "spec." },
-  { key: "obscureLinks", name: "obsc." },
+  { key: "text", name: "Word" },
+  { key: "type", name: "Type" },
+  { key: "regularLinks", name: "Reg." },
+  { key: "specialLinks", name: "Spec." },
+  { key: "obscureLinks", name: "Obsc." },
 ];
 
 /** table row limit */
@@ -421,10 +417,6 @@ const chartData = computed(() => {
   gap: 5px;
 }
 
-input {
-  text-transform: uppercase;
-}
-
 .table {
   max-width: 100%;
   max-height: calc(10 * (1lh + 10px));
@@ -436,7 +428,6 @@ table {
   border-collapse: collapse;
   background: var(--off-white);
   text-align: center;
-  text-transform: uppercase;
 }
 
 table button {
@@ -445,7 +436,6 @@ table button {
   gap: 0;
   border-radius: 0;
   background: none;
-  text-transform: uppercase;
 }
 
 thead tr {
@@ -470,6 +460,10 @@ tbody tr {
 
 tbody tr:hover {
   background: var(--light-gray);
+}
+
+td:first-child {
+  text-transform: uppercase;
 }
 
 td {

@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+/** map par to subjective difficulty */
 export const getDifficulty = (par: number) => {
   if (par === 0) return { tooltip: "", color: "" };
   if (par <= 5) return { tooltip: "Easy", color: "var(--easy)" };
@@ -27,7 +28,6 @@ type Props = {
 
 const { par } = defineProps<Props>();
 
-/** map par to subjective difficulty */
 const difficulty = computed(() => getDifficulty(par));
 </script>
 

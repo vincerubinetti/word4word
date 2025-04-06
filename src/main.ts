@@ -1,9 +1,12 @@
 import { createApp } from "vue";
 import VueTippy from "vue-tippy";
 import App from "@/App.vue";
+import { run } from "@/data";
 import { router } from "@/router";
 import "@/styles.css";
 import "tippy.js/dist/tippy.css";
+
+run();
 
 const app = createApp(App);
 app.use(router);
