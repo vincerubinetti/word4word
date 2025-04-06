@@ -25,7 +25,14 @@
       </button>
     </div>
 
-    <AppPath v-if="won && showPar" :path="par" />
+    <AppPath
+      v-if="won && showPar"
+      :path="
+        aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
+          ? par.toReversed()
+          : par
+      "
+    />
 
     <div v-else class="grid">
       <div
@@ -34,7 +41,12 @@
         class="row"
         :style="{ '--dist': dists[word.text] }"
       >
-        <Star v-if="word.type === 'special'" class="special filled" />
+        <Star
+          v-if="word.type === 'special'"
+          class="special"
+          tabindex="0"
+          v-tooltip="'Special word'"
+        />
         <AppChar
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
@@ -80,7 +92,7 @@
           <button
             class="hint secondary square"
             v-tooltip="'Get hint'"
-            @click="hint"
+            @click.prevent="hint"
           >
             <Lightbulb />
           </button>
@@ -108,7 +120,7 @@
           <button
             class="reverse secondary square"
             v-tooltip="'Reverse path'"
-            @click="reverse"
+            @click.prevent="reverse"
           >
             <ArrowUpDown />
           </button>
@@ -123,7 +135,12 @@
         class="row"
         :style="{ '--dist': dists[word.text] }"
       >
-        <Star v-if="word.type === 'special'" class="special filled" />
+        <Star
+          v-if="word.type === 'special'"
+          class="special"
+          tabindex="0"
+          v-tooltip="'Special word'"
+        />
         <AppChar
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
@@ -393,7 +410,7 @@ const { pause, resume } = useIntervalFn(
     if (document.querySelectorAll(".particle").length > maxParticles) return;
     const particle = document.createElement("div");
     particle.className = "particle";
-    const size = random(3, 12);
+    const size = random(5, 15);
     const halfW = window.innerWidth / 2;
     const halfH = window.innerHeight / 2;
     let x = halfW;

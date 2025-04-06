@@ -191,11 +191,6 @@ form {
   color: var(--error);
 }
 
-.filled {
-  fill: currentColor;
-  stroke: currentColor;
-}
-
 .lucide {
   width: unset;
   height: 1em;
@@ -292,21 +287,18 @@ form {
   width: var(--size);
   height: var(--size);
   rotate: var(--angle);
-  background: var(--secondary);
+  background: var(--primary);
   animation: particle 1s linear;
-  mix-blend-mode: difference;
   clip-path: polygon(
-    50% 80%,
-    79% 90%,
-    79% 59%,
-    98% 35%,
-    68% 26%,
+    50% 100%,
+    62% 62%,
+    100% 50%,
+    62% 38%,
     50% 0%,
-    32% 26%,
-    2% 35%,
-    21% 59%,
-    21% 90%,
-    50% 80%
+    38% 38%,
+    0% 50%,
+    38% 62%,
+    50% 100%
   );
 }
 

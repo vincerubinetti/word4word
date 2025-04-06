@@ -32,12 +32,10 @@ export const star = (
   range(0, 360, 360 / (points * 2))
     .concat([360])
     .map((angle, index) => ({
-      x: x + sin(angle) * (radius * (index % 2 ? 1 : ratio)),
-      y: y + cos(angle) * (radius * (index % 2 ? 1 : ratio)),
-    }));
+      x: x + sin(angle) * (radius * (index % 2 ? ratio : 1)),
+      y: y + cos(angle) * (radius * (index % 2 ? ratio : 1)),
+    }))
+    .map(({ x, y }) => `${x.toFixed(0)}% ${y.toFixed(0)}%`)
+    .join(", ");
 
-// console.debug(
-//   star(5, 0.6, 50, 50, 50)
-//     .map(({ x, y }) => `${x.toFixed(0)}% ${y.toFixed(0)}%`)
-//     .join(", "),
-// );
+// console.debug(star(4, 0.35, 50, 50, 50));
