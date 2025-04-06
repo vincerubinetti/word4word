@@ -24,6 +24,7 @@ watchEffect(() => {
   const { pars, lookupWord } = data.value;
   const { params } = route;
 
+  // test daily picks
   // for (let i = 0; i < 100; i++) {
   //   const today = new Date(new Date().getTime() + i * 1000 * 60 * 60 * 24);
   //   console.time("getDaily");

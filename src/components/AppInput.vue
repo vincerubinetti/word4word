@@ -30,8 +30,10 @@ const element = useTemplateRef("element");
 
 const maxLength = 4;
 
+/** on type */
 const onInput = (event: Event) => {
   const element = event.target as HTMLInputElement;
+  /** sanitize */
   const value = element.value
     .toLowerCase()
     .replaceAll(/[^a-z]*/g, "")

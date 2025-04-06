@@ -80,7 +80,7 @@
             v-model="input"
             class="input"
             placeholder="Word"
-            @keydown.enter.prevent="add"
+            @keydown.enter.prevent="submit"
           />
 
           <Transition name="slide" mode="out-in">
@@ -108,9 +108,9 @@
 
           <button
             v-if="inputWord && (aDiff || bDiff)"
-            class="add secondary square pulse"
+            class="submit secondary square pulse"
             v-tooltip="'Add word'"
-            @click="add"
+            @click="submit"
           >
             <MoveVertical v-if="aDiff && bDiff" />
             <ArrowUp v-else-if="aDiff" />
@@ -209,7 +209,9 @@ import { findPath, oneLetterDifferent, type Word } from "@/word";
 const { VITE_TITLE } = import.meta.env;
 
 type Props = {
+  /** start word */
   a: Word;
+  /** end word */
   b: Word;
 };
 
@@ -227,24 +229,28 @@ const { load, save, clear } = storage<{ a: string[]; b: string[] }>();
 
 /** look up words from text, when ready */
 const lookup = computed(() => {
-  if (!data.value) return () => [];
+  if (!data.value) return () => undefined;
   const { lookupWord } = data.value;
   return (words: string[]) => {
+    /** map text words to full word objects */
     const lookups = words.map(lookupWord);
     const filtered = lookups.filter((w) => w !== undefined);
-    if (filtered.length !== lookups.length)
-      throw Error("Couldn't look up word from storage");
+    /** error if any words can't be found in dict */
+    if (filtered.length !== lookups.length) {
+      console.error("Couldn't look up word from storage");
+      return;
+    }
     return filtered;
   };
 });
 
+/** load game */
 const loadGame = () => {
   const loaded = load(key.value);
   if (loaded) {
     /** load from storage */
-    const { a, b } = loaded;
-    aPath.value = lookup.value(a);
-    bPath.value = lookup.value(b);
+    aPath.value = lookup.value(loaded.a) ?? [a];
+    bPath.value = lookup.value(loaded.b) ?? [b];
   } else {
     /** new game */
     aPath.value = [a];
@@ -253,6 +259,7 @@ const loadGame = () => {
 };
 watch([() => a, () => b, key, lookup], loadGame, { immediate: true });
 
+/** save game */
 const saveGame = () => {
   /** save to storage */
   save(key.value, {
@@ -269,6 +276,7 @@ const resetGame = () => {
   }
 };
 
+/** input dom element */
 const inputElement = useTemplateRef("inputElement");
 
 /** input text */
@@ -307,10 +315,11 @@ const check = () => {
 /** auto-check when player has typed all letters */
 watchEffect(() => input.value.length === 4 && check());
 
-/** "submit" word to be added to path */
-const add = async () => {
+/** submit word to be added to path */
+const submit = async () => {
   if (check()) {
     const word = inputWord.value!;
+    /** add word to path */
     if (aDiff.value) {
       aPath.value.push(word);
       saveGame();
@@ -319,6 +328,8 @@ const add = async () => {
       saveGame();
     }
   }
+
+  /** reset input */
   input.value = "";
   await sleep(100);
   inputElement.value?.element?.scrollIntoView({
@@ -511,7 +522,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 .hint,
 .clear,
 :deep(.input),
-.add,
+.submit,
 .reverse {
   grid-row: 1;
 }
@@ -525,7 +536,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
   background: none !important;
 }
 
-.add {
+.submit {
   grid-column: 5;
   background: none !important;
 }
