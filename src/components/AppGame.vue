@@ -169,9 +169,14 @@
       </div>
     </div>
 
-    <button :class="won ? 'primary' : 'secondary'" @click="share">
-      <Share />Share
-    </button>
+    <div class="info">
+      <button class="secondary square" @click="resetGame">
+        <RefreshCcw />
+      </button>
+      <button :class="won ? 'primary' : 'secondary'" @click="share">
+        <Share />Share
+      </button>
+    </div>
   </section>
 </template>
 
@@ -185,6 +190,7 @@ import {
   LandPlot,
   Lightbulb,
   MoveVertical,
+  RefreshCcw,
   Share,
   Star,
   User,
@@ -209,8 +215,6 @@ type Props = {
 
 const { a, b } = defineProps<Props>();
 
-const inputElement = useTemplateRef("inputElement");
-
 /** storage key */
 const key = computed(() => a.text + "-" + b.text);
 
@@ -219,7 +223,7 @@ const aPath = ref<Word[]>([]);
 const bPath = ref<Word[]>([]);
 
 /** typed storage interface */
-const { load, save } = storage<{ a: string[]; b: string[] }>();
+const { load, save, clear } = storage<{ a: string[]; b: string[] }>();
 
 /** look up words from text, when ready */
 const lookup = computed(() => {
@@ -234,76 +238,41 @@ const lookup = computed(() => {
   };
 });
 
-/** load from storage */
-watchEffect(
-  () => {
-    const loaded = load(key.value);
-    if (!loaded) return;
+const loadGame = () => {
+  const loaded = load(key.value);
+  if (loaded) {
+    /** load from storage */
     const { a, b } = loaded;
     aPath.value = lookup.value(a);
     bPath.value = lookup.value(b);
-  },
-  { flush: "post" },
-);
+  } else {
+    /** new game */
+    aPath.value = [a];
+    bPath.value = [b];
+  }
+};
+watch([() => a, () => b, key, lookup], loadGame, { immediate: true });
 
-/** save to storage */
-watchEffect(
-  () => {
-    if (!data.value) return;
-    save(key.value, {
-      a: map(aPath.value, "text"),
-      b: map(bPath.value, "text"),
-    });
-  },
-  { flush: "post" },
-);
+const saveGame = () => {
+  /** save to storage */
+  save(key.value, {
+    a: map(aPath.value, "text"),
+    b: map(bPath.value, "text"),
+  });
+};
+
+/** reset game */
+const resetGame = () => {
+  if (window.confirm("Start over?")) {
+    clear(key.value);
+    loadGame();
+  }
+};
+
+const inputElement = useTemplateRef("inputElement");
 
 /** input text */
 const input = ref("");
-
-/** message text */
-const message = ref("");
-
-/** show message */
-const setMessage = (text: string) => {
-  message.value = text;
-  hideMessage();
-};
-
-/** hide message */
-const hideMessage = debounce(() => (message.value = ""), 1500);
-
-/** update paths */
-watch(
-  [() => a, () => b],
-  () => {
-    aPath.value = [a];
-    bPath.value = [b];
-  },
-  { immediate: true },
-);
-
-/** find shortest path between a/b */
-const par = computed(() => findPath(a, b));
-
-/** length of players path */
-const steps = computed(() => aPath.value.length + bPath.value.length);
-
-/** map of word in path to distance from other end */
-const dists = computed(() => {
-  const aOpposite = aPath.value.at(0)!;
-  const bOpposite = bPath.value.at(-1)!;
-  const getDist =
-    (opposite: Word, min = 0, max = 1) =>
-    (word: Word) => {
-      let dist = findPath(word, opposite).length;
-      dist = lerp(dist, par.value.length, 1, min, max);
-      return [word.text, dist] as const;
-    };
-  const aDists = aPath.value.map(getDist(bOpposite, 0, 1));
-  const bDists = bPath.value.map(getDist(aOpposite, 1, 0));
-  return Object.fromEntries(aDists.concat(bDists));
-});
 
 /** full input word object, undef if invalid word */
 const inputWord = computed(() => {
@@ -336,24 +305,79 @@ const check = () => {
 };
 
 /** auto-check when player has typed all letters */
-watchEffect(() => {
-  if (input.value.length === 4) check();
-});
+watchEffect(() => input.value.length === 4 && check());
 
 /** "submit" word to be added to path */
 const add = async () => {
   if (check()) {
     const word = inputWord.value!;
-    if (aDiff.value) aPath.value.push(word);
-    else if (bDiff.value) bPath.value.unshift(word);
+    if (aDiff.value) {
+      aPath.value.push(word);
+      saveGame();
+    } else if (bDiff.value) {
+      bPath.value.unshift(word);
+      saveGame();
+    }
   }
-
   input.value = "";
   await sleep(100);
   inputElement.value?.element?.scrollIntoView({
     block: "nearest",
     behavior: "smooth",
   });
+};
+
+/** message text */
+const message = ref("");
+
+/** show message */
+const setMessage = (text: string) => {
+  message.value = text;
+  hideMessage();
+};
+
+/** hide message */
+const hideMessage = debounce(() => (message.value = ""), 1500);
+
+/** find shortest path between a/b */
+const par = computed(() => findPath(a, b));
+
+/** length of players path */
+const steps = computed(() => aPath.value.length + bPath.value.length);
+
+/** map of word to distance from other end */
+const dists = computed(() => {
+  const aOpposite = aPath.value.at(0)!;
+  const bOpposite = bPath.value.at(-1)!;
+  const getDist =
+    (opposite: Word, min = 0, max = 1) =>
+    (word: Word) => {
+      let dist = findPath(word, opposite).length;
+      dist = lerp(dist, par.value.length, 1, min, max);
+      return [word.text, dist] as const;
+    };
+  const aDists = aPath.value.map(getDist(bOpposite, 0, 1));
+  const bDists = bPath.value.map(getDist(aOpposite, 1, 0));
+  return Object.fromEntries(aDists.concat(bDists));
+});
+
+/** give player random word linking to middle of path tails */
+const hint = () => {
+  const links = filter(
+    aPath.value.at(-1)?.links.concat(bPath.value.at(0)?.links ?? []) ?? [],
+    { type: "regular" },
+  );
+  const newText = sample(links)?.text ?? "";
+  if (input.value === newText && links.length > 2) hint();
+  else input.value = newText;
+};
+
+/** reverse path direction */
+const reverse = () => {
+  const temp = aPath.value;
+  aPath.value = bPath.value.reverse();
+  bPath.value = temp.reverse();
+  saveGame();
 };
 
 /** whether this char should be linked to char above in path */
@@ -372,22 +396,23 @@ const getDiff = (
   return charAbove && char !== charAbove;
 };
 
-/** give player random word linking to middle of path tails */
-const hint = () => {
-  const links = filter(
-    aPath.value.at(-1)?.links.concat(bPath.value.at(0)?.links ?? []) ?? [],
-    { type: "regular" },
-  );
-  const newText = sample(links)?.text ?? "";
-  if (input.value === newText && links.length > 2) hint();
-  else input.value = newText;
-};
-
-/** reverse path direction */
-const reverse = () => {
-  const temp = aPath.value;
-  aPath.value = bPath.value.reverse();
-  bPath.value = temp.reverse();
+/** share results */
+const share = async () => {
+  try {
+    await window.navigator.share({
+      url: window.location.href,
+      text: [
+        VITE_TITLE,
+        `${a.text} ↔ ${b.text}`,
+        `Par: ${par.value.length}`,
+        won.value ? `Mine: ${steps.value}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n"),
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 /** win state */
@@ -397,6 +422,9 @@ const won = computed(() =>
     bPath.value.at(0)?.text ?? "",
   ),
 );
+
+/** should show perfect par path */
+const showPar = ref(false);
 
 /** did player get a perfect par */
 const perfect = computed(() => won.value && steps.value <= par.value.length);
@@ -427,28 +455,6 @@ const { pause, resume } = useIntervalFn(
   { immediate: false },
 );
 watchEffect(() => (won.value && perfect.value ? resume() : pause()));
-
-/** should show perfect par path */
-const showPar = ref(false);
-
-/** share results */
-const share = async () => {
-  try {
-    await window.navigator.share({
-      url: window.location.href,
-      text: [
-        VITE_TITLE,
-        `${a.text} ↔ ${b.text}`,
-        `Par: ${par.value.length}`,
-        won.value ? `Mine: ${steps.value}` : "",
-      ]
-        .filter(Boolean)
-        .join("\n"),
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
 </script>
 
 <style scoped>

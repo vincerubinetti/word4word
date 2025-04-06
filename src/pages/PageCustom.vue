@@ -1,6 +1,6 @@
 <template>
   <section>
-    <form>
+    <form @submit.prevent="$router.push(`/${a}/${b}`)">
       <AppInput v-model.trim="a" placeholder="From" />
       <AppInput v-model.trim="b" placeholder="To" />
 
@@ -9,14 +9,7 @@
       <AppPar v-else-if="par.length" :par="par.length" />
       <div v-else class="error">No path between these words!</div>
 
-      <button
-        type="submit"
-        class="primary"
-        :disabled="!playable"
-        @click="$router.push(`/${a}/${b}`)"
-      >
-        Play
-      </button>
+      <button type="submit" class="primary" :disabled="!playable">Play</button>
     </form>
   </section>
 </template>
