@@ -1,1 +1,1 @@
-[🚀 PLAY THE GAME](vincerubinetti.github.io/word4word/)
+[🚀 PLAY THE GAME](https://vincerubinetti.github.io/word4word/)
