@@ -19,7 +19,7 @@ import { computed, ref, watchEffect } from "vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
 import { data } from "@/data";
-import { findPath } from "@/data/word";
+import { findPath } from "@/word";
 
 /** start word text */
 const a = ref("");

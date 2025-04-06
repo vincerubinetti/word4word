@@ -1,0 +1,39 @@
+name: Compile
+
+on:
+  push:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install packages
+        run: bun install
+
+      - uses: dorny/paths-filter@v3
+        id: changed
+        with:
+          filters: |
+            data:
+              - 'src/data/**'
+      - name: SSH debug
+        uses: mxschmitt/action-tmate@v3
+
+      - name: Build
+        if: steps.changed.outputs.data == 'true'
+        run: bun run compile
+
+      - name: Build
+        run: bun run build
+
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          clean: true

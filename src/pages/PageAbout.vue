@@ -238,10 +238,10 @@ import AppInput from "@/components/AppInput.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data } from "@/data";
-import { getWordInfo } from "@/data/info";
-import { findPath, type Word } from "@/data/word";
 import { useQuery } from "@/util/composables";
 import { sleep } from "@/util/misc";
+import { findPath, type Word } from "@/word";
+import { getWordInfo } from "@/word/info";
 
 const infoElement = useTemplateRef("infoElement");
 

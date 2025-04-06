@@ -1,4 +1,4 @@
-import type { Response } from "@/data/dictionaryapi";
+import type { Response } from "@/word/dictionaryapi";
 
 const api = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 

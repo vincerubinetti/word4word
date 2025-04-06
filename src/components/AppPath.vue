@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import AppChar from "@/components/AppChar.vue";
-import type { Word } from "@/data/word";
+import type { Word } from "@/word";
 
 type Props = {
   path: Word[];

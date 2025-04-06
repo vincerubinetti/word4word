@@ -202,9 +202,9 @@ import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data } from "@/data";
-import { findPath, oneLetterDifferent, type Word } from "@/data/word";
 import { lerp } from "@/util/math";
 import { sleep, storage } from "@/util/misc";
+import { findPath, oneLetterDifferent, type Word } from "@/word";
 
 const { VITE_TITLE } = import.meta.env;
 

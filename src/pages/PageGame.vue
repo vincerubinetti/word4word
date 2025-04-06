@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import { title } from "@/App.vue";
 import AppGame from "@/components/AppGame.vue";
 import { data } from "@/data";
-import { getDaily, type Word } from "@/data/word";
+import { getDaily, type Word } from "@/word";
 
 const route = useRoute();
 
