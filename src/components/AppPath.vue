@@ -4,12 +4,8 @@
       <AppChar
         v-for="(char, charIndex) in word.text"
         :key="charIndex"
-        :class="[
-          'flip',
-          wordIndex > 0 &&
-            path[wordIndex - 1]?.text[charIndex] !== char &&
-            'highlight',
-        ]"
+        :link="wordIndex > 0 && path[wordIndex - 1]?.text[charIndex] !== char"
+        :class="['flip']"
         :style="{
           '--dist': wordIndex / ((path.length ?? 1) - 1),
           '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',

@@ -27,14 +27,20 @@
       <b>{{ total.toLocaleString() }}</b> 4-letter words:
     </p>
 
-    <p style="padding-left: 40px">
-      <b>{{ regular.toLocaleString() }}</b> <i>regular</i> words, very commonly
-      known and used<br />
-      <b>{{ special.toLocaleString() }}</b> <i>special</i> words, known but not
-      used every day or misc.<br />
-      <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words, rarely known
-      or used
-    </p>
+    <ul>
+      <li>
+        <b>{{ regular.toLocaleString() }}</b> <i>regular</i> words, very
+        commonly known and used
+      </li>
+      <li>
+        <b>{{ special.toLocaleString() }}</b> <i>special</i> words, known but
+        not used every day, misc.
+      </li>
+      <li>
+        <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words, rarely known
+        or used
+      </li>
+    </ul>
 
     <p>
       <i>Regular</i> words are used to find the par. <i>Special</i> words can

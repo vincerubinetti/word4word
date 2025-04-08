@@ -121,6 +121,7 @@ button {
   gap: 7px;
   border: none;
   background: none;
+  color: inherit;
   font: inherit;
   cursor: pointer;
   transition-duration: var(--fast);
@@ -164,6 +165,18 @@ p {
   margin: 0;
   line-height: 2;
   text-align: justify;
+}
+
+ul {
+  width: 100%;
+  margin: 0;
+  padding-left: 30px;
+  line-height: 2;
+  text-align: left;
+}
+
+li {
+  padding-left: 10px;
 }
 
 :focus {

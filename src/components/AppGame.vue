@@ -50,10 +50,8 @@
         <AppChar
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
-          :class="[
-            won ? 'wiggle-always' : 'flip',
-            getDiff(char, 'a', wordIndex, charIndex) && 'highlight',
-          ]"
+          :link="getDiff(char, 'a', wordIndex, charIndex)"
+          :class="[won ? 'wiggle-always' : 'flip']"
           :style="{
             '--col': charIndex,
             '--delay': (won ? wordIndex * 0.4 : 0) + charIndex * 0.1 + 's',
@@ -144,10 +142,8 @@
         <AppChar
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
-          :class="[
-            won ? 'wiggle-always' : 'flip',
-            getDiff(char, 'b', wordIndex, charIndex) && 'highlight',
-          ]"
+          :link="getDiff(char, 'b', wordIndex, charIndex)"
+          :class="[won ? 'wiggle-always' : 'flip']"
           :style="{
             '--col': charIndex,
             '--delay':
@@ -404,7 +400,7 @@ const getDiff = (
       : bPath.value[wordIndex - 1] ||
         (won.value ? aPath.value.at(-1) : undefined);
   const charAbove = wordAbove?.text?.[charIndex] ?? "";
-  return charAbove && char !== charAbove;
+  return !!charAbove && char !== charAbove;
 };
 
 /** share results */
