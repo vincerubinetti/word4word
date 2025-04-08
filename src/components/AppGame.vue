@@ -24,9 +24,15 @@
     <AppPath
       v-if="showPar"
       :path="
-        aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
-          ? par.toReversed()
-          : par
+        par.length
+          ? aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
+            ? par.toReversed()
+            : par
+          : [
+              aPath.at(0)!,
+              { text: '????', type: 'special', links: [] },
+              bPath.at(-1)!,
+            ]
       "
       :hide="!won"
     />
@@ -359,21 +365,22 @@ const steps = computed(() => aPath.value.length + bPath.value.length);
 /** map of word in path to distance from end of opposite path */
 const dists = computed(() => {
   /** get distances for one of the paths */
-  const getDist = (path: Word[], opposite: Word, invert: boolean) => {
-    /** find dist in # of steps */
-    let dists = path.map(
-      (word) => [word.text, findPath(word, opposite).length] as const,
-    );
-    /** normalize to 0-1 based on par (or max if no par) */
-    const max = par.value.length || Math.max(...map(dists, "[1]"));
-    /** normalize */
-    dists = dists.map(([text, dist]) => [text, dist && max ? dist / max : 1]);
-    console.log(dists, max);
-    /** flip */
-    if (invert) dists = dists.map(([text, dist]) => [text, 1 - dist]);
+  const getDist = (path: Word[], opposite: Word, invert: boolean) =>
     /** make into lookup */
-    return Object.fromEntries(dists);
-  };
+    Object.fromEntries(
+      path.map((word) => {
+        /** find dist in # of steps */
+        let dist = findPath(word, opposite).length || 1;
+        /** find max */
+        const max = par.value.length;
+        /** normalize to 0-1 */
+        dist = dist / max;
+        /** flip */
+        if (invert) dist = 1 - dist;
+        return [word.text, dist];
+      }),
+    );
+
   return {
     a: getDist(aPath.value, bPath.value.at(-1)!, true),
     b: getDist(bPath.value, aPath.value.at(0)!, false),
