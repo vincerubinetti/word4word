@@ -1,10 +1,15 @@
 <template>
-  <div v-tooltip="`Difficulty: ${difficulty.tooltip}`" tabindex="0">
+  <component
+    :is="component ?? 'div'"
+    v-tooltip="`Difficulty: ${difficulty.tooltip}`"
+    tabindex="0"
+  >
+    <slot />
     <span>Par</span>
     <span class="difficulty" :style="{ color: difficulty.color }">
       {{ par || "???" }}
     </span>
-  </div>
+  </component>
 </template>
 
 <script lang="ts">
@@ -24,6 +29,7 @@ import { computed } from "vue";
 
 type Props = {
   par: number;
+  component?: string;
 };
 
 const { par } = defineProps<Props>();

@@ -19,7 +19,7 @@
         <RouterLink
           v-if="route.meta.header"
           :to="route.path"
-          :class="$route.name === route.name && 'active'"
+          :class="$route.name === route.name && 'underline'"
         >
           <span
             v-for="(char, index) in route.name"
@@ -73,17 +73,13 @@ nav {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px 15px;
+  gap: 5px 10px;
 }
 
 a {
-  padding: 5px;
+  padding: 7.5px;
   border-bottom: solid 2px transparent;
   text-decoration: none;
-}
-
-.active {
-  border-color: var(--primary);
 }
 
 @media (max-width: 500px) {

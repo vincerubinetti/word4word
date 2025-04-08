@@ -1,6 +1,6 @@
 <template>
-  <div v-bind="omit($attrs, 'class')" class="char">
-    <div v-bind="pick($attrs, 'class')" class="letter">
+  <div class="char">
+    <div class="letter">
       <slot />
     </div>
     <div v-if="link" class="link"></div>
@@ -8,10 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { omit, pick } from "lodash";
-
-defineOptions({ inheritAttrs: false });
-
 type Props = {
   link?: boolean;
 };
@@ -45,20 +41,13 @@ defineProps<Props>();
 .link {
   z-index: -1;
   position: absolute;
-  bottom: calc(100% + 5px / 2);
+  top: 100%;
   left: 50%;
   width: 10px;
   height: 5px;
-  translate: -50% 50%;
-  background: var(--dark-gray);
+  translate: -50% -1px;
+  background: var(--color);
   content: "";
-  animation: appear 1s var(--delay, 0s) both;
   clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-}
-
-@keyframes appear {
-  from {
-    opacity: 0;
-  }
 }
 </style>

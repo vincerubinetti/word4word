@@ -47,7 +47,9 @@
       still be played. <i>Obscure</i> words are not allowed at all.
     </p>
 
-    <AppInput v-model="search" placeholder="Search" />
+    <form @submit.prevent="searchSubmit">
+      <AppInput v-model="search" placeholder="Search" />
+    </form>
 
     <div class="table">
       <table>
@@ -123,30 +125,22 @@
       </div>
 
       <div class="info" style="width: 100%">
-        <span>Regular Links</span>
-        <span>
-          {{
-            map(filter(selected.links, { type: "regular" }), "text")
-              .join(", ")
-              .toUpperCase()
-          }}
-        </span>
-        <span>Special Links</span>
-        <span>
-          {{
-            map(filter(selected.links, { type: "special" }), "text")
-              .join(", ")
-              .toUpperCase()
-          }}
-        </span>
-        <span>Obscure Links</span>
-        <span>
-          {{
-            map(filter(selected.links, { type: "obscure" }), "text")
-              .join(", ")
-              .toUpperCase()
-          }}
-        </span>
+        <template
+          v-for="(type, index) in ['regular', 'special', 'obscure'] as const"
+          :key="index"
+        >
+          <span>{{ startCase(type) }} Links</span>
+
+          <div class="links">
+            <button
+              v-for="(word, index) in filter(selected.links, { type })"
+              :key="index"
+              @click="select(word)"
+            >
+              {{ word.text.toUpperCase() }}
+            </button>
+          </div>
+        </template>
       </div>
 
       <div v-if="info" class="info">
@@ -238,7 +232,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watchEffect } from "vue";
-import { clamp, filter, map, max, orderBy, range } from "lodash";
+import { clamp, filter, max, orderBy, range, startCase } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
 import AppInput from "@/components/AppInput.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
@@ -339,6 +333,12 @@ const select = async (word: Word) => {
     await sleep();
     infoElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
   }
+};
+
+/** search submit */
+const searchSubmit = () => {
+  const firstResult = filteredDictionary.value[0];
+  if (firstResult) select(firstResult);
 };
 
 /** lookup info for selected word */
@@ -490,6 +490,7 @@ td {
   display: grid;
   grid-template-columns: max-content 1fr;
   justify-items: flex-start;
+  width: 100%;
   gap: 10px 20px;
   text-align: left;
 }
@@ -498,9 +499,20 @@ td {
   font-weight: var(--bold);
 }
 
-.info > :empty {
+.info > :empty::after {
   content: "-";
   color: var(--gray);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 10px;
+}
+
+.links > button {
+  padding: 0;
+  color: var(--primary);
 }
 
 .chart {

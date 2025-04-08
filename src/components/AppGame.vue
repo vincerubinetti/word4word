@@ -1,22 +1,18 @@
 <template>
   <section>
     <div class="info">
-      <button
-        :class="won ? (showPar ? 'primary' : 'secondary') : ''"
-        :disabled="!won"
+      <AppPar
+        component="button"
+        :par="par.length"
+        :class="showPar && 'underline'"
         @click="showPar = true"
       >
         <LandPlot />
-        <template v-if="won">
-          <span>Par</span>
-          <b>{{ par.length }}</b>
-        </template>
-        <AppPar v-else :par="par.length" />
-      </button>
+      </AppPar>
 
       <button
-        :class="won ? (!showPar ? 'primary' : 'secondary') : ''"
-        :disabled="!won"
+        :class="!showPar && 'underline'"
+        v-tooltip="'Your path'"
         @click="showPar = false"
       >
         <User />
@@ -26,12 +22,13 @@
     </div>
 
     <AppPath
-      v-if="won && showPar"
+      v-if="showPar"
       :path="
         aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
           ? par.toReversed()
           : par
       "
+      :hide="!won"
     />
 
     <div v-else class="grid">
@@ -39,7 +36,7 @@
         v-for="(word, wordIndex) in aPath"
         :key="word.text"
         class="row"
-        :style="{ '--dist': dists[word.text] }"
+        :style="{ '--dist': dists.a[word.text] }"
       >
         <Star
           v-if="word.type === 'special'"
@@ -131,7 +128,7 @@
         v-for="(word, wordIndex) in bPath"
         :key="word.text"
         class="row"
-        :style="{ '--dist': dists[word.text] }"
+        :style="{ '--dist': dists.b[word.text] }"
       >
         <Star
           v-if="word.type === 'special'"
@@ -166,10 +163,18 @@
     </div>
 
     <div class="info">
-      <button class="secondary square" @click="resetGame">
+      <button
+        class="secondary square"
+        v-tooltip="'Reset game'"
+        @click="resetGame"
+      >
         <RefreshCcw />
       </button>
-      <button :class="won ? 'primary' : 'secondary'" @click="share">
+      <button
+        :class="won ? 'primary' : 'secondary'"
+        v-tooltip="'Share results'"
+        @click="share"
+      >
         <Share />Share
       </button>
     </div>
@@ -198,7 +203,6 @@ import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data } from "@/data";
-import { lerp } from "@/util/math";
 import { sleep, storage } from "@/util/misc";
 import { findPath, oneLetterDifferent, type Word } from "@/word";
 
@@ -352,20 +356,28 @@ const par = computed(() => findPath(a, b));
 /** length of players path */
 const steps = computed(() => aPath.value.length + bPath.value.length);
 
-/** map of word to distance from other end */
+/** map of word in path to distance from end of opposite path */
 const dists = computed(() => {
-  const aOpposite = aPath.value.at(0)!;
-  const bOpposite = bPath.value.at(-1)!;
-  const getDist =
-    (opposite: Word, min = 0, max = 1) =>
-    (word: Word) => {
-      let dist = findPath(word, opposite).length;
-      dist = lerp(dist, par.value.length, 1, min, max);
-      return [word.text, dist] as const;
-    };
-  const aDists = aPath.value.map(getDist(bOpposite, 0, 1));
-  const bDists = bPath.value.map(getDist(aOpposite, 1, 0));
-  return Object.fromEntries(aDists.concat(bDists));
+  /** get distances for one of the paths */
+  const getDist = (path: Word[], opposite: Word, invert: boolean) => {
+    /** find dist in # of steps */
+    let dists = path.map(
+      (word) => [word.text, findPath(word, opposite).length] as const,
+    );
+    /** normalize to 0-1 based on par (or max if no par) */
+    const max = par.value.length || Math.max(...map(dists, "[1]"));
+    /** normalize */
+    dists = dists.map(([text, dist]) => [text, dist && max ? dist / max : 1]);
+    console.log(dists, max);
+    /** flip */
+    if (invert) dists = dists.map(([text, dist]) => [text, 1 - dist]);
+    /** make into lookup */
+    return Object.fromEntries(dists);
+  };
+  return {
+    a: getDist(aPath.value, bPath.value.at(-1)!, true),
+    b: getDist(bPath.value, aPath.value.at(0)!, false),
+  };
 });
 
 /** give player random word linking to middle of path tails */
@@ -387,20 +399,20 @@ const reverse = () => {
   saveGame();
 };
 
-/** whether this char should be linked to char above in path */
+/** whether this char should be linked to char below in path */
 const getDiff = (
-  char: string,
+  text: string,
   which: "a" | "b",
   wordIndex: number,
   charIndex: number,
 ) => {
-  const wordAbove =
+  const word =
     which === "a"
-      ? aPath.value[wordIndex - 1]
-      : bPath.value[wordIndex - 1] ||
-        (won.value ? aPath.value.at(-1) : undefined);
-  const charAbove = wordAbove?.text?.[charIndex] ?? "";
-  return !!charAbove && char !== charAbove;
+      ? aPath.value[wordIndex + 1] ||
+        (won.value ? bPath.value.at(0) : undefined)
+      : bPath.value[wordIndex + 1];
+  const char = word?.text?.[charIndex] ?? "";
+  return !!char && text !== char;
 };
 
 /** share results */
@@ -411,7 +423,7 @@ const share = async () => {
       text: [
         VITE_TITLE,
         `${a.text} ↔ ${b.text}`,
-        `Par: ${par.value.length}`,
+        `Par: ${par.value.length || "???"}`,
         won.value ? `Mine: ${steps.value}` : "",
       ]
         .filter(Boolean)
@@ -437,7 +449,10 @@ const showPar = ref(false);
 const perfect = computed(() => won.value && steps.value <= par.value.length);
 
 /** max particles at a time */
-const maxParticles = 10;
+const maxParticles = 20;
+/** size range of particle */
+const minSize = 5;
+const maxSize = 15;
 
 /** confetti */
 const { pause, resume } = useIntervalFn(
@@ -445,13 +460,13 @@ const { pause, resume } = useIntervalFn(
     if (document.querySelectorAll(".particle").length > maxParticles) return;
     const particle = document.createElement("div");
     particle.className = "particle";
-    const size = random(5, 15);
+    const size = random(minSize, maxSize);
     const halfW = window.innerWidth / 2;
     const halfH = window.innerHeight / 2;
     let x = halfW;
     let y = halfH;
-    x += random(-1, 1, true) * (halfW - 100);
-    y += random(-1, 1, true) * (halfH - 100);
+    x += random(-1, 1, true) * (halfW - maxSize);
+    y += random(-1, 1, true) * (halfH - maxSize);
     particle.style.setProperty("--size", size + "px");
     particle.style.setProperty("--x", x + "px");
     particle.style.setProperty("--y", y + "px");
