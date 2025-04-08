@@ -19,7 +19,10 @@
         <RouterLink
           v-if="route.meta.header"
           :to="route.path"
-          :class="$route.name === route.name && 'underline'"
+          :class="[
+            'underline',
+            $route.name === route.name && 'underline-active',
+          ]"
         >
           <span
             v-for="(char, index) in route.name"

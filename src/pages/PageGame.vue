@@ -3,6 +3,11 @@
   <section v-else class="error">Couldn't get words</section>
 </template>
 
+<script lang="ts">
+/** daily challenge */
+const daily = ref<ReturnType<typeof getDaily>>();
+</script>
+
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
@@ -40,9 +45,9 @@ watchEffect(() => {
   } else {
     /** get daily challenge */
     try {
-      const daily = getDaily(pars);
-      a.value = daily.a;
-      b.value = daily.b;
+      daily.value ??= getDaily(pars);
+      a.value = daily.value.a;
+      b.value = daily.value.b;
     } catch (error) {
       console.error(error);
     }

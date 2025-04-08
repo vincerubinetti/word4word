@@ -4,14 +4,14 @@
       <AppPar
         component="button"
         :par="par.length"
-        :class="showPar && 'underline'"
+        :class="['underline', showPar && 'underline-active']"
         @click="showPar = true"
       >
         <LandPlot />
       </AppPar>
 
       <button
-        :class="!showPar && 'underline'"
+        :class="['underline', !showPar && 'underline-active']"
         v-tooltip="'Your path'"
         @click="showPar = false"
       >
