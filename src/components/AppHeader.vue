@@ -81,7 +81,6 @@ nav {
 
 a {
   padding: 7.5px;
-  border-bottom: solid 2px transparent;
   text-decoration: none;
 }
 

@@ -277,8 +277,8 @@ const example = computed(() => {
 
   const { lookupWord } = data.value;
 
-  const a = lookupWord("pool")!;
-  const b = lookupWord("time")!;
+  const a = lookupWord("word")!;
+  const b = lookupWord("game")!;
   const par = findPath(a, b);
 
   return { a, b, par };

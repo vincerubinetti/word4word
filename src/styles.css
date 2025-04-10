@@ -4,10 +4,10 @@
 
   --error: hsl(340, 90%, 65%);
 
-  --easy: hsl(160, 50%, 45%);
-  --medium: hsl(220, 50%, 60%);
-  --hard: hsl(300, 25%, 55%);
-  --expert: hsl(0, 50%, 60%);
+  --easy: hsl(160, 70%, 40%);
+  --medium: hsl(200, 70%, 50%);
+  --hard: hsl(260, 50%, 60%);
+  --expert: hsl(350, 70%, 60%);
 
   --black: hsl(195, 25%, 25%);
   --dark-gray: hsl(195, 20%, 35%);
@@ -209,7 +209,7 @@ li {
 
 :focus-visible {
   outline: solid 2px var(--primary);
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 
 ::placeholder {

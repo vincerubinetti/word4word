@@ -65,8 +65,8 @@
         <button
           v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
           class="secondary square"
-          v-tooltip="'Delete word'"
-          @click="aPath = aPath.slice(0, -1)"
+          v-tooltip="'Remove word'"
+          @click="remove('a')"
         >
           <X />
         </button>
@@ -82,6 +82,7 @@
             class="input"
             placeholder="Word"
             @keydown.enter.prevent="submit"
+            @keydown="shortcuts"
           />
 
           <Transition name="slide" mode="out-in">
@@ -102,7 +103,7 @@
             v-if="input.length > 0"
             class="clear secondary square"
             v-tooltip="'Clear input'"
-            @click="input = ''"
+            @click="clear"
           >
             <X />
           </button>
@@ -160,8 +161,8 @@
         <button
           v-if="!won && wordIndex === 0 && bPath.length > 1"
           class="secondary square"
-          v-tooltip="'Delete word'"
-          @click="bPath = bPath.slice(1)"
+          v-tooltip="'Remove word'"
+          @click="remove('b')"
         >
           <X />
         </button>
@@ -231,7 +232,7 @@ const aPath = ref<Word[]>([]);
 const bPath = ref<Word[]>([]);
 
 /** typed storage interface */
-const { load, save, clear } = storage<{ a: string[]; b: string[] }>();
+const { load, save, reset } = storage<{ a: string[]; b: string[] }>();
 
 /** look up words from text, when ready */
 const lookup = computed(() => {
@@ -277,7 +278,7 @@ const saveGame = () => {
 /** reset game */
 const resetGame = () => {
   if (window.confirm("Start over?")) {
-    clear(key.value);
+    reset(key.value);
     loadGame();
   }
 };
@@ -321,6 +322,12 @@ const check = () => {
 /** auto-check when player has typed all letters */
 watchEffect(() => input.value.length === 4 && check());
 
+/** clear input */
+const clear = () => (input.value = "");
+
+/** which path was last added to */
+let lastAdded: ("a" | "b")[] = [];
+
 /** submit word to be added to path */
 const submit = async () => {
   if (check()) {
@@ -328,9 +335,11 @@ const submit = async () => {
     /** add word to path */
     if (aDiff.value) {
       aPath.value.push(word);
+      lastAdded.push("a");
       saveGame();
     } else if (bDiff.value) {
       bPath.value.unshift(word);
+      lastAdded.push("b");
       saveGame();
     }
   }
@@ -342,6 +351,20 @@ const submit = async () => {
     block: "nearest",
     behavior: "smooth",
   });
+};
+
+/** remove word from path */
+const remove = (path: "a" | "b") => {
+  if (path === "a" && aPath.value.length > 1)
+    aPath.value = aPath.value.slice(0, -1);
+  if (path === "b" && bPath.value.length > 1)
+    bPath.value = bPath.value.slice(1);
+};
+
+/** remove last added word */
+const removeLast = () => {
+  const last = lastAdded.pop();
+  if (last) remove(last);
 };
 
 /** message text */
@@ -404,6 +427,24 @@ const reverse = () => {
   aPath.value = bPath.value.reverse();
   bPath.value = temp.reverse();
   saveGame();
+};
+
+/** keyboard shortcuts on input */
+const shortcuts = (event: KeyboardEvent) => {
+  if (event.ctrlKey) {
+    if (event.key === "r") {
+      event.preventDefault();
+      removeLast();
+    }
+    if (event.key === "h") {
+      event.preventDefault();
+      hint();
+    }
+    if (event.key === "c") {
+      event.preventDefault();
+      clear();
+    }
+  }
 };
 
 /** whether this char should be linked to char below in path */

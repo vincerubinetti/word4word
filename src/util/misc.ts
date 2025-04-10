@@ -16,7 +16,7 @@ export const storage = <Type>() => {
   const save = (key: string, data: Type) =>
     window.localStorage.setItem(key, JSON.stringify(data));
 
-  const clear = (key: string) => window.localStorage.removeItem(key);
+  const reset = (key: string) => window.localStorage.removeItem(key);
 
-  return { load, save, clear };
+  return { load, save, reset };
 };

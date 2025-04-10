@@ -6,6 +6,8 @@ import { router } from "@/router";
 import "@/styles.css";
 import "tippy.js/dist/tippy.css";
 
+console.debug(import.meta.env);
+
 run();
 
 const app = createApp(App);

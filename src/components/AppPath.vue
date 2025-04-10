@@ -9,10 +9,10 @@
           wordIndex < path.length - 1 &&
           path[wordIndex + 1]?.text[charIndex] !== char
         "
-        :class="['flip']"
+        class="flip"
         :style="{
           '--dist': wordIndex / ((path.length ?? 1) - 1),
-          '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',
+          '--delay': wordIndex * (0.4 / 5) + charIndex * (0.1 / 5) + 's',
         }"
       >
         {{ hide && inRange(wordIndex, 1, path.length - 1) ? "?" : char }}

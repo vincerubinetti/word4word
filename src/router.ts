@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import PageAbout from "@/pages/PageAbout.vue";
 import PageCustom from "@/pages/PageCustom.vue";
 import PageGame from "@/pages/PageGame.vue";
+import PageIcons from "@/pages/PageIcons.vue";
 
 export const routes = [
   {
@@ -36,6 +37,16 @@ export const routes = [
     component: PageGame,
     meta: { header: false },
   },
+  ...(import.meta.env.DEV
+    ? [
+        {
+          name: "icons",
+          path: "/icons",
+          component: PageIcons,
+          meta: { header: false },
+        },
+      ]
+    : []),
   {
     name: "404",
     path: "/:pathMatch(.*)*",
