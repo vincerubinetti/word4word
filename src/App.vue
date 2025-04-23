@@ -9,6 +9,7 @@
     </section>
     <RouterView v-else />
   </main>
+  <AppFooter />
 </template>
 
 <script lang="ts">
@@ -26,6 +27,7 @@ watchEffect(() => {
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
+import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import { status } from "@/data";
 
