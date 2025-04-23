@@ -183,12 +183,7 @@
     <svg
       v-if="data?.pars"
       :viewBox="
-        [
-          -chartPadding,
-          -chartHeight - chartPadding,
-          chartWidth + 2 * chartPadding,
-          chartHeight + 2 * chartPadding,
-        ].join(' ')
+        [-350, -chartHeight - 50, chartWidth + 350 + 20, chartHeight + 300].join(' ')
       "
       class="chart"
     >
@@ -196,7 +191,7 @@
         v-for="({ par, x, y, yLabel }, index) in chartData.data"
         :key="index"
         class="bar"
-        :d="['M', x, 0, 'v', -y].join(' ')"
+        :d="['M', x + 10, 0, 'v', -y].join(' ')"
         :stroke="getDifficulty(par).color"
         tabindex="0"
         v-tooltip="yLabel"
@@ -204,7 +199,7 @@
 
       <path
         class="axes"
-        :d="['M', 0, -chartHeight, 'v', chartHeight, 'h', chartWidth].join(' ')"
+        :d="['M', 0, -chartHeight, 'v', chartHeight, 'h', chartWidth + 20].join(' ')"
       />
 
       <text class="x-axis" :x="chartWidth / 2" y="0">Par</text>
@@ -363,7 +358,6 @@ watchEffect(() => (audio.value.src = info.value?.audio ?? ""));
 /** chart settings */
 const chartWidth = 2000;
 const chartHeight = 1000;
-const chartPadding = 300;
 
 /** chart coordinates */
 const chartData = computed(() => {
@@ -527,10 +521,6 @@ td {
   text-align: left;
 }
 
-.chart {
-  overflow: visible;
-}
-
 .chart text {
   fill: var(--black);
   font-size: 60px;
@@ -544,7 +534,7 @@ td {
 
 .bar {
   fill: none;
-  stroke-width: 50px;
+  stroke-width: 90px;
 }
 
 .x-axis {

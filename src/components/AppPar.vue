@@ -1,8 +1,8 @@
 <template>
   <component
     :is="component ?? 'div'"
-    v-tooltip="`Difficulty: ${difficulty.tooltip}`"
     tabindex="0"
+    v-tooltip="`Difficulty: ${difficulty.tooltip}`"
   >
     <slot />
     <span>Par</span>
