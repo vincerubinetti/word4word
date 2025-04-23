@@ -64,11 +64,3 @@ const playable = computed(
     par.value.length,
 );
 </script>
-
-<style scoped>
-input,
-button {
-  width: 200px;
-  max-width: 100%;
-}
-</style>

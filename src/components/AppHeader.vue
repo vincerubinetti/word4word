@@ -17,7 +17,11 @@
     <nav>
       <template v-for="(route, index) in routes" :key="index">
         <RouterLink
-          v-if="route.meta.header"
+          v-if="
+            typeof route.meta.header === 'boolean'
+              ? route.meta.header
+              : route.meta.header.value
+          "
           :to="route.path"
           :class="[
             'underline',
@@ -49,7 +53,7 @@ header {
   display: flex;
   align-items: center;
   padding: 10px 20px;
-  gap: 10px;
+  gap: 10px 20px;
   background: var(--off-white);
 }
 
@@ -80,11 +84,11 @@ nav {
 }
 
 a {
-  padding: 7.5px;
+  padding: 5px;
   text-decoration: none;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   header {
     flex-direction: column;
   }

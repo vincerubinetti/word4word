@@ -19,13 +19,15 @@ footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  justify-content: space-between;
+  padding: 10px 20px;
   gap: 10px 20px;
   background: var(--off-white);
 }
 
-footer a {
+a {
+  display: inline-block;
+  padding: 5px;
   text-decoration: none;
 }
 </style>

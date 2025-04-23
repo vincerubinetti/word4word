@@ -1,10 +1,12 @@
 <template>
   <input
     ref="element"
-    pattern="[A-Za-z]*"
+    type="text"
     :maxlength="maxLength"
+    pattern="[A-Za-z]*"
     autocapitalize="off"
     autocorrect="off"
+    autocomplete="off"
     spellcheck="false"
     :value="modelValue"
     @input="onInput"

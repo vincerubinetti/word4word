@@ -1,8 +1,12 @@
+import { computed } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
+import { isEmpty } from "lodash";
 import PageAbout from "@/pages/PageAbout.vue";
 import PageCustom from "@/pages/PageCustom.vue";
 import PageGame from "@/pages/PageGame.vue";
 import PageIcons from "@/pages/PageIcons.vue";
+import PageSaved from "@/pages/PageSaved.vue";
+import { savedGames } from "@/util/storage";
 
 export const routes = [
   {
@@ -24,6 +28,12 @@ export const routes = [
     path: "/custom",
     component: PageCustom,
     meta: { header: true },
+  },
+  {
+    name: "Saved",
+    path: "/saved",
+    component: PageSaved,
+    meta: { header: computed(() => !isEmpty(savedGames.value)) },
   },
   {
     name: "About",

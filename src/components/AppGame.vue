@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="info">
+    <div class="buttons">
       <AppPar
         component="button"
         :par="par.length"
@@ -170,7 +170,7 @@
       </div>
     </div>
 
-    <div class="info">
+    <div class="buttons">
       <button
         class="secondary square"
         v-tooltip="'Reset game'"
@@ -211,7 +211,8 @@ import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data } from "@/data";
-import { sleep, storage } from "@/util/misc";
+import { sleep } from "@/util/misc";
+import { savedGames } from "@/util/storage";
 import { findPath, oneLetterDifferent, type Word } from "@/word";
 
 const { VITE_TITLE } = import.meta.env;
@@ -232,9 +233,6 @@ const key = computed(() => a.text + "-" + b.text);
 const aPath = ref<Word[]>([]);
 const bPath = ref<Word[]>([]);
 
-/** typed storage interface */
-const { load, save, reset } = storage<{ a: string[]; b: string[] }>();
-
 /** look up words from text, when ready */
 const lookup = computed(() => {
   if (!data.value) return () => undefined;
@@ -254,7 +252,7 @@ const lookup = computed(() => {
 
 /** load game */
 const loadGame = () => {
-  const loaded = load(key.value);
+  const loaded = savedGames.value[key.value];
   if (loaded) {
     /** load from storage */
     aPath.value = lookup.value(loaded.a) ?? [a];
@@ -270,16 +268,17 @@ watch([() => a, () => b, key, lookup], loadGame, { immediate: true });
 /** save game */
 const saveGame = () => {
   /** save to storage */
-  save(key.value, {
+  savedGames.value[key.value] = {
     a: map(aPath.value, "text"),
     b: map(bPath.value, "text"),
-  });
+    won: won.value,
+  };
 };
 
 /** reset game */
 const resetGame = () => {
   if (window.confirm("Start over?")) {
-    reset(key.value);
+    delete savedGames.value[key.value];
     loadGame();
   }
 };
@@ -356,10 +355,14 @@ const submit = async () => {
 
 /** remove word from path */
 const remove = (path: "a" | "b") => {
-  if (path === "a" && aPath.value.length > 1)
+  if (path === "a" && aPath.value.length > 1) {
     aPath.value = aPath.value.slice(0, -1);
-  if (path === "b" && bPath.value.length > 1)
+    saveGame();
+  }
+  if (path === "b" && bPath.value.length > 1) {
     bPath.value = bPath.value.slice(1);
+    saveGame();
+  }
 };
 
 /** remove last added word */
@@ -529,7 +532,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 </script>
 
 <style scoped>
-.info {
+.buttons {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
