@@ -161,7 +161,7 @@
         Looking for definitions
       </div>
       <div v-if="status === 'error'" class="gray">
-        Couldn't find definitions automatically
+        Couldn't look up definitions automatically
       </div>
     </template>
   </section>

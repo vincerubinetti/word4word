@@ -101,7 +101,7 @@ export const getDaily = (pars: Pars, today = new Date()) => {
 
   console.debug({ day, week, days, par, pairs, pair });
 
-  if (!daily) throw Error("Couldn't get daily");
+  if (!daily) throw Error("Couldn't determine daily game");
 
   return daily;
 };

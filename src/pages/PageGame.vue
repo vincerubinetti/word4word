@@ -1,6 +1,6 @@
 <template>
   <AppGame v-if="a && b" :a="a" :b="b" />
-  <section v-else class="error">Couldn't get words</section>
+  <section v-else class="error">Couldn't find words</section>
 </template>
 
 <script lang="ts">
