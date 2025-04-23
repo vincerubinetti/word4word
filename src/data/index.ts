@@ -5,11 +5,11 @@ import { oneLetterDifferent, type Pars, type Word } from "@/word";
 
 const rawPars = import.meta.env.BASE_URL + "pars.dat";
 
-/** par that represents infinity (no possible path). max 1 byte value. */
-export let infinitePar = 256;
+/** par that represents infinity (no possible path) */
+export let infinitePar = 999;
 
 /** highest par possible (other than infinity) */
-export let maxPar = infinitePar;
+export let maxPar = 99;
 
 /** load game data */
 export const loadData = async () => {
@@ -40,7 +40,7 @@ export const loadData = async () => {
   const matrixWords: { a: Word; b: Word }[] = [];
   regularWords.forEach((a, aIndex) =>
     regularWords.forEach((b, bIndex) => {
-      /** upper-triangular */
+      /** triangular */
       if (aIndex < bIndex) matrixWords.push({ a, b });
     }),
   );
@@ -48,20 +48,16 @@ export const loadData = async () => {
   /** read triangular matrix of par lengths */
   const parsMatrix = new Uint8Array(await (await fetch(rawPars)).arrayBuffer());
   for (let index = 0; index < parsMatrix.length; index++) {
-    /** get par, make 1-indexed instead of 0-indexed */
+    /** get par, add one step to include end word */
     let par = parsMatrix[index]! + 1;
-
-    pars[par] ??= [];
     /** add word pair */
+    pars[par] ??= [];
     pars[par]?.push(matrixWords[index]!);
   }
 
-  /** get highest par */
-  maxPar = pars
-    .slice(0, -1)
-    .findLastIndex(
-      (par) => par && par.length > 0 && par.length !== infinitePar,
-    );
+  /** update par limits from actual data */
+  infinitePar = pars.length - 1;
+  maxPar = pars.slice(0, -1).findLastIndex(Boolean);
 
   /** util func */
   const lookupWord = (text: string) => {

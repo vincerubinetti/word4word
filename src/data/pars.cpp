@@ -1,8 +1,7 @@
 /*
-    Pre-computes "par distance" between each pair of words in dictionary of regular/common 4-letter words.
-    Par is length of shortest path possible between start and end word, using only words in dictionary.
-    Floyd-Warshall algorithm too slow to be used in real time or in JavaScript at all.
-    Exports a triangular matrix of pars (1 byte each).
+    pre-compute shortest possible path between each pair of regular 4-letter
+    words. floyd-warshall algorithm too slow to be used in real time or
+    implemented in javascript at all. exports triangular matrix of pars.
 */
 
 // includes
@@ -14,7 +13,6 @@
 
 using namespace std;
 
-// max par value
 const unsigned char Infinity = 255;
 
 // word object
@@ -27,7 +25,7 @@ struct Word {
     }
 };
 
-// checks if two words are exactly 1 letter different
+// check if two words are exactly 1 letter different
 bool OneLetterDifferent(string wordA, string wordB)
 {
     if (wordA.length() != 4 || wordB.length() != 4)
@@ -44,7 +42,7 @@ bool OneLetterDifferent(string wordA, string wordB)
     return diffChars == 1;
 }
 
-// checks if two words are linked
+// check if two words are linked
 bool AreLinked(Word* wordA, Word* wordB)
 {
     for (unsigned char i = 0; i < wordA->links.size(); i++)
@@ -64,6 +62,7 @@ int main()
 
     vector<Word*> Dictionary;
     vector<Word*>::size_type DictionarySize;
+
     ifstream dictionaryFile("dictionary.yaml");
     string line;
     while (getline(dictionaryFile, line))
