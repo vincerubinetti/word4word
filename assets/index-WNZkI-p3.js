@@ -338,7 +338,7 @@ anta: obscure
 ante: regular
 anti: regular
 ants: regular
-anus: regular
+anus: special
 apay: obscure
 apec: obscure
 aped: special
@@ -4278,7 +4278,7 @@ purl: special
 purr: regular
 purs: obscure
 push: regular
-puss: regular
+puss: special
 puts: regular
 putt: regular
 putz: special
@@ -5455,7 +5455,7 @@ tway: obscure
 twee: special
 twig: regular
 twin: regular
-twit: regular
+twit: special
 twos: regular
 tyde: obscure
 tyed: obscure
@@ -5793,7 +5793,7 @@ whio: obscure
 whip: regular
 whir: regular
 whit: special
-whiz: special
+whiz: regular
 whoa: regular
 whod: regular
 whom: regular
