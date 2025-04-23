@@ -45,7 +45,7 @@
       <li>
         <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words
         <br />
-        Uncommon, archaic, esoteric.
+        Uncommon, archaic, esoteric, etc.
         <br />
         Not allowed in play at all.
       </li>

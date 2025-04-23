@@ -1,5 +1,5 @@
 import { differenceInCalendarDays, getDate, getDay } from "date-fns";
-import { clamp, filter, range } from "lodash";
+import { clamp, range } from "lodash";
 import { maxPar } from "@/data";
 import { shuffle } from "@/util/math";
 
@@ -20,7 +20,11 @@ export const oneLetterDifferent = (a: string, b: string) => {
 };
 
 /** find shortest path between two words, breadth first search */
-export const findPath = (a: Word, b: Word, anyType = false) => {
+export const findPath = (
+  a: Word,
+  b: Word,
+  types: Word["type"][] = ["regular"],
+) => {
   if (a.text === b.text) return [a];
 
   const explored: Record<Word["text"], boolean> = {};
@@ -32,7 +36,7 @@ export const findPath = (a: Word, b: Word, anyType = false) => {
   while (list.length > 0) {
     let word = list.shift();
     let links = word?.links ?? [];
-    if (!anyType) links = filter(links, { type: "regular" });
+    links = links.filter((link) => types.includes(link.type));
     for (const link of links) {
       if (link === b) {
         const path = [link];

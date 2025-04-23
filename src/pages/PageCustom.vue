@@ -37,9 +37,22 @@ const par = computed(() =>
   aWord.value && bWord.value ? findPath(aWord.value, bWord.value) : [],
 );
 
+/** get par path between words, using more advanced words */
+const specialPar = computed(() =>
+  aWord.value && bWord.value
+    ? findPath(aWord.value, bWord.value, ["regular", "special"])
+    : [],
+);
+
 watchEffect(() => {
+  const path = par.value.length
+    ? par.value
+    : specialPar.value.length
+      ? specialPar.value
+      : null;
+  if (!path) return;
   console.groupCollapsed("cheater");
-  for (const { text } of par.value) console.debug(text);
+  for (const { text } of path) console.debug(text);
   console.groupEnd();
 });
 
