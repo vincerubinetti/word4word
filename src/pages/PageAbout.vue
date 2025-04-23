@@ -3,7 +3,7 @@
     <h2>How To Play</h2>
 
     <p>
-      Get from one 4-letter word to another, changing only
+      Get from one 4-letter word to another, changing
       <b>one letter at a time</b> and using only valid English words. Take this
       <b>par {{ example?.par.length }}</b> example between
       {{ example?.a.text.toUpperCase() }} and
