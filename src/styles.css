@@ -4,17 +4,17 @@
 
   --error: hsl(340, 90%, 65%);
 
+  --black: hsl(195, 50%, 25%);
+  --dark-gray: hsl(195, 20%, 50%);
+  --gray: hsl(195, 10%, 75%);
+  --light-gray: hsl(10, 20%, 95%);
+  --off-white: hsl(10, 50%, 98%);
+  --white: hsl(10, 100%, 100%);
+
   --easy: hsl(160, 70%, 40%);
   --medium: hsl(200, 70%, 50%);
   --hard: hsl(260, 50%, 60%);
   --expert: hsl(350, 70%, 60%);
-
-  --black: hsl(195, 25%, 25%);
-  --dark-gray: hsl(195, 20%, 35%);
-  --gray: hsl(195, 15%, 75%);
-  --light-gray: hsl(195, 10%, 92%);
-  --off-white: hsl(195, 5%, 95%);
-  --white: hsl(195, 5%, 98%);
 
   --bold: 600;
   --extra-bold: 900;

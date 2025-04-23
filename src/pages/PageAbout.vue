@@ -183,7 +183,7 @@
     <svg
       v-if="data?.pars"
       :viewBox="
-        [-350, -chartHeight - 50, chartWidth + 350 + 20, chartHeight + 300].join(' ')
+        [-350, -chartHeight - 50, chartWidth + 370, chartHeight + 300].join(' ')
       "
       class="chart"
     >
@@ -191,7 +191,7 @@
         v-for="({ par, x, y, yLabel }, index) in chartData.data"
         :key="index"
         class="bar"
-        :d="['M', x + 10, 0, 'v', -y].join(' ')"
+        :d="['M', x, 0, 'v', -y].join(' ')"
         :stroke="getDifficulty(par).color"
         tabindex="0"
         v-tooltip="yLabel"
@@ -376,7 +376,7 @@ const chartData = computed(() => {
 
   /** transform ranges */
   const scaleX = (index: number, length: number) =>
-    chartWidth * ((0.5 + index) / length);
+    chartWidth * ((0.5 + index) / length) + 10;
   const scaleY = (value: number) => chartHeight * normalize(value);
 
   /** bar item for each par */
@@ -431,6 +431,7 @@ const chartData = computed(() => {
   overflow-x: auto;
   overflow-y: auto;
   border: solid 2px var(--light-gray);
+  background: var(--white);
 }
 
 table {
@@ -449,7 +450,7 @@ table button {
 thead tr {
   position: sticky;
   top: 0;
-  background: var(--light-gray);
+  background: var(--off-white);
 }
 
 th button {
@@ -466,7 +467,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: var(--light-gray);
+  background: var(--off-white);
 }
 
 td:first-child {

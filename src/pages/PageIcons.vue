@@ -49,17 +49,17 @@ const path = computed(() => {
   display: grid;
   place-content: center;
   place-items: center;
-  width: 1200px;
-  height: 700px;
+  width: 800px;
+  height: 600px;
   gap: 50px;
-  background: var(--light-gray);
+  background: var(--off-white);
   color: var(--black);
   font-weight: var(--bold);
-  font-size: 60px;
+  font-size: 40px;
   line-height: 1;
 }
 
 .share span {
-  filter: drop-shadow(0 5px 0 var(--gray));
+  filter: drop-shadow(0 2px 0 var(--gray));
 }
 </style>
