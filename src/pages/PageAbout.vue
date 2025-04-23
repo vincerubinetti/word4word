@@ -24,28 +24,32 @@
 
     <p>
       This game has a total of
-      <b>{{ total.toLocaleString() }}</b> 4-letter words:
+      <b>{{ total.toLocaleString() }}</b> words:
     </p>
 
     <ul>
       <li>
-        <b>{{ regular.toLocaleString() }}</b> <i>regular</i> words, very
-        commonly known and used
+        <b>{{ regular.toLocaleString() }}</b> <i>regular</i> words
+        <br />
+        Common, basic.
+        <br />
+        Used to find par and pick daily game words.
       </li>
       <li>
-        <b>{{ special.toLocaleString() }}</b> <i>special</i> words, known but
-        not used every day, misc.
+        <b>{{ special.toLocaleString() }}</b> <i>special</i> words
+        <br />
+        Less common, proper nouns, borrowed, slang offensive, etc.
+        <br />
+        Can still be played.
       </li>
       <li>
-        <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words, rarely known
-        or used
+        <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words
+        <br />
+        Uncommon, archaic, esoteric.
+        <br />
+        Not allowed in play at all.
       </li>
     </ul>
-
-    <p>
-      <i>Regular</i> words are used to find the par. <i>Special</i> words can
-      still be played. <i>Obscure</i> words are not allowed at all.
-    </p>
 
     <form @submit.prevent="searchSubmit">
       <AppInput v-model="search" placeholder="Search" />
@@ -237,7 +241,7 @@ import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
 import AppInput from "@/components/AppInput.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
-import { data } from "@/data";
+import { data, infinitePar } from "@/data";
 import { useQuery } from "@/util/composables";
 import { sleep } from "@/util/misc";
 import { findPath, type Word } from "@/word";
@@ -383,8 +387,7 @@ const chartData = computed(() => {
         ? {
             par: index,
             value: pairs.length,
-            /** if 64 (max 8-bit int), par is infinity (i.e. no possible path) */
-            xLabel: index === 64 ? "∞" : index,
+            xLabel: index === infinitePar ? "∞" : index,
             yLabel: pairs.length.toLocaleString(),
           }
         : undefined,

@@ -10,19 +10,17 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
-const int Infinity = 999999;
+// max par value
+const unsigned char Infinity = 255;
 
 // word object
 struct Word {
     string text;
     vector<Word*> links;
-
-    unsigned char explored;
-    Word* previous;
-
     Word(string word)
     {
         text = word;
@@ -35,8 +33,8 @@ bool OneLetterDifferent(string wordA, string wordB)
     if (wordA.length() != 4 || wordB.length() != 4)
         return false;
 
-    unsigned int diffChars = 0;
-    for (unsigned int i = 0; i < wordA.length(); i++) {
+    unsigned char diffChars = 0;
+    for (unsigned char i = 0; i < wordA.length(); i++) {
         if (wordA[i] != wordB[i])
             diffChars++;
         if (diffChars > 1)
@@ -49,11 +47,11 @@ bool OneLetterDifferent(string wordA, string wordB)
 // checks if two words are linked
 bool AreLinked(Word* wordA, Word* wordB)
 {
-    for (unsigned int i = 0; i < wordA->links.size(); i++)
+    for (unsigned char i = 0; i < wordA->links.size(); i++)
         if (wordA->links[i] == wordB)
             return true;
 
-    for (unsigned int i = 0; i < wordB->links.size(); i++)
+    for (unsigned char i = 0; i < wordB->links.size(); i++)
         if (wordB->links[i] == wordA)
             return true;
 
@@ -85,8 +83,8 @@ int main()
 
     cout << "linking words..." << endl;
 
-    for (unsigned int i = 0; i < DictionarySize; i++)
-        for (unsigned int j = 0; j < DictionarySize; j++)
+    for (unsigned short i = 0; i < DictionarySize; i++)
+        for (unsigned short j = 0; j < DictionarySize; j++)
             if (i < j)
                 if (OneLetterDifferent(Dictionary[i]->text, Dictionary[j]->text)) {
                     Dictionary[i]->links.push_back(Dictionary[j]);
@@ -98,30 +96,30 @@ int main()
     cout << "processing pars..." << endl;
 
     // floyd warshall
-    unsigned int** Pars;
-    Pars = new unsigned int*[DictionarySize];
-    for (unsigned int i = 0; i < DictionarySize; i++)
-        Pars[i] = new unsigned int[DictionarySize];
+    unsigned char** Pars;
+    Pars = new unsigned char*[DictionarySize];
+    for (unsigned short i = 0; i < DictionarySize; i++)
+        Pars[i] = new unsigned char[DictionarySize];
 
-    for (unsigned int i = 0; i < DictionarySize; i++)
-        for (unsigned int j = 0; j < DictionarySize; j++) {
+    for (unsigned short i = 0; i < DictionarySize; i++)
+        for (unsigned short j = 0; j < DictionarySize; j++) {
             if (i == j)
                 Pars[i][j] = 0;
             else
                 Pars[i][j] = Infinity;
         }
 
-    for (unsigned int i = 0; i < DictionarySize; i++)
-        for (unsigned int j = 0; j < DictionarySize; j++)
+    for (unsigned short i = 0; i < DictionarySize; i++)
+        for (unsigned short j = 0; j < DictionarySize; j++)
             if (i < j)
                 if (AreLinked(Dictionary[i], Dictionary[j])) {
                     Pars[i][j] = 1;
                     Pars[j][i] = 1;
                 }
 
-    for (unsigned int k = 0; k < DictionarySize; k++)
-        for (unsigned int i = 0; i < DictionarySize; i++)
-            for (unsigned int j = 0; j < DictionarySize; j++)
+    for (unsigned short k = 0; k < DictionarySize; k++)
+        for (unsigned short i = 0; i < DictionarySize; i++)
+            for (unsigned short j = 0; j < DictionarySize; j++)
                 if (Pars[i][j] > Pars[i][k] + Pars[k][j])
                     Pars[i][j] = Pars[i][k] + Pars[k][j];
 
@@ -132,8 +130,8 @@ int main()
     ofstream file;
     file.open("pars.dat", fstream::binary);
 
-    for (unsigned int i = 0; i < DictionarySize; i++)
-        for (unsigned int j = 0; j < DictionarySize; j++)
+    for (unsigned short i = 0; i < DictionarySize; i++)
+        for (unsigned short j = 0; j < DictionarySize; j++)
             if (i < j)
                 file.write(reinterpret_cast<char*>(&Pars[i][j]), sizeof(unsigned char));
 

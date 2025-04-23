@@ -5,6 +5,12 @@ import { oneLetterDifferent, type Pars, type Word } from "@/word";
 
 const rawPars = import.meta.env.BASE_URL + "pars.dat";
 
+/** par that represents infinity (no possible path). max 1 byte value. */
+export let infinitePar = 256;
+
+/** highest par possible (other than infinity) */
+export let maxPar = infinitePar;
+
 /** load game data */
 export const loadData = async () => {
   // await sleep(1000);
@@ -49,6 +55,13 @@ export const loadData = async () => {
     /** add word pair */
     pars[par]?.push(matrixWords[index]!);
   }
+
+  /** get highest par */
+  maxPar = pars
+    .slice(0, -1)
+    .findLastIndex(
+      (par) => par && par.length > 0 && par.length !== infinitePar,
+    );
 
   /** util func */
   const lookupWord = (text: string) => {

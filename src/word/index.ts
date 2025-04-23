@@ -1,5 +1,6 @@
 import { differenceInCalendarDays, getDate, getDay } from "date-fns";
 import { clamp, filter, range } from "lodash";
+import { maxPar } from "@/data";
 import { shuffle } from "@/util/math";
 
 export type Word = {
@@ -74,7 +75,16 @@ export const getDaily = (pars: Pars, today = new Date()) => {
   ];
 
   /** get par */
-  const par = clamp(difficulties[week]?.[day] ?? 0, 5, 20);
+  const par = clamp(
+    difficulties[week]?.[day] ?? 0,
+    /** less than this not fun */
+    4,
+    /**
+     * very few pairs around max par (will cause repeats too soon), so go a few
+     * pars below
+     */
+    maxPar - 2,
+  );
 
   /** number of word pairs in chosen par */
   const pairs = pars[par]?.length ?? 0;
