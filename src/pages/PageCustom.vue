@@ -44,16 +44,15 @@ const specialPar = computed(() =>
     : [],
 );
 
+/** debug/cheat */
 watchEffect(() => {
-  const path = par.value.length
-    ? par.value
-    : specialPar.value.length
-      ? specialPar.value
-      : null;
-  if (!path) return;
-  console.groupCollapsed("cheater");
-  for (const { text } of path) console.debug(text);
-  console.groupEnd();
+  for (const path of [par.value, specialPar.value].filter(
+    (path) => path.length,
+  )) {
+    console.groupCollapsed("cheater");
+    for (const { text } of path) console.debug(text);
+    console.groupEnd();
+  }
 });
 
 /** should user be allowed to play game */
