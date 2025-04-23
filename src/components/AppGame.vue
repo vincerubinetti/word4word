@@ -23,6 +23,7 @@
 
     <AppPath
       v-if="showPar"
+      :class="won ? 'wiggle-always' : 'flip'"
       :path="
         par.length
           ? aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
@@ -54,7 +55,7 @@
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
           :link="getDiff(char, 'a', wordIndex, charIndex)"
-          :class="[won ? 'wiggle-always' : 'flip']"
+          :class="won ? 'wiggle-always' : 'flip'"
           :style="{
             '--col': charIndex,
             '--delay': (won ? wordIndex * 0.4 : 0) + charIndex * 0.1 + 's',
@@ -147,7 +148,7 @@
           v-for="(char, charIndex) in word.text"
           :key="charIndex"
           :link="getDiff(char, 'b', wordIndex, charIndex)"
-          :class="[won ? 'wiggle-always' : 'flip']"
+          :class="won ? 'wiggle-always' : 'flip'"
           :style="{
             '--col': charIndex,
             '--delay':
@@ -179,7 +180,7 @@
       </button>
       <button
         :class="won ? 'primary' : 'secondary'"
-        v-tooltip="'Share results'"
+        v-tooltip="'Share game'"
         @click="share"
       >
         <Share />Share
@@ -463,7 +464,7 @@ const getDiff = (
   return !!char && text !== char;
 };
 
-/** share results */
+/** share game */
 const share = async () => {
   try {
     await window.navigator.share({
@@ -536,12 +537,6 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
   gap: 10px;
 }
 
-[disabled] {
-  color: unset;
-  filter: none;
-  opacity: 1;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 40px);
@@ -606,6 +601,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 
 .special {
   grid-column: 1;
-  color: var(--secondary);
+  color: var(--gray);
+  fill: currentColor;
 }
 </style>

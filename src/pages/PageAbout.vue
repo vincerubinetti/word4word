@@ -10,7 +10,7 @@
       {{ example?.b.text.toUpperCase() }}:
     </p>
 
-    <AppPath :path="example?.par ?? []" />
+    <AppPath class="flip" :path="example?.par ?? []" />
 
     <p>
       That's it! Try to connect the words in as few steps as you can. The
@@ -23,8 +23,8 @@
     <h2>Dictionary</h2>
 
     <p>
-      This game has a total of
-      <b>{{ total.toLocaleString() }}</b> words:
+      The game knows a total of
+      <b>{{ total.toLocaleString() }}</b> 4-letter words:
     </p>
 
     <ul>
@@ -38,7 +38,7 @@
       <li>
         <b>{{ special.toLocaleString() }}</b> <i>special</i> words
         <br />
-        Less common, proper nouns, borrowed, slang offensive, etc.
+        Less common, proper nouns, borrowed, slang, offensive, etc.
         <br />
         Can still be played.
       </li>
@@ -106,26 +106,13 @@
 
     <template v-if="selected">
       <div ref="infoElement" class="details">
-        <button
-          v-if="info?.audio"
-          class="secondary square"
-          v-tooltip="'Pronunciation'"
-          @click="audio.play()"
-        >
-          <Volume2 />
-        </button>
-
         <b>
           {{ selected.text.toUpperCase() }}
         </b>
 
-        <a
-          :href="`https://www.google.com/search?q=define%3A+${selected.text}`"
-          target="_blank"
-        >
-          Look up
-          <ExternalLink />
-        </a>
+        <i>
+          {{ selected.type }}
+        </i>
       </div>
 
       <div class="info" style="width: 100%">
@@ -147,21 +134,39 @@
         </template>
       </div>
 
-      <div v-if="info" class="info">
-        <template
+      <ol v-if="info" class="definitions">
+        <li
           v-for="({ part, description }, index) in info.definitions"
           :key="index"
         >
-          <span>{{ part }}</span>
-          <span>{{ description }}</span>
-        </template>
-      </div>
+          <i>({{ part }})</i> {{ description }}
+        </li>
+      </ol>
 
       <div v-if="status === 'loading'" class="gray">
         Looking for definitions
       </div>
       <div v-if="status === 'error'" class="gray">
         Couldn't look up definitions automatically
+      </div>
+
+      <div class="details">
+        <button
+          v-if="info?.audio"
+          class="primary square"
+          v-tooltip="'Pronunciation'"
+          @click="audio.play()"
+        >
+          <Volume2 />
+        </button>
+
+        <a
+          :href="`https://www.google.com/search?q=define%3A+${selected.text}`"
+          target="_blank"
+        >
+          Look up
+          <ExternalLink />
+        </a>
       </div>
     </template>
   </section>
@@ -431,11 +436,11 @@ const chartData = computed(() => {
   max-height: calc(10 * (1lh + 10px));
   overflow-x: auto;
   overflow-y: auto;
+  border: solid 2px var(--light-gray);
 }
 
 table {
   border-collapse: collapse;
-  background: var(--off-white);
   text-align: center;
 }
 
@@ -516,6 +521,10 @@ td {
 .links > button {
   padding: 0;
   color: var(--primary);
+}
+
+.definitions {
+  text-align: left;
 }
 
 .chart {

@@ -4,15 +4,15 @@
       <AppChar
         v-for="(char, charIndex) in word.text"
         :key="charIndex"
+        v-bind="$attrs"
         :link="
           !hide &&
           wordIndex < path.length - 1 &&
           path[wordIndex + 1]?.text[charIndex] !== char
         "
-        class="flip"
         :style="{
           '--dist': wordIndex / ((path.length ?? 1) - 1),
-          '--delay': wordIndex * (0.4 / 5) + charIndex * (0.1 / 5) + 's',
+          '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',
         }"
       >
         {{ hide && inRange(wordIndex, 1, path.length - 1) ? "?" : char }}
@@ -25,6 +25,8 @@
 import { inRange } from "lodash";
 import AppChar from "@/components/AppChar.vue";
 import type { Word } from "@/word";
+
+defineOptions({ inheritAttrs: false });
 
 type Props = {
   path: Word[];

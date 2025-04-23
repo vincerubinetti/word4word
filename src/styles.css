@@ -149,7 +149,6 @@ button.secondary {
   min-height: 40px;
   padding: 5px 10px;
   border-radius: 999px;
-  background: var(--off-white);
   color: var(--primary);
 }
 
@@ -172,7 +171,8 @@ p {
   text-align: justify;
 }
 
-ul {
+ul,
+ol {
   width: 100%;
   margin: 0;
   padding-left: 30px;
@@ -219,6 +219,7 @@ li {
 [disabled] {
   filter: saturate(0);
   opacity: 0.5;
+  pointer-events: none;
 }
 
 form {
