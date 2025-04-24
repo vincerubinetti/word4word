@@ -199,7 +199,11 @@
 
       <path
         class="axes"
-        :d="['M', 0, -chartHeight, 'v', chartHeight, 'h', chartWidth + 20].join(' ')"
+        :d="
+          ['M', 0, -chartHeight, 'v', chartHeight, 'h', chartWidth + 20].join(
+            ' ',
+          )
+        "
       />
 
       <text class="x-axis" :x="chartWidth / 2" y="0">Par</text>
@@ -231,6 +235,21 @@
         {{ text }}
       </text>
     </svg>
+  </section>
+
+  <section>
+    <div>
+      <a href="https://github.com/vincerubinetti/word4word" target="_blank"
+        >Source Code</a
+      >
+    </div>
+
+    <div>
+      &copy; 2025
+      <a href="https://vincentrubinetti.com" target="_blank"
+        >Vincent Rubinetti</a
+      >
+    </div>
   </section>
 </template>
 
