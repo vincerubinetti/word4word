@@ -430,6 +430,7 @@ const reverse = () => {
   const temp = aPath.value;
   aPath.value = bPath.value.reverse();
   bPath.value = temp.reverse();
+  lastAdded = lastAdded.map((list) => list === "a" ? "b" : "a");
   saveGame();
 };
 
