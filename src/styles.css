@@ -1,9 +1,9 @@
-:root {
+:root[data-dark="false"] {
   --primary: hsl(195, 100%, 35%);
   --secondary: hsl(10, 80%, 65%);
 
   --black: hsl(195, 50%, 25%);
-  --dark-gray: hsl(195, 20%, 50%);
+  --dark-gray: hsl(195, 10%, 50%);
   --gray: hsl(195, 10%, 75%);
   --light-gray: hsl(10, 20%, 95%);
   --off-white: hsl(10, 50%, 98%);
@@ -13,7 +13,26 @@
   --medium: hsl(200, 70%, 50%);
   --hard: hsl(260, 50%, 60%);
   --expert: hsl(350, 70%, 60%);
+}
 
+:root[data-dark="true"] {
+  --primary: hsl(195, 80%, 50%);
+  --secondary: hsl(10, 100%, 70%);
+
+  --black: hsl(195, 100%, 100%);
+  --dark-gray: hsl(195, 20%, 70%);
+  --gray: hsl(195, 20%, 40%);
+  --light-gray: hsl(195, 5%, 20%);
+  --off-white: hsl(195, 10%, 10%);
+  --white: hsl(195, 25%, 0%);
+
+  --easy: hsl(160, 80%, 60%);
+  --medium: hsl(200, 100%, 70%);
+  --hard: hsl(260, 80%, 80%);
+  --expert: hsl(350, 100%, 80%);
+}
+
+:root {
   --success: var(--easy);
   --info: var(--medium);
   --error: var(--expert);
@@ -105,6 +124,7 @@ input {
   padding: 7.5px 15px;
   border: solid 2px var(--light-gray);
   border-radius: 999px;
+  background: var(--white);
   color: inherit;
   font: inherit;
   text-align: center;

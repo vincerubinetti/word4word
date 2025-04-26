@@ -38,14 +38,32 @@
           </span>
         </RouterLink>
       </template>
+
+      <button
+        role="switch"
+        :aria-checked="darkMode"
+        @click="darkMode = !darkMode"
+        v-tooltip="darkMode ? 'Switch to light Mode' : 'Switch to dark Mode'"
+      >
+        <Sun v-if="darkMode" /><Moon v-else />
+      </button>
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
+import { watchEffect } from "vue";
+import { Moon, Sun } from "lucide-vue-next";
+import { useLocalStorage } from "@vueuse/core";
 import { routes } from "@/router";
 
 const { VITE_TITLE } = import.meta.env;
+
+const darkMode = useLocalStorage("dark-mode", false);
+
+watchEffect(() => {
+  document.documentElement.setAttribute("data-dark", String(darkMode.value));
+});
 </script>
 
 <style scoped>
@@ -86,6 +104,10 @@ nav {
 a {
   padding: 5px;
   text-decoration: none;
+}
+
+button {
+  color: var(--primary);
 }
 
 @media (max-width: 600px) {
