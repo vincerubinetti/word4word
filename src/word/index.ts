@@ -57,7 +57,7 @@ export const findPath = (
   return [];
 };
 
-/** get daily challenge */
+/** get daily game */
 export const getDaily = (pars: Pars, today = new Date()) => {
   /** get date info */
   const epoch = new Date(2000, 0, 0, 0, 0);

@@ -12,7 +12,7 @@
         "
         :style="{
           '--dist': wordIndex / ((path.length ?? 1) - 1),
-          '--delay': wordIndex * 0.4 + charIndex * 0.1 + 's',
+          '--delay': wordIndex * 0.2 + charIndex * 0.1 + 's',
         }"
       >
         {{ hide && inRange(wordIndex, 1, path.length - 1) ? "?" : char }}

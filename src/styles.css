@@ -121,7 +121,7 @@ input {
   min-width: 0;
   max-width: 100%;
   min-height: 40px;
-  padding: 7.5px 15px;
+  padding: 5px 15px;
   border: solid 2px var(--light-gray);
   border-radius: 999px;
   background: var(--white);
@@ -142,9 +142,10 @@ button {
   align-items: center;
   justify-content: center;
   max-width: 100%;
-  padding: 7.5px;
-  gap: 7.5px;
+  padding: 5px 10px;
+  gap: 5px;
   border: none;
+  border-radius: 999px;
   background: none;
   color: inherit;
   font: inherit;
@@ -156,8 +157,6 @@ button {
 button.primary {
   min-width: 100px;
   min-height: 40px;
-  padding: 5px 10px;
-  border-radius: 999px;
   background: var(--primary);
   color: var(--white);
 }
@@ -169,8 +168,6 @@ button.primary:hover {
 button.secondary {
   min-width: 100px;
   min-height: 40px;
-  padding: 5px 10px;
-  border-radius: 999px;
   color: var(--primary);
 }
 
@@ -214,27 +211,9 @@ hr {
   background: var(--light-gray);
 }
 
-.underline {
-  position: relative;
-}
-
-.underline::after {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  scale: 0.5 1;
-  background: var(--primary);
-  content: "";
-  opacity: 0;
-  transition-duration: var(--fast);
-  transition-property: opacity, scale;
-}
-
-.underline-active::after {
-  scale: 1 1;
-  opacity: 1;
+.active {
+  background: var(--light-gray);
+  color: var(--black) !important;
 }
 
 :focus-visible {

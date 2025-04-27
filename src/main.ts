@@ -17,6 +17,7 @@ app.use(VueTippy, {
   defaultProps: {
     delay: [100, 0],
     duration: [100, 0],
+    allowHTML: true,
     // onHide: () => false,
   },
 });

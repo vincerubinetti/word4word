@@ -4,20 +4,19 @@
       <AppPar
         component="button"
         :par="par.length"
-        :class="['underline', showPar && 'underline-active']"
+        :class="showPar && 'active'"
         @click="showPar = true"
       >
         <LandPlot />
       </AppPar>
 
       <button
-        :class="['underline', !showPar && 'underline-active']"
+        :class="!showPar && 'active'"
         v-tooltip="'Your path'"
         @click="showPar = false"
       >
         <User />
-        <span>Yours</span>
-        <b>{{ steps }}</b>
+        <span>Yours: {{ steps }}</span>
       </button>
     </div>
 
@@ -58,7 +57,7 @@
           :class="won ? 'wiggle-always' : 'flip'"
           :style="{
             '--col': charIndex,
-            '--delay': (won ? wordIndex * 0.4 : 0) + charIndex * 0.1 + 's',
+            '--delay': (won ? wordIndex * 0.2 : 0) + charIndex * 0.1 + 's',
           }"
         >
           {{ char }}
@@ -152,7 +151,7 @@
           :style="{
             '--col': charIndex,
             '--delay':
-              (won ? (aPath.length + wordIndex) * 0.4 : 0) +
+              (won ? (aPath.length + wordIndex) * 0.2 : 0) +
               charIndex * 0.1 +
               's',
           }"
@@ -179,11 +178,12 @@
         <RefreshCcw />
       </button>
       <button
-        :class="won ? 'primary' : 'secondary'"
+        :class="won ? 'primary' : 'secondary square'"
         v-tooltip="'Share game'"
         @click="share"
       >
-        <Share />Share
+        <Share />
+        <template v-if="won">Share</template>
       </button>
     </div>
   </section>
@@ -191,7 +191,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
-import { clamp, debounce, filter, map, random, sample } from "lodash";
+import { debounce, filter, map, random, sample } from "lodash";
 import {
   ArrowDown,
   ArrowUp,

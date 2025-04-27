@@ -18,24 +18,19 @@
       <template v-for="(route, index) in routes" :key="index">
         <RouterLink
           v-if="
-            typeof route.meta.header === 'boolean'
+            'header' in route.meta &&
+            (typeof route.meta.header === 'boolean'
               ? route.meta.header
-              : route.meta.header.value
+              : route.meta.header.value)
           "
           :to="route.path"
-          :class="[
-            'underline',
-            $route.name === route.name && 'underline-active',
-          ]"
+          :class="['underline', $route.name === route.name && 'active']"
+          v-tooltip="'tooltip' in route.meta && route.meta.tooltip"
         >
-          <span
-            v-for="(char, index) in route.name"
-            :key="index"
-            class="wiggle-char wiggle-hover"
-            :style="{ '--delay': index * 0.1 + 's' }"
-          >
-            {{ char }}
-          </span>
+          <component
+            v-if="'icon' in route.meta && route.meta.icon"
+            :is="route.meta.icon"
+          />
         </RouterLink>
       </template>
 
@@ -69,18 +64,17 @@ watchEffect(() => {
 <style scoped>
 header {
   display: flex;
+  position: relative;
   align-items: center;
-  padding: 10px 20px;
+  justify-content: space-between;
+  padding: 10px;
   gap: 10px 20px;
   background: var(--off-white);
 }
 
-header > * {
-  flex-grow: 1;
-  flex-basis: 0;
-}
-
 h1 {
+  position: relative;
+  padding: 0 10px;
   text-align: left;
   white-space: nowrap;
 }
@@ -97,27 +91,20 @@ nav {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
-  gap: 5px 10px;
+  justify-content: center;
+  gap: 5px;
 }
 
-a {
-  padding: 5px;
-  text-decoration: none;
-}
-
+a,
 button {
+  display: inline-flex;
+  padding: 5px;
+  border-radius: 999px;
   color: var(--primary);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
   header {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 300px) {
-  nav {
     flex-direction: column;
   }
 }

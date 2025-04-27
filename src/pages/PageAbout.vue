@@ -4,9 +4,9 @@
 
     <p>
       Get from one 4-letter word to another, changing
-      <b>one letter at a time</b> and using only valid English words. Take this
-      <b>par {{ example?.par.length }}</b> example between
-      {{ example?.a.text.toUpperCase() }} and
+      <b>one letter at a time</b> and only using valid English words. Take this
+      <b>par {{ example?.par.length }}</b> example from
+      {{ example?.a.text.toUpperCase() }} to
       {{ example?.b.text.toUpperCase() }}:
     </p>
 
@@ -14,8 +14,14 @@
 
     <p>
       That's it! Try to connect the words in as few steps as you can. The
-      <b>par</b> is the smallest # of steps possible using only
-      <i>regular</i> words, so you have to be very <i>special</i> to beat it.
+      <b>par</b> is the smallest # of steps possible if you use only
+      <i>regular</i> words. Consider it a perfect score; even matching it is an
+      achievement, and you'd have to be very <i>special</i> to beat it.
+    </p>
+
+    <p>
+      The daily game increases in difficulty throughout the week, and throughout
+      the month.
     </p>
   </section>
 
@@ -33,7 +39,7 @@
         <br />
         Common, basic.
         <br />
-        Used to find par and pick daily game words.
+        Used to calculate par and pick daily game words.
       </li>
       <li>
         <b>{{ special.toLocaleString() }}</b> <i>special</i> words

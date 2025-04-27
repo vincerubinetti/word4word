@@ -1,6 +1,7 @@
 import { computed } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty } from "lodash";
+import { BadgeHelp, Bookmark, Calendar1, PencilRuler } from "lucide-vue-next";
 import PageAbout from "@/pages/PageAbout.vue";
 import PageCustom from "@/pages/PageCustom.vue";
 import PageGame from "@/pages/PageGame.vue";
@@ -13,7 +14,7 @@ export const routes = [
     name: "Daily",
     path: "/",
     component: PageGame,
-    meta: { header: true },
+    meta: { header: true, icon: Calendar1, tooltip: "Daily game" },
     beforeEnter: () => {
       const path = window.sessionStorage.redirectPath;
       if (typeof path === "string") {
@@ -27,25 +28,29 @@ export const routes = [
     name: "Custom",
     path: "/custom",
     component: PageCustom,
-    meta: { header: true },
+    meta: { header: true, icon: PencilRuler, tooltip: "Custom game" },
   },
   {
     name: "Saved",
     path: "/saved",
     component: PageSaved,
-    meta: { header: computed(() => !isEmpty(savedGames.value)) },
+    meta: {
+      header: computed(() => !isEmpty(savedGames.value)),
+      icon: Bookmark,
+      tooltip: "Saved games",
+    },
   },
   {
     name: "About",
     path: "/about",
     component: PageAbout,
-    meta: { header: true },
+    meta: { header: true, icon: BadgeHelp, tooltip: "How to play & about" },
   },
   {
     name: "",
     path: "/:a([A-Za-z]{4})/:b([A-Za-z]{4})",
     component: PageGame,
-    meta: { header: false },
+    meta: {},
   },
   ...(import.meta.env.DEV
     ? [
@@ -53,7 +58,7 @@ export const routes = [
           name: "icons",
           path: "/icons",
           component: PageIcons,
-          meta: { header: false },
+          meta: {},
         },
       ]
     : []),
@@ -61,7 +66,7 @@ export const routes = [
     name: "404",
     path: "/:pathMatch(.*)*",
     component: PageGame,
-    meta: { header: false },
+    meta: {},
     beforeEnter: () => "/",
   },
 ] as const;

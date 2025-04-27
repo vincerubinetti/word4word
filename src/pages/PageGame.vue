@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-/** daily challenge */
+/** daily game */
 const daily = ref<ReturnType<typeof getDaily>>();
 </script>
 
@@ -43,7 +43,7 @@ watchEffect(() => {
     a.value = lookupWord(String(params.a));
     b.value = lookupWord(String(params.b));
   } else {
-    /** get daily challenge */
+    /** get daily game */
     try {
       daily.value ??= getDaily(pars);
       a.value = daily.value.a;

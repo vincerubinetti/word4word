@@ -5,8 +5,8 @@
     v-tooltip="`Difficulty: ${difficulty.tooltip}`"
   >
     <slot />
-    <span>Par</span>
-    <span class="difficulty" :style="{ color: difficulty.color }">
+    <span>Par:</span>
+    <span :style="{ color: difficulty.color }">
       {{ par || "???" }}
     </span>
   </component>
@@ -43,9 +43,5 @@ const difficulty = computed(() => getDifficulty(par));
 div {
   display: flex;
   gap: 5px;
-}
-
-.difficulty {
-  font-weight: var(--bold);
 }
 </style>

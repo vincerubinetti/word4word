@@ -7,7 +7,7 @@
           :to="`/${a.at(0)}/${b.at(-1)}`"
           :key="index"
           class="saved-game"
-          v-tooltip="won ? 'See game' : 'Continue game'"
+          v-tooltip="won ? 'Admire game' : 'Continue game'"
         >
           {{ a.at(0) }}
           ↔
