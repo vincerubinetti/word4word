@@ -191,7 +191,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
-import { debounce, filter, map, random, sample } from "lodash";
+import { clamp, debounce, filter, map, random, sample } from "lodash";
 import {
   ArrowDown,
   ArrowUp,
@@ -397,9 +397,11 @@ const dists = computed(() => {
     Object.fromEntries(
       path.map((word) => {
         /** find dist in # of steps */
-        let dist = findPath(word, opposite).length || 1;
+        let dist = findPath(word, opposite).length;
         /** find max */
         const max = par.value.length;
+        /** if no path */
+        if (!dist || !max) return [word.text, invert ? 0 : 1];
         /** normalize to 0-1 */
         dist = dist / max;
         /** flip */

@@ -26,10 +26,10 @@
   --off-white: hsl(195, 10%, 10%);
   --white: hsl(195, 25%, 0%);
 
-  --easy: hsl(160, 80%, 60%);
-  --medium: hsl(200, 100%, 70%);
-  --hard: hsl(260, 80%, 80%);
-  --expert: hsl(350, 100%, 80%);
+  --easy: hsl(160, 80%, 50%);
+  --medium: hsl(200, 100%, 50%);
+  --hard: hsl(260, 80%, 70%);
+  --expert: hsl(350, 100%, 70%);
 }
 
 :root {
