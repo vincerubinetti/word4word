@@ -115,7 +115,7 @@
         </i>
       </div>
 
-      <div class="info" style="width: 100%">
+      <div class="detail" style="width: 100%">
         <template
           v-for="(type, index) in ['regular', 'special', 'obscure'] as const"
           :key="index"
@@ -508,7 +508,7 @@ td {
   gap: 20px;
 }
 
-.info {
+.detail {
   display: grid;
   grid-template-columns: max-content 1fr;
   justify-items: flex-start;
@@ -517,11 +517,11 @@ td {
   text-align: left;
 }
 
-.info > :nth-child(odd) {
+.detail > :nth-child(odd) {
   font-weight: var(--bold);
 }
 
-.info > :empty::after {
+.detail > :empty::after {
   content: "-";
   color: var(--gray);
 }
