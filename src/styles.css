@@ -349,30 +349,42 @@ form {
   rotate: var(--angle);
   background: var(--primary);
   animation: particle 1s linear;
-  clip-path: polygon(
+  pointer-events: none;
+  --star-open: polygon(
     50% 100%,
-    62% 62%,
+    65% 65%,
     100% 50%,
-    62% 38%,
+    65% 35%,
     50% 0%,
-    38% 38%,
+    35% 35%,
     0% 50%,
-    38% 62%,
+    35% 65%,
+    50% 100%
+  );
+  --star-closed: polygon(
+    50% 100%,
+    50% 50%,
+    100% 50%,
+    50% 50%,
+    50% 0%,
+    50% 50%,
+    0% 50%,
+    50% 50%,
     50% 100%
   );
 }
 
 @keyframes particle {
   0% {
-    opacity: 0;
+    clip-path: var(--star-closed);
   }
 
   50% {
-    opacity: 1;
+    clip-path: var(--star-open);
   }
 
   100% {
     translate: 0 calc(-1 * var(--size));
-    opacity: 0;
+    clip-path: var(--star-closed);
   }
 }

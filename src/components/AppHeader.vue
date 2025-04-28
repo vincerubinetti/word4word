@@ -38,7 +38,7 @@
         role="switch"
         :aria-checked="darkMode"
         @click="darkMode = !darkMode"
-        v-tooltip="darkMode ? 'Switch to light Mode' : 'Switch to dark Mode'"
+        v-tooltip="darkMode ? 'Light mode' : 'Dark mode'"
       >
         <Sun v-if="darkMode" /><Moon v-else />
       </button>

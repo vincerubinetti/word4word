@@ -44,7 +44,7 @@ export const routes = [
     name: "About",
     path: "/about",
     component: PageAbout,
-    meta: { header: true, icon: BadgeHelp, tooltip: "How to play & about" },
+    meta: { header: true, icon: BadgeHelp, tooltip: "How to play, info, about" },
   },
   {
     name: "",
