@@ -346,19 +346,19 @@ form {
   left: var(--x);
   width: var(--size);
   height: var(--size);
-  rotate: var(--angle);
-  background: var(--primary);
+  background: var(--black);
   animation: particle 1s linear;
+  mix-blend-mode: difference;
   pointer-events: none;
   --star-open: polygon(
     50% 100%,
-    65% 65%,
+    60% 60%,
     100% 50%,
-    65% 35%,
+    60% 40%,
     50% 0%,
-    35% 35%,
+    40% 40%,
     0% 50%,
-    35% 65%,
+    40% 60%,
     50% 100%
   );
   --star-closed: polygon(

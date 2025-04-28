@@ -397,13 +397,13 @@ const dists = computed(() => {
     Object.fromEntries(
       path.map((word) => {
         /** find dist in # of steps */
-        let dist = findPath(word, opposite).length;
+        let dist = findPath(word, opposite).length - 1;
         /** find max */
         const max = par.value.length;
         /** if no path */
-        if (!dist || !max) return [word.text, invert ? 0 : 1];
+        if (dist < 1 || max < 1) return [word.text, invert ? 0 : 1];
         /** normalize to 0-1 */
-        dist = dist / max;
+        dist = dist / (max - 1);
         /** flip */
         if (invert) dist = 1 - dist;
         return [word.text, dist];
@@ -515,16 +515,16 @@ const { pause, resume } = useIntervalFn(
     if (document.querySelectorAll(".particle").length > maxParticles) return;
     const particle = document.createElement("div");
     particle.className = "particle";
-    const size = random(minSize, maxSize);
     const halfW = window.innerWidth / 2;
     const halfH = window.innerHeight / 2;
     let x = halfW;
     let y = halfH;
     x += random(-1, 1, true) * (halfW - maxSize);
     y += random(-1, 1, true) * (halfH - maxSize);
-    particle.style.setProperty("--size", size + "px");
+    const size = random(minSize, maxSize);
     particle.style.setProperty("--x", x + "px");
     particle.style.setProperty("--y", y + "px");
+    particle.style.setProperty("--size", size + "px");
     document.body.append(particle);
     particle.addEventListener("animationend", particle.remove);
   },
