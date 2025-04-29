@@ -25,9 +25,9 @@
   --off-white: hsl(195, 10%, 10%);
   --white: hsl(195, 25%, 0%);
 
-  --easy: hsl(170, 60%, 40%);
-  --medium: hsl(250, 40%, 65%);
-  --hard: hsl(340, 60%, 60%);
+  --easy: hsl(170, 60%, 45%);
+  --medium: hsl(250, 40%, 70%);
+  --hard: hsl(340, 60%, 65%);
 }
 
 :root {
