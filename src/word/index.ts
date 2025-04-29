@@ -19,7 +19,7 @@ export const oneLetterDifferent = (a: string, b: string) => {
   return diff === 1;
 };
 
-/** find shortest path between two words, breadth first search */
+/** find shortest path between two words */
 export const findPath = (
   a: Word,
   b: Word,
@@ -27,29 +27,45 @@ export const findPath = (
 ) => {
   if (a.text === b.text) return [a];
 
+  /** breadth first search */
+
+  /** per-node records */
   const explored: Record<Word["text"], boolean> = {};
   const previous: Record<Word["text"], Word> = {};
 
+  /** list of nodes to explore */
   const list = [a];
+  /** mark start as explored */
   explored[a.text] = true;
 
-  while (list.length > 0) {
-    let word = list.shift();
-    let links = word?.links ?? [];
+  let word: Word | undefined;
+  /** get next word */
+  while ((word = list.shift())) {
+    /** get next links */
+    let links = word.links ?? [];
+    /** only get links of certain type(s) */
     links = links.filter((link) => types.includes(link.type));
+    /** for each link */
     for (const link of links) {
+      /** if we found end */
       if (link === b) {
+        /** construct path */
         const path = [link];
+        /** walk back to start, following each previous */
         while (word) {
           path.push(word);
           word = previous[word.text];
         }
+        /** flip end to start */
         path.reverse();
         return path;
       } else if (!explored[link.text]) {
+        /** explore link next */
         list.push(link);
+        /** mark link as explored */
         explored[link.text] = true;
-        if (word) previous[link.text] = word;
+        /** track where we came from */
+        previous[link.text] = word;
       }
     }
   }
