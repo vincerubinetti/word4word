@@ -23,8 +23,11 @@ footer {
   justify-content: center;
   padding: 40px;
   gap: 10px 20px;
-  /* border-top: solid 2px var(--light-gray); */
-  /* background: var(--off-white); */
+  background: var(--white);
+  color: var(--black);
   font-size: 1.2rem;
+  transition:
+    background var(--fast),
+    color var(--fast);
 }
 </style>

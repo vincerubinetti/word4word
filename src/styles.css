@@ -18,9 +18,9 @@
   --primary: hsl(195, 80%, 50%);
   --secondary: hsl(10, 100%, 70%);
 
-  --black: hsl(195, 100%, 100%);
-  --dark-gray: hsl(195, 20%, 70%);
-  --gray: hsl(195, 20%, 40%);
+  --black: hsl(10, 100%, 100%);
+  --dark-gray: hsl(10, 10%, 70%);
+  --gray: hsl(10, 10%, 40%);
   --light-gray: hsl(195, 5%, 20%);
   --off-white: hsl(195, 10%, 10%);
   --white: hsl(195, 25%, 0%);
@@ -38,8 +38,8 @@
   --bold: 600;
   --extra-bold: 900;
 
-  --fast: 0.1s;
-  --slow: 0.5s;
+  --fast: 0.25s ease-in-out;
+  --slow: 0.5s ease-in-out;
 }
 
 * {
@@ -51,6 +51,9 @@ html {
   color: var(--black);
   font-family: "Quicksand", sans-serif;
   text-align: center;
+  transition:
+    background var(--fast),
+    color var(--fast);
 }
 
 body {
@@ -76,6 +79,12 @@ section {
   justify-content: center;
   padding: 40px max(40px, (100% - 600px) / 2);
   gap: 20px;
+  background: var(--white);
+  color: var(--black);
+  transition:
+    background var(--fast),
+    color var(--fast),
+    border-color var(--fast);
 }
 
 section:first-child {
@@ -90,7 +99,6 @@ section:nth-child(even) {
 
 h2 {
   margin: 0;
-  color: var(--black);
   font-weight: var(--bold);
   font-size: 1.2rem;
 }
@@ -126,12 +134,15 @@ hr {
   margin: 40px 0;
   border: none;
   background: var(--light-gray);
+  transition: background var(--fast);
 }
 
 a {
   color: var(--primary);
-  transition-duration: var(--fast);
-  transition-property: color, background, border-color;
+  transition:
+    color var(--fast),
+    background var(--fast),
+    border-color var(--fast);
 }
 
 a:hover {
@@ -153,8 +164,10 @@ input {
   color: inherit;
   font: inherit;
   text-align: center;
-  transition-duration: var(--fast);
-  transition-property: border-color;
+  transition:
+    background var(--fast),
+    color var(--fast),
+    border-color var(--fast);
 }
 
 input:hover {
@@ -174,8 +187,9 @@ button {
   color: inherit;
   font: inherit;
   cursor: pointer;
-  transition-duration: var(--fast);
-  transition-property: background, color;
+  transition:
+    background var(--fast),
+    color var(--fast);
 }
 
 button.primary {
@@ -223,11 +237,12 @@ button.square {
   bottom: -2px;
   left: 0;
   height: 2px;
-  scale: 0 0;
+  scale: 0 1;
   background: var(--primary);
   content: "";
-  transition-property: scale;
-  transition: var(--fast);
+  transition:
+    background var(--fast),
+    scale var(--fast);
 }
 
 .active::after {
@@ -236,6 +251,7 @@ button.square {
 
 ::placeholder {
   color: var(--gray);
+  transition: color var(--fast);
 }
 
 [disabled] {
@@ -256,18 +272,22 @@ html:not([data-headlessui-focus-visible]) :focus-visible {
 
 .gray {
   color: var(--gray);
+  transition: color var(--fast);
 }
 
 .success {
   color: var(--success);
+  transition: color var(--fast);
 }
 
 .info {
   color: var(--info);
+  transition: color var(--fast);
 }
 
 .error {
   color: var(--error);
+  transition: color var(--fast);
 }
 
 .lucide {
@@ -276,15 +296,24 @@ html:not([data-headlessui-focus-visible]) :focus-visible {
 }
 
 .tippy-box {
-  padding: 2px !important;
+  padding: 0 !important;
   border-radius: 0 !important;
   background: var(--black) !important;
   color: var(--white) !important;
   font: inherit !important;
+  transition:
+    background var(--fast),
+    color var(--fast) !important;
+}
+
+.tippy-content {
+  padding: 5px 10px !important;
+  transition: unset !important;
 }
 
 .tippy-arrow {
   color: var(--black) !important;
+  transition: color var(--fast) !important;
 }
 
 .tippy-arrow::before {
@@ -345,8 +374,9 @@ html:not([data-headlessui-focus-visible]) :focus-visible {
 
 .slide-enter-active,
 .slide-leave-active {
-  transition-duration: var(--fast);
-  transition-property: translate, opacity;
+  transition:
+    translate var(--fast),
+    opacity var(--fast);
   transition-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
 }
 
@@ -366,11 +396,9 @@ html:not([data-headlessui-focus-visible]) :focus-visible {
   left: var(--x);
   width: var(--size);
   height: var(--size);
-  background: var(--black);
+  background: var(--primary);
   animation: particle 1s linear;
-  mix-blend-mode: difference;
-  pointer-events: none;
-  --star-open: polygon(
+  clip-path: polygon(
     50% 100%,
     60% 60%,
     100% 50%,
@@ -381,30 +409,21 @@ html:not([data-headlessui-focus-visible]) :focus-visible {
     40% 60%,
     50% 100%
   );
-  --star-closed: polygon(
-    50% 100%,
-    50% 50%,
-    100% 50%,
-    50% 50%,
-    50% 0%,
-    50% 50%,
-    0% 50%,
-    50% 50%,
-    50% 100%
-  );
+  pointer-events: none;
+  transition: background var(--fast);
 }
 
 @keyframes particle {
   0% {
-    clip-path: var(--star-closed);
+    opacity: 0;
   }
 
   50% {
-    clip-path: var(--star-open);
+    opacity: 1;
   }
 
   100% {
     translate: 0 calc(-1 * var(--size));
-    clip-path: var(--star-closed);
+    opacity: 0;
   }
 }

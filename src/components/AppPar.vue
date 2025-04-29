@@ -42,4 +42,8 @@ div {
   display: flex;
   gap: 5px;
 }
+
+span {
+  transition: color var(--fast);
+}
 </style>

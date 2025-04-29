@@ -36,6 +36,9 @@ defineProps<Props>();
   font-weight: var(--extra-bold);
   font-size: 1.2rem;
   text-transform: uppercase;
+  transition:
+    background var(--fast),
+    color var(--fast);
 }
 
 .link {
@@ -50,5 +53,6 @@ defineProps<Props>();
   background: var(--color);
   content: "";
   clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+  transition: background var(--fast);
 }
 </style>

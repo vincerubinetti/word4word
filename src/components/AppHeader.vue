@@ -86,19 +86,22 @@ header {
   gap: 10px 20px;
   border-bottom: solid 2px var(--light-gray);
   background: var(--off-white);
+  color: var(--black);
   font-size: 1.2rem;
+  transition:
+    background var(--fast),
+    color var(--fast),
+    border-color var(--fast);
 }
 
 .title {
   padding: 0 10px;
   font-weight: var(--bold);
   text-align: left;
-  /* white-space: nowrap; */
 }
 
 h1 {
   margin: 0;
-  color: var(--black);
   font-weight: unset;
   font-size: inherit;
   text-transform: uppercase;
@@ -120,7 +123,6 @@ button {
   width: 30px;
   height: 30px;
   padding: 0;
-  color: var(--primary);
 }
 
 @media (max-width: 600px) {

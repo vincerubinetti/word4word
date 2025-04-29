@@ -60,5 +60,6 @@ const clearAll = () => {
   fill: currentColor;
   flex-shrink: 0;
   stroke: var(--white);
+  transition: stroke var(--fast);
 }
 </style>

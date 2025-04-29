@@ -608,6 +608,9 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
   padding: 5px 10px;
   background: var(--black);
   color: var(--white);
+  transition:
+    background var(--fast),
+    color var(--fast);
 }
 
 :deep(.input) {
@@ -646,5 +649,6 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
   grid-column: 1;
   color: var(--gray);
   fill: currentColor;
+  transition: color var(--fast);
 }
 </style>

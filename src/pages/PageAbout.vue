@@ -181,7 +181,8 @@
 
     <p>
       The <RouterLink to="/daily">daily game</RouterLink> increases in
-      difficulty (higher <b>par</b>) over the course of the week and the month.
+      difficulty (higher <b>par</b>) throughout the week and over the course of
+      the month.
     </p>
 
     <div class="table">
@@ -477,6 +478,7 @@ const chartData = computed(() => {
   overflow-x: auto;
   overflow-y: auto;
   background: var(--white);
+  transition: background var(--fast);
 }
 
 table {
@@ -513,6 +515,10 @@ td {
   padding: 5px 10px;
 }
 
+.row {
+  transition: background var(--fast);
+}
+
 .row:hover {
   background: var(--light-gray);
   cursor: pointer;
@@ -522,6 +528,7 @@ th,
 .label {
   background: var(--light-gray);
   font-weight: var(--bold);
+  transition: background var(--fast);
 }
 
 .upper {
@@ -555,6 +562,7 @@ th,
 .detail > :empty::after {
   content: "-";
   color: var(--gray);
+  transition: color var(--fast);
 }
 
 .links {
@@ -566,6 +574,7 @@ th,
 .links > button {
   padding: 0;
   color: var(--primary);
+  transition: color var(--fast);
 }
 
 .definitions {
@@ -575,17 +584,20 @@ th,
 .chart text {
   fill: var(--black);
   font-size: 60px;
+  transition: fill var(--fast);
 }
 
 .axes {
   fill: none;
   stroke: var(--black);
   stroke-width: 5px;
+  transition: stroke var(--fast);
 }
 
 .bar {
   fill: none;
   stroke-width: 90px;
+  transition: stroke var(--fast);
 }
 
 .x-axis {
