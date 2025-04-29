@@ -516,7 +516,7 @@ const unCopied = useDebounceFn(() => (copied.value = false), 2000);
 /** copy path to clipboard */
 const copy = async () => {
   await navigator.clipboard.writeText(
-    (showPar ? par.value : aPath.value.concat(bPath.value))
+    (tab.value === 0 ? par.value : aPath.value.concat(bPath.value))
       .map((word) => word.text)
       .join(" "),
   );
@@ -531,9 +531,6 @@ const won = computed(() =>
     bPath.value.at(0)?.text ?? "",
   ),
 );
-
-/** should show perfect par path */
-const showPar = ref(false);
 
 /** did player get a perfect par */
 const perfect = computed(() => won.value && steps.value <= par.value.length);
