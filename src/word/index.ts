@@ -57,6 +57,12 @@ export const findPath = (
   return [];
 };
 
+/** daily calculation cache */
+const cache = new Map<
+  { day: number; week: number; days: number },
+  { a: Word; b: Word }
+>();
+
 /** get daily game */
 export const getDaily = (pars: Pars, today = new Date()) => {
   /** get date info */
@@ -68,6 +74,10 @@ export const getDaily = (pars: Pars, today = new Date()) => {
   /** start week on monday */
   day--;
   if (day < 0) day += 7;
+
+  /** get cached */
+  const cacheKey = { day, week, days };
+  if (cache.has(cacheKey)) return cache.get(cacheKey)!;
 
   /** increase difficulty over day of week (1-7) and week of month (1-5) */
   const difficulties = [
@@ -102,6 +112,9 @@ export const getDaily = (pars: Pars, today = new Date()) => {
   console.debug({ day, week, days, par, pairs, pair });
 
   if (!daily) throw Error("Couldn't determine daily game");
+
+  /** set cache */
+  cache.set(cacheKey, daily);
 
   return daily;
 };

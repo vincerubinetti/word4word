@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.23",
     "@vueuse/core": "^13.0.0",
     "date-fns": "^4.1.0",
     "fast-shuffle": "^6.1.1",

@@ -3,20 +3,15 @@
   <section v-else class="error">Couldn't find words</section>
 </template>
 
-<script lang="ts">
-/** daily game */
-const daily = ref<ReturnType<typeof getDaily>>();
-</script>
-
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-import { title } from "@/App.vue";
+import { useRoute, useRouter } from "vue-router";
 import AppGame from "@/components/AppGame.vue";
 import { data } from "@/data";
 import { getDaily, type Word } from "@/word";
 
 const route = useRoute();
+const router = useRouter();
 
 /** start/end words */
 const a = ref<Word>();
@@ -35,34 +30,37 @@ watchEffect(() => {
   //   console.time("getDaily");
   //   const { a, b } = getDaily(pars, today);
   //   console.timeEnd("getDaily");
-  //   console.debug(a.text, b.text);
+  //   console.log(a.text, b.text);
   // }
 
+  /** get daily game */
+  const daily = getDaily(pars);
+
   if (params.a && params.b) {
+    /** if url words match daily words (e.g. when following daily share link) */
+    if (String(params.a) === daily.a.text && String(params.b) === daily.b.text)
+      /** go to daily game */
+      return router.push({ path: "/", replace: true });
+
     /** get custom words from url */
     a.value = lookupWord(String(params.a));
     b.value = lookupWord(String(params.b));
   } else {
-    /** get daily game */
-    try {
-      daily.value ??= getDaily(pars);
-      a.value = daily.value.a;
-      b.value = daily.value.b;
-    } catch (error) {
-      console.error(error);
-    }
+    /** use daily words */
+    a.value = daily.a;
+    b.value = daily.b;
   }
 
-  if (a.value && b.value) {
-    /** normalize to alphabetical */
-    if (a.value.text > b.value.text) {
-      const temp = a.value;
-      a.value = b.value;
-      b.value = temp;
-    }
+  if (!a.value || !b.value) return;
 
-    /** update page title */
-    title.value = `${a.value.text} ↔ ${b.value.text}`;
+  /** normalize to alphabetical */
+  if (a.value.text > b.value.text) {
+    const temp = a.value;
+    a.value = b.value;
+    b.value = temp;
   }
+
+  /** update page title */
+  // title.value = `${a.value.text} ↔ ${b.value.text}`;
 });
 </script>

@@ -17,6 +17,8 @@
         </RouterLink>
       </div>
 
+      <br />
+
       <button class="primary" @click="clearAll">Clear All</button>
     </template>
 
@@ -42,27 +44,21 @@ const clearAll = () => {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  gap: 10px;
+  gap: 5px 10px;
 }
 
 .saved-game {
   display: flex;
-  position: relative;
   align-items: center;
   justify-content: center;
-  width: 120px;
   padding: 5px 10px;
   gap: 5px;
-  border-radius: 999px;
-  background: var(--off-white);
   text-decoration: none;
 }
 
 .icon {
-  position: absolute;
-  top: -3px;
-  right: -3px;
   fill: currentColor;
+  flex-shrink: 0;
   stroke: var(--white);
 }
 </style>

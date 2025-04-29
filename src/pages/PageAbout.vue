@@ -243,26 +243,14 @@
     </svg>
   </section>
 
-  <section>
-    <div>
-      <a href="https://github.com/vincerubinetti/word4word" target="_blank"
-        >Source Code</a
-      >
-    </div>
-
-    <div>
-      &copy; 2025
-      <a href="https://vincentrubinetti.com" target="_blank"
-        >Vincent Rubinetti</a
-      >
-    </div>
-  </section>
+  <AppFooter />
 </template>
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watchEffect } from "vue";
 import { clamp, filter, max, orderBy, range, startCase } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
+import AppFooter from "@/components/AppFooter.vue";
 import AppInput from "@/components/AppInput.vue";
 import { getDifficulty } from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
@@ -455,7 +443,6 @@ const chartData = computed(() => {
   max-height: calc(10 * (1lh + 10px));
   overflow-x: auto;
   overflow-y: auto;
-  border: solid 2px var(--light-gray);
   background: var(--white);
 }
 
@@ -475,7 +462,7 @@ table button {
 thead tr {
   position: sticky;
   top: 0;
-  background: var(--off-white);
+  background: var(--light-gray);
 }
 
 th button {
@@ -492,7 +479,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: var(--off-white);
+  background: var(--light-gray);
 }
 
 td:first-child {

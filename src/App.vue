@@ -32,5 +32,5 @@ import { status } from "@/data";
 const route = useRoute();
 
 /** update page title */
-watchEffect(() => (title.value = String(route?.name ?? "")));
+watchEffect(() => (title.value = String(route?.meta.name ?? "")));
 </script>

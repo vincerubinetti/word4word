@@ -11,10 +11,14 @@ import { savedGames } from "@/util/storage";
 
 export const routes = [
   {
-    name: "Daily",
     path: "/",
     component: PageGame,
-    meta: { header: true, icon: Calendar1, tooltip: "Daily game" },
+    meta: {
+      name: "Daily game",
+      header: true,
+      icon: Calendar1,
+      tooltip: "Daily game",
+    },
     beforeEnter: () => {
       const path = window.sessionStorage.redirectPath;
       if (typeof path === "string") {
@@ -25,48 +29,69 @@ export const routes = [
     },
   },
   {
-    name: "Custom",
     path: "/custom",
     component: PageCustom,
-    meta: { header: true, icon: PencilRuler, tooltip: "Custom game" },
+    meta: {
+      name: "Custom game",
+      header: true,
+      icon: PencilRuler,
+      tooltip: "Custom game",
+    },
   },
   {
-    name: "Saved",
     path: "/saved",
     component: PageSaved,
     meta: {
+      name: "Saved games",
       header: computed(() => !isEmpty(savedGames.value)),
       icon: Bookmark,
       tooltip: "Saved games",
     },
   },
   {
-    name: "About",
     path: "/about",
     component: PageAbout,
-    meta: { header: true, icon: BadgeHelp, tooltip: "How to play, info, about" },
+    meta: {
+      name: "About",
+      header: true,
+      icon: BadgeHelp,
+      tooltip: "About",
+    },
   },
   {
-    name: "",
     path: "/:a([A-Za-z]{4})/:b([A-Za-z]{4})",
     component: PageGame,
-    meta: {},
+    meta: {
+      name: "Custom game",
+      header: false,
+      icon: null,
+      tooltip: "",
+    },
   },
   ...(import.meta.env.DEV
     ? [
         {
-          name: "icons",
+          name: "Icons",
           path: "/icons",
           component: PageIcons,
-          meta: {},
+          meta: {
+            name: "Icons",
+            header: false,
+            icon: null,
+            tooltip: "",
+          },
         },
       ]
     : []),
   {
-    name: "404",
     path: "/:pathMatch(.*)*",
     component: PageGame,
-    meta: {},
+    meta: {
+      name: "Not Found",
+      header: false,
+      icon: null,
+      tooltip: "",
+    },
     beforeEnter: () => "/",
   },
 ] as const;

@@ -1,173 +1,180 @@
 <template>
   <section>
-    <div class="buttons">
-      <AppPar
-        component="button"
-        :par="par.length"
-        :class="showPar && 'active'"
-        @click="showPar = true"
-      >
-        <LandPlot />
-      </AppPar>
+    <TabGroup :selectedIndex="tab" @change="(index) => (tab = index)">
+      <TabList class="buttons">
+        <Tab as="template" v-slot="{ selected }">
+          <AppPar
+            component="button"
+            :par="par.length"
+            :class="selected ? 'active' : 'inactive'"
+          >
+            <LandPlot />
+          </AppPar>
+        </Tab>
 
-      <button
-        :class="!showPar && 'active'"
-        v-tooltip="'Your path'"
-        @click="showPar = false"
-      >
-        <User />
-        <span>Yours: {{ steps }}</span>
-      </button>
-    </div>
+        <Tab as="template" v-slot="{ selected }">
+          <button
+            :class="selected ? 'active' : 'inactive'"
+            v-tooltip="'Your path'"
+          >
+            <User />
+            <span>Yours: {{ steps }}</span>
+          </button>
+        </Tab>
+      </TabList>
 
-    <AppPath
-      v-if="showPar"
-      :class="won ? 'wiggle-always' : 'flip'"
-      :path="
-        par.length
-          ? aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
-            ? par.toReversed()
-            : par
-          : [
-              aPath.at(0)!,
-              { text: '????', type: 'special', links: [] },
-              bPath.at(-1)!,
-            ]
-      "
-      :hide="!won"
-    />
-
-    <div v-else class="grid">
-      <div
-        v-for="(word, wordIndex) in aPath"
-        :key="word.text"
-        class="row"
-        :style="{ '--dist': dists.a[word.text] }"
-      >
-        <Star
-          v-if="word.type === 'special'"
-          class="special"
-          tabindex="0"
-          v-tooltip="'Special word'"
-        />
-        <AppChar
-          v-for="(char, charIndex) in word.text"
-          :key="charIndex"
-          :link="getDiff(char, 'a', wordIndex, charIndex)"
-          :class="won ? 'wiggle-always' : 'flip'"
-          :style="{
-            '--col': charIndex,
-            '--delay': (won ? wordIndex * 0.2 : 0) + charIndex * 0.1 + 's',
-          }"
-        >
-          {{ char }}
-        </AppChar>
-        <button
-          v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
-          class="secondary square"
-          v-tooltip="'Remove word'"
-          @click="remove('a')"
-        >
-          <X />
-        </button>
-      </div>
-
-      <template v-if="!won">
-        <div class="spacer" />
-
-        <div class="row">
-          <AppInput
-            ref="inputElement"
-            v-model="input"
-            class="input"
-            placeholder="Word"
-            @keydown.enter.prevent="submit"
-            @keydown="shortcuts"
+      <TabPanels>
+        <TabPanel as="template">
+          <AppPath
+            :class="won ? 'wiggle-always' : 'flip'"
+            :path="
+              par.length
+                ? aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
+                  ? par.toReversed()
+                  : par
+                : [
+                    aPath.at(0)!,
+                    { text: '????', type: 'special', links: [] },
+                    bPath.at(-1)!,
+                  ]
+            "
+            :hide="!won"
           />
+        </TabPanel>
 
-          <Transition name="slide" mode="out-in">
-            <aside v-if="message" class="message" aria-live="polite">
-              {{ message }}
-            </aside>
-          </Transition>
-
-          <button
-            class="hint secondary square"
-            v-tooltip="'Get hint'"
-            @click.prevent="hint"
+        <TabPanel class="grid">
+          <div
+            v-for="(word, wordIndex) in aPath"
+            :key="word.text"
+            class="row"
+            :style="{ '--dist': dists.a[word.text] }"
           >
-            <Lightbulb />
-          </button>
+            <Star
+              v-if="word.type === 'special'"
+              class="special"
+              tabindex="0"
+              v-tooltip="'Special word'"
+            />
+            <AppChar
+              v-for="(char, charIndex) in word.text"
+              :key="charIndex"
+              :link="getDiff(char, 'a', wordIndex, charIndex)"
+              :class="won ? 'wiggle-always' : 'flip'"
+              :style="{
+                '--col': charIndex,
+                '--delay': (won ? wordIndex * 0.2 : 0) + charIndex * 0.1 + 's',
+              }"
+            >
+              {{ char }}
+            </AppChar>
+            <button
+              v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
+              class="secondary square"
+              v-tooltip="'Remove word'"
+              @click="remove('a')"
+            >
+              <X />
+            </button>
+          </div>
 
-          <button
-            v-if="input.length > 0"
-            class="clear secondary square"
-            v-tooltip="'Clear input'"
-            @click="clear"
+          <template v-if="!won">
+            <div class="spacer" />
+
+            <div class="row">
+              <AppInput
+                ref="inputElement"
+                v-model="input"
+                class="input"
+                placeholder="Word"
+                @keydown.enter.prevent="submit"
+                @keydown="shortcuts"
+              />
+
+              <Transition name="slide" mode="out-in">
+                <aside v-if="message" class="message" aria-live="polite">
+                  {{ message }}
+                </aside>
+              </Transition>
+
+              <button
+                class="hint secondary square"
+                v-tooltip="'Get hint'"
+                @click.prevent="hint"
+              >
+                <Lightbulb />
+              </button>
+
+              <button
+                v-if="input.length > 0"
+                class="clear secondary square"
+                v-tooltip="'Clear input'"
+                @click="clear"
+              >
+                <X />
+              </button>
+
+              <button
+                v-if="inputWord && (aDiff || bDiff)"
+                class="submit secondary square pulse"
+                v-tooltip="'Add word'"
+                @click="submit"
+              >
+                <MoveVertical v-if="aDiff && bDiff" />
+                <ArrowUp v-else-if="aDiff" />
+                <ArrowDown v-else-if="bDiff" />
+              </button>
+
+              <button
+                class="reverse secondary square"
+                v-tooltip="'Reverse path'"
+                @click.prevent="reverse"
+              >
+                <ArrowUpDown />
+              </button>
+            </div>
+
+            <div class="spacer" />
+          </template>
+
+          <div
+            v-for="(word, wordIndex) in bPath"
+            :key="word.text"
+            class="row"
+            :style="{ '--dist': dists.b[word.text] }"
           >
-            <X />
-          </button>
-
-          <button
-            v-if="inputWord && (aDiff || bDiff)"
-            class="submit secondary square pulse"
-            v-tooltip="'Add word'"
-            @click="submit"
-          >
-            <MoveVertical v-if="aDiff && bDiff" />
-            <ArrowUp v-else-if="aDiff" />
-            <ArrowDown v-else-if="bDiff" />
-          </button>
-
-          <button
-            class="reverse secondary square"
-            v-tooltip="'Reverse path'"
-            @click.prevent="reverse"
-          >
-            <ArrowUpDown />
-          </button>
-        </div>
-
-        <div class="spacer" />
-      </template>
-
-      <div
-        v-for="(word, wordIndex) in bPath"
-        :key="word.text"
-        class="row"
-        :style="{ '--dist': dists.b[word.text] }"
-      >
-        <Star
-          v-if="word.type === 'special'"
-          class="special"
-          tabindex="0"
-          v-tooltip="'Special word'"
-        />
-        <AppChar
-          v-for="(char, charIndex) in word.text"
-          :key="charIndex"
-          :link="getDiff(char, 'b', wordIndex, charIndex)"
-          :class="won ? 'wiggle-always' : 'flip'"
-          :style="{
-            '--col': charIndex,
-            '--delay':
-              (won ? (aPath.length + wordIndex) * 0.2 : 0) +
-              charIndex * 0.1 +
-              's',
-          }"
-        >
-          {{ char }}
-        </AppChar>
-        <button
-          v-if="!won && wordIndex === 0 && bPath.length > 1"
-          class="secondary square"
-          v-tooltip="'Remove word'"
-          @click="remove('b')"
-        >
-          <X />
-        </button>
-      </div>
-    </div>
+            <Star
+              v-if="word.type === 'special'"
+              class="special"
+              tabindex="0"
+              v-tooltip="'Special word'"
+            />
+            <AppChar
+              v-for="(char, charIndex) in word.text"
+              :key="charIndex"
+              :link="getDiff(char, 'b', wordIndex, charIndex)"
+              :class="won ? 'wiggle-always' : 'flip'"
+              :style="{
+                '--col': charIndex,
+                '--delay':
+                  (won ? (aPath.length + wordIndex) * 0.2 : 0) +
+                  charIndex * 0.1 +
+                  's',
+              }"
+            >
+              {{ char }}
+            </AppChar>
+            <button
+              v-if="!won && wordIndex === 0 && bPath.length > 1"
+              class="secondary square"
+              v-tooltip="'Remove word'"
+              @click="remove('b')"
+            >
+              <X />
+            </button>
+          </div>
+        </TabPanel>
+      </TabPanels>
+    </TabGroup>
 
     <div class="buttons">
       <button
@@ -185,6 +192,14 @@
         <Share />
         <template v-if="won">Share</template>
       </button>
+      <button
+        v-if="won"
+        class="secondary square"
+        v-tooltip="'Copy words'"
+        @click="copy"
+      >
+        <Check v-if="copied" /> <Copy v-else />
+      </button>
     </div>
   </section>
 </template>
@@ -196,6 +211,8 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
+  Check,
+  Copy,
   LandPlot,
   Lightbulb,
   MoveVertical,
@@ -205,7 +222,8 @@ import {
   User,
   X,
 } from "lucide-vue-next";
-import { useIntervalFn } from "@vueuse/core";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
+import { useDebounceFn, useIntervalFn } from "@vueuse/core";
 import AppChar from "@/components/AppChar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
@@ -225,6 +243,9 @@ type Props = {
 };
 
 const { a, b } = defineProps<Props>();
+
+/** selected tab index */
+const tab = ref(1);
 
 /** storage key */
 const key = computed(() => a.text + "-" + b.text);
@@ -472,21 +493,35 @@ const getDiff = (
 
 /** share game */
 const share = async () => {
+  /** absolute, not just e.g. "/daily", in case someone visits days later */
+  const url = `${window.location.origin}${import.meta.env.BASE_URL}${a.text}/${b.text}`;
+  const text = [
+    VITE_TITLE,
+    `${a.text} ↔ ${b.text}`,
+    `Par: ${par.value.length || "???"}`,
+    won.value ? `Mine: ${steps.value}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
   try {
-    await window.navigator.share({
-      url: window.location.href,
-      text: [
-        VITE_TITLE,
-        `${a.text} ↔ ${b.text}`,
-        `Par: ${par.value.length || "???"}`,
-        won.value ? `Mine: ${steps.value}` : "",
-      ]
-        .filter(Boolean)
-        .join("\n"),
-    });
+    await window.navigator.share({ url, text });
   } catch (error) {
     console.error(error);
   }
+};
+
+const copied = ref(false);
+const unCopied = useDebounceFn(() => (copied.value = false), 2000);
+
+/** copy path to clipboard */
+const copy = async () => {
+  await navigator.clipboard.writeText(
+    (showPar ? par.value : aPath.value.concat(bPath.value))
+      .map((word) => word.text)
+      .join(" "),
+  );
+  copied.value = true;
+  unCopied();
 };
 
 /** win state */

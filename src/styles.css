@@ -85,102 +85,21 @@ section:first-child {
 }
 
 section:nth-child(even) {
+  border-top: solid 2px var(--light-gray);
+  border-bottom: solid 2px var(--light-gray);
   background: var(--off-white);
 }
 
-h1 {
-  margin: 0;
-  color: var(--black);
-  font-weight: var(--bold);
-  font-size: 1.3rem;
-}
-
 h2 {
-  margin: 20px 0;
+  margin: 0;
   color: var(--black);
   font-weight: var(--bold);
   font-size: 1.2rem;
 }
 
-a {
-  color: var(--primary);
-  transition-duration: var(--fast);
-  transition-property: color, background, border-color;
-}
-
-a:hover {
-  color: var(--black);
-}
-
 strong,
 b {
   font-weight: var(--bold);
-}
-
-input {
-  min-width: 0;
-  max-width: 100%;
-  min-height: 40px;
-  padding: 5px 15px;
-  border: solid 2px var(--light-gray);
-  border-radius: 999px;
-  background: var(--white);
-  color: inherit;
-  font: inherit;
-  text-align: center;
-  transition-duration: var(--fast);
-  transition-property: border-color;
-}
-
-input:hover {
-  border-color: var(--gray);
-}
-
-button {
-  display: inline-flex;
-  appearance: none;
-  align-items: center;
-  justify-content: center;
-  max-width: 100%;
-  padding: 5px 10px;
-  gap: 5px;
-  border: none;
-  border-radius: 999px;
-  background: none;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-  transition-duration: var(--fast);
-  transition-property: background, color;
-}
-
-button.primary {
-  min-width: 100px;
-  min-height: 40px;
-  background: var(--primary);
-  color: var(--white);
-}
-
-button.primary:hover {
-  background: var(--black);
-}
-
-button.secondary {
-  min-width: 100px;
-  min-height: 40px;
-  color: var(--primary);
-}
-
-button.secondary:hover {
-  background: var(--light-gray);
-}
-
-button.square {
-  width: 40px;
-  min-width: unset;
-  height: 40px;
-  min-height: unset;
-  padding: 0;
 }
 
 p {
@@ -211,14 +130,110 @@ hr {
   background: var(--light-gray);
 }
 
-.active {
-  background: var(--light-gray);
-  color: var(--black) !important;
+a {
+  color: var(--primary);
+  transition-duration: var(--fast);
+  transition-property: color, background, border-color;
 }
 
-:focus-visible {
-  outline: solid 2px var(--primary);
-  outline-offset: -2px;
+a:hover {
+  color: var(--black);
+}
+
+form {
+  display: contents;
+}
+
+input {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 40px;
+  padding: 5px 15px;
+  border: solid 2px var(--light-gray);
+  border-radius: 999px;
+  background: var(--white);
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  transition-duration: var(--fast);
+  transition-property: border-color;
+}
+
+input:hover {
+  border-color: var(--gray);
+}
+
+button {
+  display: inline-flex;
+  appearance: none;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: 5px 10px;
+  gap: 5px;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition-duration: var(--fast);
+  transition-property: background, color;
+}
+
+button.primary {
+  min-width: 100px;
+  min-height: 40px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--white);
+}
+
+button.primary:hover {
+  background: var(--black);
+}
+
+button.secondary {
+  min-width: 100px;
+  min-height: 40px;
+  border-radius: 999px;
+  color: var(--primary);
+}
+
+button.secondary:hover {
+  background: var(--light-gray);
+}
+
+button.square {
+  width: 40px;
+  min-width: unset;
+  height: 40px;
+  min-height: unset;
+  padding: 0;
+  border-radius: 999px;
+}
+
+.inactive,
+.active {
+  position: relative;
+  border-radius: 0;
+}
+
+.inactive::after,
+.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  scale: 0 0;
+  background: var(--primary);
+  content: "";
+  transition-property: scale;
+  transition: var(--fast);
+}
+
+.active::after {
+  scale: 1 1;
 }
 
 ::placeholder {
@@ -231,8 +246,14 @@ hr {
   pointer-events: none;
 }
 
-form {
-  display: contents;
+:focus-visible {
+  outline: solid 2px var(--primary);
+  outline-offset: -2px;
+}
+
+/** https://github.com/tailwindlabs/headlessui/issues/2583 */
+html:not([data-headlessui-focus-visible]) :focus-visible {
+  outline: none;
 }
 
 .gray {
@@ -295,6 +316,7 @@ form {
 
 .wiggle-char {
   display: inline-block;
+  white-space: pre-wrap;
 }
 
 .wiggle-always {
