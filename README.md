@@ -4,4 +4,4 @@
 
 Get from one 4-letter word to another, changing one letter at a time
 
-[🚀 **PLAY THE GAME**](https://vincerubinetti.github.io/word4word/)
+[🚀 **PLAY THE GAME**](https://word4word.app/)
