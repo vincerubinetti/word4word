@@ -13,10 +13,10 @@
     <AppPath class="flip" :path="example?.par ?? []" />
 
     <p>
-      That's it! Try to connect the words in as few steps as you can. The
+      That's it! Try to connect the words in as few steps as possible. The
       <b>par</b> is the smallest # of steps possible if you use only
-      <i>regular</i> words. Consider it a perfect score; even matching it is an
-      achievement, and you'd have to be very <i>special</i> to beat it.
+      <b>regular</b> words. Consider it a perfect score. Even matching it is an
+      achievement (and you'd have to be very <b>special</b> to <i>beat</i> it).
     </p>
 
     <p>
@@ -35,25 +35,25 @@
 
     <ul>
       <li>
-        <b>{{ regular.toLocaleString() }}</b> <i>regular</i> words
+        <b>{{ regular.toLocaleString() }}</b> <b>regular</b> words
         <br />
         Common, basic.
         <br />
         Used to calculate par and pick daily game words.
       </li>
       <li>
-        <b>{{ special.toLocaleString() }}</b> <i>special</i> words
+        <b>{{ special.toLocaleString() }}</b> <b>special</b> words
         <br />
         Less common, proper nouns, borrowed, slang, offensive, etc.
         <br />
         Can still be played.
       </li>
       <li>
-        <b>{{ obscure.toLocaleString() }}</b> <i>obscure</i> words
+        <b>{{ obscure.toLocaleString() }}</b> <b>obscure</b> words
         <br />
         Uncommon, archaic, esoteric, etc.
         <br />
-        Not allowed in play at all.
+        Not allowed at all.
       </li>
     </ul>
 
@@ -181,8 +181,8 @@
     <h2>Pars</h2>
 
     <p>
-      Certain <i>pars</i> are more common than others. Here's the distribution
-      of pars between all unique pairs of <i>regular</i> words. Par ∞ means no
+      Certain <b>pars</b> are more common than others. Here's the distribution
+      of pars between all unique pairs of <b>regular</b> words. Par ∞ means no
       possible path.
     </p>
 
