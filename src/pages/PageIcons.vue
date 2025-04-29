@@ -42,7 +42,10 @@ const path = computed(() => {
 
 .icon span {
   translate: -8px -16px;
-  filter: drop-shadow(0 16px 0 var(--black));
+  filter: drop-shadow(0 4px 0 var(--black)) drop-shadow(0 4px 0 var(--black))
+    drop-shadow(0 4px 0 var(--black)) drop-shadow(0 4px 0 var(--black))
+    drop-shadow(0 4px 0 var(--black)) drop-shadow(0 4px 0 var(--black))
+    drop-shadow(0 4px 0 var(--black)) drop-shadow(0 4px 0 var(--black));
 }
 
 .share {
@@ -60,6 +63,7 @@ const path = computed(() => {
 }
 
 .share span {
-  filter: drop-shadow(0 2px 0 var(--gray));
+  filter: drop-shadow(0 1px 0 var(--gray)) drop-shadow(0 1px 0 var(--gray))
+    drop-shadow(0 1px 0 var(--gray)) drop-shadow(0 1px 0 var(--gray));
 }
 </style>

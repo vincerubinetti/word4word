@@ -42,7 +42,6 @@ defineProps<Props>();
 }
 
 .link {
-  z-index: -1;
   position: absolute;
   top: 100%;
   left: 50%;
