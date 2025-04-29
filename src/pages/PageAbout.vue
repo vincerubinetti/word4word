@@ -18,11 +18,6 @@
       <b>regular</b> words. Consider it a perfect score. Even matching it is an
       achievement (and you'd have to be very <b>special</b> to <i>beat</i> it).
     </p>
-
-    <p>
-      The daily game increases in difficulty throughout the week, and throughout
-      the month.
-    </p>
   </section>
 
   <section>
@@ -88,19 +83,23 @@
               showAll ? 9999 : limit,
             )"
             :key="index"
-            :class="selected?.text === word.text && 'selected'"
+            :class="['row', selected?.text === word.text && 'selected']"
             tabindex="0"
             v-tooltip="'See info about word'"
             @click="select(word)"
             @keydown.enter="select(word)"
           >
-            <td v-for="(col, index) in cols" :key="index">
+            <td
+              v-for="(col, index) in cols"
+              :key="index"
+              :class="index === 0 && 'upper'"
+            >
               {{ word[col.key] }}
             </td>
           </tr>
 
           <tr v-if="filteredDictionary.length > limit">
-            <td colspan="5">
+            <td colspan="5" class="row">
               <button @click="showAll = !showAll">
                 Show {{ showAll ? "Less" : "All" }}
               </button>
@@ -178,6 +177,40 @@
   </section>
 
   <section>
+    <h2>Daily Game</h2>
+
+    <p>
+      The <RouterLink to="/daily">daily game</RouterLink> increases in
+      difficulty (higher <b>par</b>) over the course of the week and the month.
+    </p>
+
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>M</th>
+            <th>T</th>
+            <th>W</th>
+            <th>T</th>
+            <th>F</th>
+            <th>S</th>
+            <th>S</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(col, index) in difficulties" :key="index">
+            <td class="label">{{ index + 1 }}</td>
+            <td v-for="(row, index) in col" :key="index">
+              <AppPar :par="row" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
     <h2>Pars</h2>
 
     <p>
@@ -252,12 +285,12 @@ import { clamp, filter, max, orderBy, range, startCase } from "lodash";
 import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
 import AppFooter from "@/components/AppFooter.vue";
 import AppInput from "@/components/AppInput.vue";
-import { getDifficulty } from "@/components/AppPar.vue";
+import AppPar, { getDifficulty } from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data, infinitePar } from "@/data";
 import { useQuery } from "@/util/composables";
 import { sleep } from "@/util/misc";
-import { findPath, type Word } from "@/word";
+import { difficulties, findPath, type Word } from "@/word";
 import { getWordInfo } from "@/word/info";
 
 const infoElement = useTemplateRef("infoElement");
@@ -452,6 +485,8 @@ table {
 }
 
 table button {
+  width: 100%;
+  height: 100%;
   min-height: 0;
   padding: 5px 15px;
   gap: 0;
@@ -462,7 +497,6 @@ table button {
 thead tr {
   position: sticky;
   top: 0;
-  background: var(--light-gray);
 }
 
 th button {
@@ -474,20 +508,24 @@ th button svg {
   right: 0;
 }
 
-tbody tr {
+th:not(:has(button)),
+td {
+  padding: 5px 10px;
+}
+
+.row:hover {
+  background: var(--light-gray);
   cursor: pointer;
 }
 
-tbody tr:hover {
+th,
+.label {
   background: var(--light-gray);
+  font-weight: var(--bold);
 }
 
-td:first-child {
+.upper {
   text-transform: uppercase;
-}
-
-td {
-  padding: 5px 10px;
 }
 
 .selected {

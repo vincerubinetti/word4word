@@ -5,7 +5,6 @@
     v-tooltip="`Difficulty: ${difficulty.tooltip}`"
   >
     <slot />
-    <span>Par:</span>
     <span :style="{ color: difficulty.color }">
       {{ par || "???" }}
     </span>
@@ -16,10 +15,9 @@
 /** map par to subjective difficulty */
 export const getDifficulty = (par: number) => {
   if (par > 0) {
-    if (par <= 5) return { tooltip: "Easy", color: "var(--easy)" };
-    if (par <= 9) return { tooltip: "Medium", color: "var(--medium)" };
-    if (par <= 13) return { tooltip: "Hard", color: "var(--hard)" };
-    if (par <= maxPar) return { tooltip: "Expert", color: "var(--expert)" };
+    if (par <= 8) return { tooltip: "Easy", color: "var(--easy)" };
+    if (par <= 14) return { tooltip: "Medium", color: "var(--medium)" };
+    if (par <= maxPar) return { tooltip: "Hard", color: "var(--hard)" };
   }
   return { tooltip: "???", color: "var(--dark-gray)" };
 };

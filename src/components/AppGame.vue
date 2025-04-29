@@ -9,6 +9,7 @@
             :class="selected ? 'active' : 'inactive'"
           >
             <LandPlot />
+            Par
           </AppPar>
         </Tab>
 
@@ -256,17 +257,15 @@ const bPath = ref<Word[]>([]);
 
 /** look up words from text, when ready */
 const lookup = computed(() => {
-  if (!data.value) return () => undefined;
+  if (!data.value) return;
   const { lookupWord } = data.value;
   return (words: string[]) => {
     /** map text words to full word objects */
     const lookups = words.map(lookupWord);
     const filtered = lookups.filter((w) => w !== undefined);
     /** error if any words can't be found in dict */
-    if (filtered.length !== lookups.length) {
-      console.error("Couldn't look up word from storage");
-      return;
-    }
+    if (filtered.length !== lookups.length)
+      throw Error("Couldn't look up word from storage");
     return filtered;
   };
 });
@@ -274,10 +273,16 @@ const lookup = computed(() => {
 /** load game */
 const loadGame = () => {
   const loaded = savedGames.value[key.value];
-  if (loaded) {
-    /** load from storage */
-    aPath.value = lookup.value(loaded.a) ?? [a];
-    bPath.value = lookup.value(loaded.b) ?? [b];
+  if (loaded && lookup.value) {
+    try {
+      /** load from storage */
+      aPath.value = lookup.value(loaded.a);
+      bPath.value = lookup.value(loaded.b);
+    } catch (error) {
+      console.error(error);
+      aPath.value = [a];
+      bPath.value = [b];
+    }
   } else {
     /** new game */
     aPath.value = [a];

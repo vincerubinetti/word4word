@@ -6,7 +6,7 @@
 
       <div v-if="a.length < 4 || b.length < 4">Enter two 4-letter words</div>
       <div v-else-if="!aWord || !bWord">Enter valid words</div>
-      <AppPar v-else-if="par.length" :par="par.length" />
+      <AppPar v-else-if="par.length" :par="par.length">Par</AppPar>
       <div v-else class="error">No path between these words!</div>
 
       <button type="submit" class="primary" :disabled="!playable">Play</button>

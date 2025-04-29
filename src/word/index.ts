@@ -63,6 +63,15 @@ const cache = new Map<
   { a: Word; b: Word }
 >();
 
+/** increase difficulty over day of week (1-7) and week of month (1-5) */
+export const difficulties = [
+  [4, 5, 6, 7, 8, 9, 10],
+  [6, 7, 8, 9, 10, 11, 12],
+  [8, 9, 10, 11, 12, 13, 14],
+  [10, 11, 12, 13, 14, 15, 16],
+  [12, 13, 14, 15, 16, 17, 18],
+];
+
 /** get daily game */
 export const getDaily = (pars: Pars, today = new Date()) => {
   /** get date info */
@@ -78,15 +87,6 @@ export const getDaily = (pars: Pars, today = new Date()) => {
   /** get cached */
   const cacheKey = { day, week, days };
   if (cache.has(cacheKey)) return cache.get(cacheKey)!;
-
-  /** increase difficulty over day of week (1-7) and week of month (1-5) */
-  const difficulties = [
-    [4, 5, 6, 7, 8, 9, 10],
-    [6, 7, 8, 9, 10, 11, 12],
-    [8, 9, 10, 11, 12, 13, 14],
-    [10, 11, 12, 13, 14, 15, 16],
-    [12, 13, 14, 15, 16, 17, 18],
-  ];
 
   /** get par */
   const par = clamp(

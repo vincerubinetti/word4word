@@ -9,10 +9,9 @@
   --off-white: hsl(10, 50%, 98%);
   --white: hsl(10, 100%, 100%);
 
-  --easy: hsl(160, 70%, 40%);
-  --medium: hsl(200, 70%, 50%);
-  --hard: hsl(260, 50%, 60%);
-  --expert: hsl(350, 70%, 60%);
+  --easy: hsl(170, 60%, 40%);
+  --medium: hsl(250, 40%, 65%);
+  --hard: hsl(340, 60%, 60%);
 }
 
 :root[data-dark="true"] {
@@ -26,16 +25,15 @@
   --off-white: hsl(195, 10%, 10%);
   --white: hsl(195, 25%, 0%);
 
-  --easy: hsl(160, 80%, 50%);
-  --medium: hsl(200, 100%, 50%);
-  --hard: hsl(260, 80%, 70%);
-  --expert: hsl(350, 100%, 70%);
+  --easy: hsl(170, 60%, 40%);
+  --medium: hsl(250, 40%, 65%);
+  --hard: hsl(340, 60%, 60%);
 }
 
 :root {
   --success: var(--easy);
-  --info: var(--medium);
-  --error: var(--expert);
+  --error: var(--hard);
+  --info: var(--primary);
 
   --bold: 600;
   --extra-bold: 900;
