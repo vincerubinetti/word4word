@@ -199,7 +199,7 @@
         v-tooltip="'Copy words'"
         @click="copy"
       >
-        <Check v-if="copied" /> <Copy v-else />
+        <Check v-if="copied" class="success" /> <Copy v-else />
       </button>
     </div>
   </section>
@@ -516,7 +516,7 @@ const share = async () => {
 };
 
 const copied = ref(false);
-const unCopied = useDebounceFn(() => (copied.value = false), 2000);
+const clearCopied = useDebounceFn(() => (copied.value = false), 1000);
 
 /** copy path to clipboard */
 const copy = async () => {
@@ -526,7 +526,7 @@ const copy = async () => {
       .join(" "),
   );
   copied.value = true;
-  unCopied();
+  clearCopied();
 };
 
 /** win state */
