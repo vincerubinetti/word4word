@@ -19,10 +19,10 @@ jobs:
       - name: Install packages
         run: bun install
 
-      - name: Build
+      - name: Compile data
         run: bun run compile
 
-      - name: Build
+      - name: Build app
         run: bun run build
 
       - name: Deploy to gh-pages
