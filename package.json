@@ -8,28 +8,28 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
-    "@vueuse/core": "^13.0.0",
+    "@vueuse/core": "^13.1.0",
     "date-fns": "^4.1.0",
     "fast-shuffle": "^6.1.1",
     "lodash": "^4.17.21",
-    "lucide-vue-next": "^0.487.0",
+    "lucide-vue-next": "^0.503.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0",
+    "vue-router": "^4.5.1",
     "vue-tippy": "v6"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@types/lodash": "^4.17.16",
-    "@types/node": "^22.13.17",
+    "@types/node": "^22.15.3",
     "@types/seed-random": "^2.2.4",
     "@types/seedrandom": "^3.0.8",
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "postcss": "^8.5.3",
     "prettier-plugin-css-order": "^2.1.2",
     "prettier-plugin-jsdoc": "^1.3.2",
-    "typescript": "^5.7.2",
-    "vite": "^6.2.0",
-    "vue-tsc": "^2.2.4"
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3",
+    "vue-tsc": "^2.2.10"
   }
 }

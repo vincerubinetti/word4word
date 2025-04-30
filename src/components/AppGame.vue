@@ -3,6 +3,16 @@
     <TabGroup :selectedIndex="tab" @change="(index) => (tab = index)">
       <TabList class="buttons">
         <Tab as="template" v-slot="{ selected }">
+          <button
+            :class="selected ? 'active' : 'inactive'"
+            v-tooltip="'Your path'"
+          >
+            <User />
+            <span>Yours: {{ steps }}</span>
+          </button>
+        </Tab>
+
+        <Tab as="template" v-slot="{ selected }">
           <AppPar
             component="button"
             :par="par.length"
@@ -12,37 +22,9 @@
             Par
           </AppPar>
         </Tab>
-
-        <Tab as="template" v-slot="{ selected }">
-          <button
-            :class="selected ? 'active' : 'inactive'"
-            v-tooltip="'Your path'"
-          >
-            <User />
-            <span>Yours: {{ steps }}</span>
-          </button>
-        </Tab>
       </TabList>
 
       <TabPanels>
-        <TabPanel as="template">
-          <AppPath
-            :class="won ? 'wiggle-always' : 'flip'"
-            :path="
-              par.length
-                ? aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
-                  ? par.toReversed()
-                  : par
-                : [
-                    aPath.at(0)!,
-                    { text: '????', type: 'special', links: [] },
-                    bPath.at(-1)!,
-                  ]
-            "
-            :hide="!won"
-          />
-        </TabPanel>
-
         <TabPanel class="grid">
           <div
             v-for="(word, wordIndex) in aPath"
@@ -174,6 +156,24 @@
             </button>
           </div>
         </TabPanel>
+
+        <TabPanel as="template">
+          <AppPath
+            :class="won ? 'wiggle-always' : 'flip'"
+            :path="
+              par.length
+                ? aPath.at(0)?.text === b.text && bPath.at(-1)?.text === a.text
+                  ? par.toReversed()
+                  : par
+                : [
+                    aPath.at(0)!,
+                    { text: '????', type: 'special', links: [] },
+                    bPath.at(-1)!,
+                  ]
+            "
+            :hide="!won"
+          />
+        </TabPanel>
       </TabPanels>
     </TabGroup>
 
@@ -246,7 +246,7 @@ type Props = {
 const { a, b } = defineProps<Props>();
 
 /** selected tab index */
-const tab = ref(1);
+const tab = ref(0);
 
 /** storage key */
 const key = computed(() => a.text + "-" + b.text);
@@ -298,6 +298,7 @@ const saveGame = () => {
     a: map(aPath.value, "text"),
     b: map(bPath.value, "text"),
     won: won.value,
+    par: par.value.length,
   };
 };
 
@@ -515,13 +516,14 @@ const share = async () => {
   }
 };
 
+/** clipboard copied indicator */
 const copied = ref(false);
 const clearCopied = useDebounceFn(() => (copied.value = false), 1000);
 
 /** copy path to clipboard */
 const copy = async () => {
   await navigator.clipboard.writeText(
-    (tab.value === 0 ? par.value : aPath.value.concat(bPath.value))
+    (tab.value === 0 ? aPath.value.concat(bPath.value) : par.value)
       .map((word) => word.text)
       .join(" "),
   );

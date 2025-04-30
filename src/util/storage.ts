@@ -1,6 +1,14 @@
 import { useStorage } from "@vueuse/core";
 
+type SavedGame = {
+  a: string[];
+  b: string[];
+  won: boolean;
+  par: number;
+};
+
 /** typed storage interface */
-export const savedGames = useStorage<
-  Record<string, { a: string[]; b: string[]; won: boolean }>
->("saved-games", {});
+export const savedGames = useStorage<Record<string, SavedGame>>(
+  "saved-games",
+  {},
+);

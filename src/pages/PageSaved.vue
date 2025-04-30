@@ -1,25 +1,41 @@
 <template>
-  <section>
+  <section style="--col: 800px">
     <template v-if="!isEmpty(savedGames)">
-      <div class="saved-games">
-        <RouterLink
-          v-for="({ a, b, won }, index) in Object.values(savedGames)"
-          :to="`/${a.at(0)}/${b.at(-1)}`"
-          :key="index"
-          class="saved-game"
-          v-tooltip="won ? 'Admire game' : 'Continue game'"
-        >
-          {{ a.at(0) }}
-          ↔
-          {{ b.at(-1) }}
-          <CircleCheck v-if="won" class="icon success" />
-          <CircleEllipsis v-if="!won" class="icon info" />
-        </RouterLink>
-      </div>
+      <template v-if="games.continue.length">
+        <h2>Continue<Ellipsis class="info" /></h2>
+
+        <div class="saved-games">
+          <SavedGame
+            v-for="({ a, b, won, par }, index) in games.continue"
+            :key="index"
+            :a="a"
+            :b="b"
+            :won="won"
+            :par="par"
+          />
+        </div>
+      </template>
 
       <br />
 
-      <button class="primary" @click="clearAll">Clear All</button>
+      <template v-if="games.completed.length">
+        <h2>Completed<CheckCircle class="success" /></h2>
+
+        <div class="saved-games">
+          <SavedGame
+            v-for="({ a, b, won, par }, index) in games.completed"
+            :key="index"
+            :a="a"
+            :b="b"
+            :won="won"
+            :par="par"
+          />
+        </div>
+      </template>
+
+      <br />
+
+      <button class="primary" @click="clearAll"><Trash2 /> Clear All</button>
     </template>
 
     <div v-else class="gray">No games yet</div>
@@ -27,39 +43,34 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { isEmpty } from "lodash";
-import { CircleCheck, CircleEllipsis } from "lucide-vue-next";
+import { CheckCircle, Ellipsis, Trash2 } from "lucide-vue-next";
 import { savedGames } from "@/util/storage";
+import SavedGame from "./SavedGame.vue";
 
+/** saved games split by type */
+const games = computed(() => {
+  const games = Object.values(savedGames.value).reverse();
+  return {
+    continue: games.filter(({ won }) => !won),
+    completed: games.filter(({ won }) => won),
+  };
+});
+
+/** remove all saved games */
 const clearAll = () => {
   if (window.confirm("Clear all saved games? Can't be undone."))
-    for (const key in savedGames.value)
-      if (key !== "lastGame") delete savedGames.value[key];
+    savedGames.value = null;
 };
 </script>
 
 <style scoped>
 .saved-games {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  place-content: center;
   width: 100%;
-  gap: 5px 10px;
-}
-
-.saved-game {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 10px;
-  gap: 5px;
-  text-decoration: none;
-}
-
-.icon {
-  fill: currentColor;
-  flex-shrink: 0;
-  stroke: var(--white);
-  transition: stroke var(--fast);
+  gap: 10px;
 }
 </style>

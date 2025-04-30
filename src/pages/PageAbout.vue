@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2>How To Play</h2>
+    <h2><BowArrow class="gray" />How To Play</h2>
 
     <p>
       Get from one 4-letter word to another, changing
@@ -21,7 +21,7 @@
   </section>
 
   <section>
-    <h2>Dictionary</h2>
+    <h2><BookA class="gray" />Dictionary</h2>
 
     <p>
       The game knows a total of
@@ -177,7 +177,7 @@
   </section>
 
   <section>
-    <h2>Daily Game</h2>
+    <h2><Calendar1 class="gray" />Daily Game</h2>
 
     <p>
       The <RouterLink to="/daily">daily game</RouterLink> increases in
@@ -212,7 +212,7 @@
   </section>
 
   <section>
-    <h2>Pars</h2>
+    <h2><LandPlot class="gray" />Pars</h2>
 
     <p>
       Certain <b>pars</b> are more common than others. Here's the distribution
@@ -283,7 +283,16 @@
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watchEffect } from "vue";
 import { clamp, filter, max, orderBy, range, startCase } from "lodash";
-import { ExternalLink, MoveDown, MoveUp, Volume2 } from "lucide-vue-next";
+import {
+  BookA,
+  BowArrow,
+  Calendar1,
+  ExternalLink,
+  LandPlot,
+  MoveDown,
+  MoveUp,
+  Volume2,
+} from "lucide-vue-next";
 import AppFooter from "@/components/AppFooter.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPar, { getDifficulty } from "@/components/AppPar.vue";

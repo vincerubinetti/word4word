@@ -9,13 +9,16 @@
       <AppPar v-else-if="par.length" :par="par.length">Par</AppPar>
       <div v-else class="error">No path between these words!</div>
 
-      <button type="submit" class="primary" :disabled="!playable">Play</button>
+      <button type="submit" class="primary" :disabled="!playable">
+        <Play />Play
+      </button>
     </form>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
+import { Play } from "lucide-vue-next";
 import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
 import { data } from "@/data";

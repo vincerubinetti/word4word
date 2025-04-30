@@ -73,11 +73,12 @@ main {
 }
 
 section {
+  --col: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px max(40px, (100% - 600px) / 2);
+  padding: 40px max(40px, (100% - var(--col)) / 2);
   gap: 20px;
   border-bottom: solid 2px var(--light-gray);
   background: var(--white);
@@ -97,7 +98,10 @@ section:nth-child(even) {
 }
 
 h2 {
+  display: flex;
+  align-items: center;
   margin: 0;
+  gap: 10px;
   font-weight: var(--bold);
   font-size: 1.2rem;
 }
