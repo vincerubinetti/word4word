@@ -9,8 +9,8 @@
   --off-white: hsl(10, 50%, 98%);
   --white: hsl(10, 100%, 100%);
 
-  --easy: hsl(170, 60%, 40%);
-  --medium: hsl(250, 40%, 65%);
+  --easy: hsl(170, 75%, 40%);
+  --medium: hsl(250, 55%, 65%);
   --hard: hsl(340, 60%, 60%);
 }
 
@@ -18,16 +18,16 @@
   --primary: hsl(195, 80%, 50%);
   --secondary: hsl(10, 100%, 70%);
 
-  --black: hsl(10, 100%, 100%);
-  --dark-gray: hsl(10, 10%, 70%);
-  --gray: hsl(10, 10%, 40%);
+  --black: hsl(195, 100%, 100%);
+  --dark-gray: hsl(195, 10%, 70%);
+  --gray: hsl(195, 10%, 40%);
   --light-gray: hsl(195, 5%, 20%);
   --off-white: hsl(195, 10%, 10%);
   --white: hsl(195, 25%, 0%);
 
-  --easy: hsl(170, 60%, 45%);
-  --medium: hsl(250, 40%, 70%);
-  --hard: hsl(340, 60%, 65%);
+  --easy: hsl(170, 75%, 40%);
+  --medium: hsl(250, 55%, 65%);
+  --hard: hsl(340, 60%, 60%);
 }
 
 :root {
@@ -79,6 +79,7 @@ section {
   justify-content: center;
   padding: 40px max(40px, (100% - 600px) / 2);
   gap: 20px;
+  border-bottom: solid 2px var(--light-gray);
   background: var(--white);
   color: var(--black);
   transition:
@@ -92,8 +93,6 @@ section:first-child {
 }
 
 section:nth-child(even) {
-  border-top: solid 2px var(--light-gray);
-  border-bottom: solid 2px var(--light-gray);
   background: var(--off-white);
 }
 
