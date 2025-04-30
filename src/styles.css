@@ -38,8 +38,8 @@
   --bold: 600;
   --extra-bold: 900;
 
-  --fast: 0.25s ease-in-out;
-  --slow: 0.5s ease-in-out;
+  --fast: 0.1s;
+  --slow: 0.5s;
 }
 
 * {
