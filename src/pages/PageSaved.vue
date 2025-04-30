@@ -71,6 +71,6 @@ const clearAll = () => {
   grid-template-columns: repeat(auto-fit, minmax(200px, auto));
   place-content: center;
   width: 100%;
-  gap: 10px;
+  gap: 10px 20px;
 }
 </style>
