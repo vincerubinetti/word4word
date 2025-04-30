@@ -196,8 +196,8 @@ button {
 }
 
 button.primary {
-  min-width: 100px;
   min-height: 40px;
+  padding: 5px 15px;
   border-radius: 999px;
   background: var(--primary);
   color: var(--white);
@@ -208,8 +208,8 @@ button.primary:hover {
 }
 
 button.secondary {
-  min-width: 100px;
   min-height: 40px;
+  padding: 5px 15px;
   border-radius: 999px;
   color: var(--primary);
 }
@@ -339,8 +339,13 @@ html:not([data-headlessui-focus-visible]) :focus-visible {
 
 @keyframes flip {
   0% {
-    scale: 1 0;
-    filter: drop-shadow(0 30px var(--gray));
+    transform: perspective(500px) rotateX(90deg);
+    filter: drop-shadow(0 0.5em var(--gray));
+  }
+
+  100% {
+    transform: perspective(500px) rotateX(0deg);
+    filter: drop-shadow(0 0 var(--gray));
   }
 }
 
@@ -401,6 +406,7 @@ html:not([data-headlessui-focus-visible]) :focus-visible {
   height: var(--size);
   background: var(--primary);
   animation: particle 1s linear;
+  mix-blend-mode: difference;
   clip-path: polygon(
     50% 100%,
     60% 60%,

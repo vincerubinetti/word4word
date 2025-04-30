@@ -68,9 +68,9 @@ const clearAll = () => {
 <style scoped>
 .saved-games {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+  grid-template-columns: repeat(auto-fit, 235px);
   place-content: center;
   width: 100%;
-  gap: 10px 20px;
+  gap: 10px;
 }
 </style>

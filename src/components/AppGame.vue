@@ -350,7 +350,10 @@ const check = () => {
 watchEffect(() => input.value.length === 4 && check());
 
 /** clear input */
-const clear = () => (input.value = "");
+const clear = () => {
+  input.value = "";
+  inputElement.value?.element?.focus();
+};
 
 /** which path was last added to */
 let lastAdded: ("a" | "b")[] = [];
@@ -373,6 +376,8 @@ const submit = async () => {
 
   /** reset input */
   input.value = "";
+
+  inputElement.value?.element?.focus();
   await sleep(100);
   inputElement.value?.element?.scrollIntoView({
     block: "nearest",
@@ -452,6 +457,7 @@ const hint = () => {
   const newText = sample(links)?.text ?? "";
   if (input.value === newText && links.length > 2) hint();
   else input.value = newText;
+  inputElement.value?.element?.focus();
 };
 
 /** reverse path direction */
@@ -525,7 +531,8 @@ const copy = async () => {
   await navigator.clipboard.writeText(
     (tab.value === 0 ? aPath.value.concat(bPath.value) : par.value)
       .map((word) => word.text)
-      .join(" "),
+      .join(" ")
+      .toUpperCase(),
   );
   copied.value = true;
   clearCopied();
