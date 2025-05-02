@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { watchEffect } from "vue";
 import { Moon, Sun } from "lucide-vue-next";
-import { useEventListener, useStorage } from "@vueuse/core";
+import { useStorage } from "@vueuse/core";
 import { routes } from "@/router";
 
 const { VITE_TITLE } = import.meta.env;
@@ -70,11 +70,6 @@ const darkMode = useStorage("dark-mode", false);
 watchEffect(() => {
   /** update css vars via html attr */
   document.documentElement.setAttribute("data-dark", String(darkMode.value));
-});
-
-/** keyboard shortcut */
-useEventListener("keydown", ({ key, ctrlKey }) => {
-  if (ctrlKey && key === "d") darkMode.value = !darkMode.value;
 });
 </script>
 

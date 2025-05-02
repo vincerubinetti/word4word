@@ -77,7 +77,6 @@
                 class="input"
                 placeholder="Word"
                 @keydown.enter.prevent="submit"
-                @keydown="shortcuts"
               />
 
               <Transition name="slide" mode="out-in">
@@ -381,8 +380,6 @@ const clear = async () => {
   });
 };
 
-/** which path was last added to */
-let lastAdded: ("a" | "b")[] = [];
 
 /** submit word to be added to path */
 const submit = async () => {
@@ -391,11 +388,9 @@ const submit = async () => {
     /** add word to path */
     if (aDiff.value) {
       aPath.value.push(word);
-      lastAdded.push("a");
       saveGame();
     } else if (bDiff.value) {
       bPath.value.unshift(word);
-      lastAdded.push("b");
       saveGame();
     }
   }
@@ -414,12 +409,6 @@ const remove = (path: "a" | "b") => {
     bPath.value = bPath.value.slice(1);
     saveGame();
   }
-};
-
-/** remove last added word */
-const removeLast = () => {
-  const last = lastAdded.pop();
-  if (last) remove(last);
 };
 
 /** message text */
@@ -484,18 +473,7 @@ const reverse = () => {
   const temp = aPath.value;
   aPath.value = bPath.value.reverse();
   bPath.value = temp.reverse();
-  lastAdded = lastAdded.map((list) => (list === "a" ? "b" : "a"));
   if (aPath.value.length > 1 || bPath.value.length > 1) saveGame();
-};
-
-/** keyboard shortcuts on input */
-const shortcuts = (event: KeyboardEvent) => {
-  if (event.ctrlKey) {
-    event.preventDefault();
-    if (event.key === "r") removeLast();
-    if (event.key === "h") hint();
-    if (event.key === "c") clear();
-  }
 };
 
 /** whether this char should be linked to char below in path */
