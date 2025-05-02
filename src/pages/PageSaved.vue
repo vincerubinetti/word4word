@@ -20,12 +20,9 @@
 
         <div class="saved-games">
           <SavedGame
-            v-for="({ a, b, won, par }, index) in games.completed"
+            v-for="(game, index) in games.completed"
             :key="index"
-            :a="a"
-            :b="b"
-            :won="won"
-            :par="par"
+            v-bind="game"
           />
         </div>
       </template>

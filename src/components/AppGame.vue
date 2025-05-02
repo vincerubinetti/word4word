@@ -268,7 +268,7 @@ const lookup = computed(() => {
     const lookups = words.map(lookupWord);
     const filtered = lookups.filter((w) => w !== undefined);
     /** error if any words can't be found in dict */
-    if (filtered.length !== lookups.length)
+    if (!words.length || filtered.length !== lookups.length)
       throw Error("Couldn't look up word from storage");
     return filtered;
   };
