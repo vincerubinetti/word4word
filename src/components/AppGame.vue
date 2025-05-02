@@ -8,7 +8,7 @@
             v-tooltip="'Your path'"
           >
             <User />
-            <span>Yours: {{ steps }}</span>
+            <span>Yours {{ steps }}</span>
           </button>
         </Tab>
 

@@ -3,17 +3,19 @@
     :to="`/${a.at(0)}/${b.at(-1)}`"
     class="saved-game"
     v-tooltip="
-      [type ? `${startCase(type)} game` : '', started || '']
+      [
+        type ? `${startCase(type)} game` : '',
+        started || '',
+        `Yours ${yours}, Par ${par ?? '?'}`,
+      ]
         .filter(Boolean)
-        .join(', ')
+        .join('<br>')
     "
   >
     <span
       class="count"
-      :style="{
-        color: par && won && a.length + b.length <= par ? 'var(--success)' : '',
-      }"
-      >{{ a.length + b.length }}</span
+      :style="{ color: par && won && yours <= par ? 'var(--success)' : '' }"
+      >{{ yours }}</span
     >
     <span />
     <span
@@ -41,13 +43,16 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { startCase } from "lodash";
 import { getDifficulty } from "@/components/AppPar.vue";
 import type { SavedGame } from "@/util/storage";
 
 type Props = SavedGame;
 
-defineProps<Props>();
+const { a, b } = defineProps<Props>();
+
+const yours = computed(() => a.length + b.length);
 </script>
 
 <style scoped>

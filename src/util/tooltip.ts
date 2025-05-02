@@ -10,6 +10,7 @@ export const tooltip: Directive<ElementWithTooltip, string> = {
     if (!value?.trim()) return;
     tippy(el, {
       delay: [100, 0],
+      allowHTML: true,
       onHide: (instance) => {
         sleep().then(() => {
           /** https://github.com/Akryum/floating-vue/issues/939 */
