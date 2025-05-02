@@ -32,7 +32,7 @@
       <br />
 
       <!-- actions -->
-      <button class="primary" @click="clearAll"><Trash2 /> Clear All</button>
+      <button class="primary" @click="clearAll"><Trash2 />Clear All</button>
     </template>
 
     <div v-else class="gray">No games yet</div>
@@ -55,10 +55,12 @@ const games = computed(() => {
   };
 });
 
-/** remove all saved games */
+/** remove all saved data */
 const clearAll = () => {
   if (window.confirm("Clear all saved games? Can't be undone."))
     for (const key in savedGames.value) delete savedGames.value[key];
+  savedGames.value = null;
+  window.localStorage.clear();
 };
 </script>
 
