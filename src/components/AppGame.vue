@@ -241,9 +241,13 @@ type Props = {
   a: Word;
   /** end word */
   b: Word;
+  /** date game started */
+  started?: string;
+  /** type of game */
+  type?: string;
 };
 
-const { a, b } = defineProps<Props>();
+const { a, b, started, type } = defineProps<Props>();
 
 /** selected tab index */
 const tab = ref(0);
@@ -294,12 +298,15 @@ watch([() => a, () => b, key, lookup], loadGame, { immediate: true });
 /** save game */
 const saveGame = () => {
   /** save to storage */
+  savedGames.value[key.value];
   savedGames.value[key.value] = {
     a: map(aPath.value, "text"),
     b: map(bPath.value, "text"),
     won: won.value,
     par: par.value.length,
   };
+  savedGames.value[key.value]!.started ??= started;
+  savedGames.value[key.value]!.type ??= type;
 };
 
 /** reset game */

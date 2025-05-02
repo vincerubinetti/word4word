@@ -1,5 +1,5 @@
 <template>
-  <AppGame v-if="a && b" :a="a" :b="b" />
+  <AppGame v-if="a && b" :a="a" :b="b" :type="type" :started="started" />
   <section v-else class="error">Couldn't find words</section>
 </template>
 
@@ -17,12 +17,20 @@ const router = useRouter();
 const a = ref<Word>();
 const b = ref<Word>();
 
+/** date game started */
+const started = ref("");
+/** type of game */
+const type = ref("");
+
 /** decide start/end words */
 watchEffect(() => {
   if (!data.value) return;
 
   const { pars, lookupWord } = data.value;
   const { params } = route;
+
+  /** set start timestamp */
+  started.value = new Date().toDateString();
 
   // test daily picks
   // for (let i = 0; i < 100; i++) {
@@ -42,13 +50,15 @@ watchEffect(() => {
       /** go to daily game */
       return router.push({ path: "/", replace: true });
 
-    /** get custom words from url */
+    /** get type words from url */
     a.value = lookupWord(String(params.a));
     b.value = lookupWord(String(params.b));
+    type.value = "custom";
   } else {
     /** use daily words */
     a.value = daily.a;
     b.value = daily.b;
+    type.value = "daily";
   }
 
   if (!a.value || !b.value) return;

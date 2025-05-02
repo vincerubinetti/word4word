@@ -1,9 +1,17 @@
 <template>
-  <RouterLink :to="`/${a.at(0)}/${b.at(-1)}`" class="saved-game">
+  <RouterLink
+    :to="`/${a.at(0)}/${b.at(-1)}`"
+    class="saved-game"
+    v-tooltip="
+      [type ? `${startCase(type)} game` : '', started || '']
+        .filter(Boolean)
+        .join(', ')
+    "
+  >
     <span
       class="count"
       :style="{
-        color: won && a.length + b.length <= par ? 'var(--success)' : '',
+        color: par && won && a.length + b.length <= par ? 'var(--success)' : '',
       }"
       >{{ a.length + b.length }}</span
     >
@@ -26,21 +34,18 @@
       {{ char }}
     </span>
     <span />
-    <span class="count" :style="{ color: getDifficulty(par).color }">
-      {{ par }}
+    <span class="count" :style="{ color: par ? getDifficulty(par).color : '' }">
+      {{ par ?? "" }}
     </span>
   </RouterLink>
 </template>
 
 <script setup lang="ts">
+import { startCase } from "lodash";
 import { getDifficulty } from "@/components/AppPar.vue";
+import type { SavedGame } from "@/util/storage";
 
-type Props = {
-  a: string[];
-  b: string[];
-  won: boolean;
-  par: number;
-};
+type Props = SavedGame;
 
 defineProps<Props>();
 </script>

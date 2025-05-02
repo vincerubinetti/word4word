@@ -1,8 +1,8 @@
 import { createApp } from "vue";
-import VueTippy from "vue-tippy";
 import App from "@/App.vue";
 import { run } from "@/data";
 import { router } from "@/router";
+import { tooltip } from "@/util/tooltip";
 import "@/styles.css";
 import "tippy.js/dist/tippy.css";
 
@@ -12,12 +12,5 @@ run();
 
 const app = createApp(App);
 app.use(router);
-app.use(VueTippy, {
-  directive: "tooltip",
-  defaultProps: {
-    delay: [100, 0],
-    allowHTML: true,
-    // onHide: () => false,
-  },
-});
+app.directive("tooltip", tooltip);
 app.mount("#app");

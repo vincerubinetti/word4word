@@ -1,10 +1,12 @@
 import { useStorage } from "@vueuse/core";
 
-type SavedGame = {
+export type SavedGame = {
   a: string[];
   b: string[];
-  won: boolean;
-  par: number;
+  won?: boolean;
+  par?: number;
+  started?: string;
+  type?: string;
 };
 
 /** typed storage interface */

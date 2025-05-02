@@ -16,7 +16,7 @@
 export const getDifficulty = (par: number) => {
   if (par > 0) {
     if (par <= 8) return { tooltip: "Easy", color: "var(--easy)" };
-    if (par <= 14) return { tooltip: "Medium", color: "var(--medium)" };
+    if (par <= 13) return { tooltip: "Medium", color: "var(--medium)" };
     if (par <= maxPar) return { tooltip: "Hard", color: "var(--hard)" };
   }
   return { tooltip: "???", color: "var(--dark-gray)" };
