@@ -26,6 +26,8 @@ export const findPath = (
   types: Word["type"][] = ["regular"],
 ) => {
   if (a.text === b.text) return [a];
+  if (!types.includes(a.type)) return [];
+  if (!types.includes(b.type)) return [];
 
   /** breadth first search */
 

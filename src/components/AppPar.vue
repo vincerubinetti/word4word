@@ -1,12 +1,8 @@
 <template>
-  <component
-    :is="component ?? 'div'"
-    tabindex="0"
-    v-tooltip="`Difficulty: ${difficulty.tooltip}`"
-  >
+  <component :is="component ?? 'div'" tabindex="0" v-tooltip="difficulty.text">
     <slot />
     <span :style="{ color: difficulty.color }">
-      {{ par || "???" }}
+      {{ par || "?" }}
     </span>
   </component>
 </template>
@@ -15,11 +11,11 @@
 /** map par to subjective difficulty */
 export const getDifficulty = (par: number) => {
   if (par > 0) {
-    if (par <= 8) return { tooltip: "Easy", color: "var(--easy)" };
-    if (par <= 13) return { tooltip: "Medium", color: "var(--medium)" };
-    if (par <= maxPar) return { tooltip: "Hard", color: "var(--hard)" };
+    if (par <= 8) return { text: "Easy", color: "var(--easy)" };
+    if (par <= 13) return { text: "Medium", color: "var(--medium)" };
+    if (par <= maxPar) return { text: "Hard", color: "var(--hard)" };
   }
-  return { tooltip: "???", color: "var(--dark-gray)" };
+  return { text: "?", color: "var(--dark-gray)" };
 };
 </script>
 
@@ -40,6 +36,7 @@ const difficulty = computed(() => getDifficulty(par));
 <style scoped>
 div {
   display: flex;
+  justify-content: center;
   gap: 5px;
 }
 

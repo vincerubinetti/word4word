@@ -68,9 +68,9 @@
             <th v-for="(col, index) in cols" :key="index">
               <button @click="sort(col.key)">
                 {{ col.name }}
-                <template v-if="sortKey === col.key">
-                  <MoveDown v-if="sortDir === 'desc'" />
-                  <MoveUp v-else />
+                <template v-if="sortOrder[0]?.key === col.key">
+                  <MoveUp v-if="sortOrder[0]?.dir === -1" />
+                  <MoveDown v-else />
                 </template>
               </button>
             </th>
@@ -282,7 +282,7 @@
 
 <script setup lang="ts">
 import { computed, ref, useTemplateRef, watchEffect } from "vue";
-import { clamp, filter, max, orderBy, range, startCase } from "lodash";
+import { clamp, filter, map, max, orderBy, range, startCase } from "lodash";
 import {
   BookA,
   BowArrow,
@@ -345,18 +345,19 @@ const example = computed(() => {
 });
 
 /** sort state */
-const sortKey = ref("text");
-const sortDir = ref<"asc" | "desc">("asc");
+const sortOrder = ref<{ key: string; dir: -1 | 1 }[]>([
+  { key: "text", dir: 1 },
+]);
 
 /** switch sort */
 const sort = (key: string) => {
-  if (sortKey.value === key) {
-    sortKey.value = key;
-    sortDir.value = sortDir.value === "desc" ? "asc" : "desc";
-  } else {
-    sortKey.value = key;
-    sortDir.value = "desc";
-  }
+  const primary = sortOrder.value[0];
+  if (primary?.key === key) primary.dir *= -1;
+  else
+    sortOrder.value = [
+      { key, dir: 1 as const },
+      ...sortOrder.value.filter((entry) => entry.key !== key),
+    ].slice(0, cols.length);
 };
 
 /** table cols */
@@ -377,9 +378,20 @@ const showAll = ref(false);
 /** sorted and searched dictionary */
 const filteredDictionary = computed(() => {
   const _search = search.value.toLowerCase();
-  return orderBy(dictionary.value, sortKey.value, sortDir.value).filter(
-    (word) => word.text.includes(_search),
-  );
+  return orderBy(
+    dictionary.value,
+    /** keys */
+    map(sortOrder.value, ({ key }) =>
+      key === "type"
+        ? ({ type }) => -["regular", "special", "obscure"].indexOf(type)
+        : key,
+    ),
+    /** directions */
+    map(
+      map(sortOrder.value, ({ key, dir }) => (key === "text" ? -dir : dir)),
+      (value) => (value === -1 ? "asc" : "desc"),
+    ),
+  ).filter((word) => word.text.includes(_search));
 });
 
 /** selected word */

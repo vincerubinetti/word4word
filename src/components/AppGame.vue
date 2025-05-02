@@ -517,7 +517,7 @@ const share = async () => {
   const text = [
     VITE_TITLE,
     `${a.text} ↔ ${b.text}`,
-    `Par: ${par.value.length || "???"}`,
+    `Par: ${par.value.length || "?"}`,
     won.value ? `Mine: ${steps.value}` : "",
   ]
     .filter(Boolean)

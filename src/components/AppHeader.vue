@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { watchEffect } from "vue";
 import { Moon, Sun } from "lucide-vue-next";
-import { useMagicKeys, useStorage } from "@vueuse/core";
+import { useEventListener, useStorage } from "@vueuse/core";
 import { routes } from "@/router";
 
 const { VITE_TITLE } = import.meta.env;
@@ -70,10 +70,8 @@ watchEffect(() => {
 });
 
 /** keyboard shortcut */
-const keys = useMagicKeys();
-const shortcut = keys["Ctrl+D"];
-watchEffect(() => {
-  if (shortcut?.value) darkMode.value = !darkMode.value;
+useEventListener("keydown", ({ key, ctrlKey }) => {
+  if (key === "d" && ctrlKey) darkMode.value = !darkMode.value;
 });
 </script>
 
