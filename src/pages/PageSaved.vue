@@ -58,7 +58,7 @@ const games = computed(() => {
 /** remove all saved games */
 const clearAll = () => {
   if (window.confirm("Clear all saved games? Can't be undone."))
-    savedGames.value = null;
+    for (const key in savedGames.value) delete savedGames.value[key];
 };
 </script>
 
