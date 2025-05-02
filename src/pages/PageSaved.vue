@@ -32,7 +32,13 @@
       <br />
 
       <!-- actions -->
-      <button class="primary" @click="clearAll"><Trash2 />Clear All</button>
+      <button
+        class="primary"
+        @click="clearAll"
+        v-tooltip="'Clear saved games & data'"
+      >
+        <Trash2 />Clear All
+      </button>
     </template>
 
     <div v-else class="gray">No games yet</div>
