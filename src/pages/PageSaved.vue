@@ -1,10 +1,11 @@
 <template>
   <section style="--col: 800px">
     <template v-if="!isEmpty(savedGames)">
+      <!-- continue -->
       <template v-if="games.continue.length">
         <h2>Continue<Ellipsis class="info" /></h2>
 
-        <div class="saved-games">
+        <div class="games">
           <SavedGame
             v-for="(game, index) in games.continue"
             :key="index"
@@ -15,10 +16,11 @@
 
       <br />
 
+      <!-- completed -->
       <template v-if="games.completed.length">
         <h2>Completed<CheckCircle class="success" /></h2>
 
-        <div class="saved-games">
+        <div class="games">
           <SavedGame
             v-for="(game, index) in games.completed"
             :key="index"
@@ -29,6 +31,7 @@
 
       <br />
 
+      <!-- actions -->
       <button class="primary" @click="clearAll"><Trash2 /> Clear All</button>
     </template>
 
@@ -60,9 +63,9 @@ const clearAll = () => {
 </script>
 
 <style scoped>
-.saved-games {
+.games {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 235px);
+  grid-template-columns: repeat(auto-fit, 225px);
   place-content: center;
   width: 100%;
   gap: 10px;

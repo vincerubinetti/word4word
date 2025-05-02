@@ -44,9 +44,27 @@ watchEffect(() => {
   /** get daily game */
   const daily = getDaily(pars);
 
+  /** normalize to alphabetical */
+  if (daily.a.text > daily.b.text) {
+    const temp = daily.a;
+    daily.a = daily.b;
+    daily.b = temp;
+  }
+
+  /** get words from url */
+  params.a = String(params.a ?? "");
+  params.b = String(params.b ?? "");
+
+  /** normalize to alphabetical */
+  if (params.a > params.b) {
+    const temp = params.a;
+    params.a = params.b;
+    params.b = temp;
+  }
+
   if (params.a && params.b) {
     /** if url words match daily words (e.g. when following daily share link) */
-    if (String(params.a) === daily.a.text && String(params.b) === daily.b.text)
+    if (params.a === daily.a.text && params.b === daily.b.text)
       /** go to daily game */
       return router.push({ path: "/", replace: true });
 
@@ -62,13 +80,6 @@ watchEffect(() => {
   }
 
   if (!a.value || !b.value) return;
-
-  /** normalize to alphabetical */
-  if (a.value.text > b.value.text) {
-    const temp = a.value;
-    a.value = b.value;
-    b.value = temp;
-  }
 
   /** update page title */
   // title.value = `${a.value.text} ↔ ${b.value.text}`;

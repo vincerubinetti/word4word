@@ -44,6 +44,9 @@
 
 * {
   box-sizing: border-box;
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 html {
@@ -89,7 +92,7 @@ section {
     border-color var(--fast);
 }
 
-section:first-child {
+section:last-child {
   flex-grow: 1;
 }
 

@@ -1,4 +1,5 @@
 <template>
+  <!-- how to play -->
   <section>
     <h2><BowArrow class="gray" />How To Play</h2>
 
@@ -20,6 +21,7 @@
     </p>
   </section>
 
+  <!-- dictionary -->
   <section>
     <h2><BookA class="gray" />Dictionary</h2>
 
@@ -28,6 +30,7 @@
       <b>{{ total.toLocaleString() }}</b> 4-letter words:
     </p>
 
+    <!-- word breakdown -->
     <ul>
       <li>
         <b>{{ regular.toLocaleString() }}</b> <b>regular</b> words
@@ -52,10 +55,12 @@
       </li>
     </ul>
 
+    <!-- search box -->
     <form @submit.prevent="searchSubmit">
       <AppInput v-model="search" placeholder="Search" />
     </form>
 
+    <!-- list -->
     <div class="table">
       <table>
         <thead>
@@ -109,6 +114,7 @@
       </table>
     </div>
 
+    <!-- selected word info -->
     <template v-if="selected">
       <div ref="infoElement" class="details">
         <b>
@@ -139,7 +145,7 @@
         </template>
       </div>
 
-      <ol v-if="info" class="definitions">
+      <ol v-if="info">
         <li
           v-for="({ part, description }, index) in info.definitions"
           :key="index"
@@ -176,6 +182,7 @@
     </template>
   </section>
 
+  <!-- daily game -->
   <section>
     <h2><Calendar1 class="gray" />Daily Game</h2>
 
@@ -211,6 +218,7 @@
     </div>
   </section>
 
+  <!-- pars -->
   <section>
     <h2><LandPlot class="gray" />Pars</h2>
 
@@ -281,7 +289,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef, watchEffect } from "vue";
+import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 import { clamp, filter, map, max, orderBy, range, startCase } from "lodash";
 import {
   BookA,
@@ -302,6 +311,8 @@ import { useQuery } from "@/util/composables";
 import { sleep } from "@/util/misc";
 import { difficulties, findPath, type Word } from "@/word";
 import { getWordInfo } from "@/word/info";
+
+const { query } = useRoute();
 
 const infoElement = useTemplateRef("infoElement");
 
@@ -344,7 +355,7 @@ const example = computed(() => {
   return { a, b, par };
 });
 
-/** sort state */
+/** multi-sort state */
 const sortOrder = ref<{ key: string; dir: -1 | 1 }[]>([
   { key: "text", dir: 1 },
 ]);
@@ -352,12 +363,18 @@ const sortOrder = ref<{ key: string; dir: -1 | 1 }[]>([
 /** switch sort */
 const sort = (key: string) => {
   const primary = sortOrder.value[0];
+  /** switch direction of first sort */
   if (primary?.key === key) primary.dir *= -1;
   else
+    /** add to sort list */
     sortOrder.value = [
+      /** move to first */
       { key, dir: 1 as const },
+      /** remove existing */
       ...sortOrder.value.filter((entry) => entry.key !== key),
-    ].slice(0, cols.length);
+    ]
+      /** limit */
+      .slice(0, cols.length);
 };
 
 /** table cols */
@@ -378,20 +395,25 @@ const showAll = ref(false);
 /** sorted and searched dictionary */
 const filteredDictionary = computed(() => {
   const _search = search.value.toLowerCase();
-  return orderBy(
-    dictionary.value,
-    /** keys */
-    map(sortOrder.value, ({ key }) =>
-      key === "type"
-        ? ({ type }) => -["regular", "special", "obscure"].indexOf(type)
-        : key,
-    ),
-    /** directions */
-    map(
-      map(sortOrder.value, ({ key, dir }) => (key === "text" ? -dir : dir)),
-      (value) => (value === -1 ? "asc" : "desc"),
-    ),
-  ).filter((word) => word.text.includes(_search));
+  /** sort */
+  return (
+    orderBy(
+      dictionary.value,
+      /** sort keys */
+      map(sortOrder.value, ({ key }) =>
+        key === "type"
+          ? ({ type }) => -["regular", "special", "obscure"].indexOf(type)
+          : key,
+      ),
+      /** sort directions */
+      map(
+        map(sortOrder.value, ({ key, dir }) => (key === "text" ? -dir : dir)),
+        (value) => (value === -1 ? "asc" : "desc"),
+      ),
+    )
+      /** search filter */
+      .filter((word) => word.text.includes(_search))
+  );
 });
 
 /** selected word */
@@ -400,12 +422,23 @@ const selected = ref<Word>();
 /** select word */
 const select = async (word: Word) => {
   if (selected.value === word) selected.value = undefined;
-  else {
-    selected.value = word;
-    await sleep();
-    infoElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
-  }
+  else selected.value = word;
+  await sleep();
+  infoElement.value?.scrollIntoView({ block: "center", behavior: "smooth" });
 };
+
+/** update search from url */
+watch(
+  [data, () => query],
+  () => {
+    if (!data.value) return;
+    const { lookupWord } = data.value;
+    search.value = String(query.search ?? "");
+    const lookedUp = lookupWord(search.value);
+    if (lookedUp) select(lookedUp);
+  },
+  { immediate: true },
+);
 
 /** search submit */
 const searchSubmit = () => {
@@ -486,13 +519,6 @@ const chartData = computed(() => {
 </script>
 
 <style scoped>
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  place-items: center;
-  gap: 5px;
-}
-
 .table {
   max-width: 100%;
   max-height: calc(10 * (1lh + 10px));
@@ -515,6 +541,7 @@ table button {
   gap: 0;
   border-radius: 0;
   background: none;
+  cursor: pointer;
 }
 
 thead tr {
@@ -595,11 +622,6 @@ th,
 .links > button {
   padding: 0;
   color: var(--primary);
-  transition: color var(--fast);
-}
-
-.definitions {
-  text-align: left;
 }
 
 .chart text {

@@ -1,7 +1,5 @@
 import { ref } from "vue";
 
-// import { sleep } from "@/util/misc";
-
 /** simple async manager/wrapper */
 export const useQuery = <Data, Args extends unknown[]>(
   func: (...args: Args) => Promise<Data>,
@@ -17,7 +15,6 @@ export const useQuery = <Data, Args extends unknown[]>(
     try {
       data.value = undefined;
       status.value = "loading";
-      // await sleep(1000);
       const result = await func(...args);
       data.value = result;
       status.value = "success";

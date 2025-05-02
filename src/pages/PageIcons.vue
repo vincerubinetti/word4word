@@ -1,4 +1,5 @@
 <template>
+  <!-- dev page to generate favicons, share thumbnail  -->
   <div class="icon">
     <span>4</span>
   </div>
@@ -18,6 +19,7 @@ import { findPath } from "@/word";
 
 const { VITE_TITLE } = import.meta.env;
 
+/** example path */
 const path = computed(() => {
   if (!data.value) return [];
   const { lookupWord } = data.value;

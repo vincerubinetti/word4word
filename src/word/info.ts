@@ -1,5 +1,6 @@
 import type { Response } from "@/word/dictionaryapi";
 
+/** https://github.com/meetDeveloper/freeDictionaryAPI */
 const api = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
 /** lookup definitions and other info about word */

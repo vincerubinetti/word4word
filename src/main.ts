@@ -8,8 +8,10 @@ import "tippy.js/dist/tippy.css";
 
 console.debug(import.meta.env);
 
+/** fetch game data */
 run();
 
+/** app entrypoint */
 const app = createApp(App);
 app.use(router);
 app.directive("tooltip", tooltip);

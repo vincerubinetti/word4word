@@ -4,7 +4,6 @@
     implemented in javascript at all. exports triangular matrix of pars.
 */
 
-// includes
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -15,7 +14,6 @@ using namespace std;
 
 const unsigned char Infinity = 255;
 
-// word object
 struct Word {
     string text;
     vector<Word*> links;
@@ -25,7 +23,6 @@ struct Word {
     }
 };
 
-// check if two words are exactly 1 letter different
 bool OneLetterDifferent(string wordA, string wordB)
 {
     if (wordA.length() != 4 || wordB.length() != 4)
@@ -42,7 +39,6 @@ bool OneLetterDifferent(string wordA, string wordB)
     return diffChars == 1;
 }
 
-// check if two words are linked
 bool AreLinked(Word* wordA, Word* wordB)
 {
     for (unsigned char i = 0; i < wordA->links.size(); i++)

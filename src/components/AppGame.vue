@@ -32,12 +32,14 @@
             class="row"
             :style="{ '--dist': dists.a[word.text] }"
           >
-            <Star
-              v-if="word.type === 'special'"
-              class="special"
-              tabindex="0"
-              v-tooltip="'Special word'"
-            />
+            <button
+              v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
+              class="secondary square"
+              v-tooltip="'Remove word'"
+              @click="remove('a')"
+            >
+              <X />
+            </button>
             <AppChar
               v-for="(char, charIndex) in word.text"
               :key="charIndex"
@@ -50,14 +52,17 @@
             >
               {{ char }}
             </AppChar>
-            <button
-              v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
-              class="secondary square"
-              v-tooltip="'Remove word'"
-              @click="remove('a')"
+            <RouterLink
+              :to="{ path: 'about', query: { search: word.text } }"
+              target="_blank"
             >
-              <X />
-            </button>
+              <Star
+                v-if="word.type === 'special'"
+                class="special"
+                tabindex="0"
+                v-tooltip="'Special word'"
+              />
+            </RouterLink>
           </div>
 
           <template v-if="!won">
@@ -80,14 +85,6 @@
               </Transition>
 
               <button
-                class="hint secondary square"
-                v-tooltip="'Get hint'"
-                @click.prevent="hint"
-              >
-                <Lightbulb />
-              </button>
-
-              <button
                 v-if="input.length > 0"
                 class="clear secondary square"
                 v-tooltip="'Clear input'"
@@ -108,11 +105,11 @@
               </button>
 
               <button
-                class="reverse secondary square"
-                v-tooltip="'Reverse path'"
-                @click.prevent="reverse"
+                class="hint secondary square"
+                v-tooltip="'Get hint'"
+                @click.prevent="hint"
               >
-                <ArrowUpDown />
+                <Lightbulb />
               </button>
             </div>
 
@@ -125,12 +122,14 @@
             class="row"
             :style="{ '--dist': dists.b[word.text] }"
           >
-            <Star
-              v-if="word.type === 'special'"
-              class="special"
-              tabindex="0"
-              v-tooltip="'Special word'"
-            />
+            <button
+              v-if="!won && wordIndex === 0 && bPath.length > 1"
+              class="secondary square"
+              v-tooltip="'Remove word'"
+              @click="remove('b')"
+            >
+              <X />
+            </button>
             <AppChar
               v-for="(char, charIndex) in word.text"
               :key="charIndex"
@@ -146,14 +145,17 @@
             >
               {{ char }}
             </AppChar>
-            <button
-              v-if="!won && wordIndex === 0 && bPath.length > 1"
-              class="secondary square"
-              v-tooltip="'Remove word'"
-              @click="remove('b')"
+            <RouterLink
+              :to="{ path: 'about', query: { search: word.text } }"
+              target="_blank"
             >
-              <X />
-            </button>
+              <Star
+                v-if="word.type === 'special'"
+                class="special"
+                tabindex="0"
+                v-tooltip="'Special word'"
+              />
+            </RouterLink>
           </div>
         </TabPanel>
 
@@ -171,7 +173,7 @@
                     bPath.at(-1)!,
                   ]
             "
-            :hide="!won"
+            :redact="!won"
           />
         </TabPanel>
       </TabPanels>
@@ -200,6 +202,13 @@
         @click="copy"
       >
         <Check v-if="copied" class="success" /> <Copy v-else />
+      </button>
+      <button
+        class="secondary square"
+        v-tooltip="'Reverse path'"
+        @click.prevent="reverse"
+      >
+        <ArrowUpDown />
       </button>
     </div>
   </section>
@@ -305,6 +314,7 @@ const saveGame = () => {
     won: won.value,
     par: par.value.length,
   };
+  /** set extra info on first time loading this game */
   savedGames.value[key.value]!.started ??= started;
   savedGames.value[key.value]!.type ??= type;
 };
@@ -638,13 +648,12 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 .hint,
 .clear,
 :deep(.input),
-.submit,
-.reverse {
+.submit {
   grid-row: 1;
 }
 
 .hint {
-  grid-column: 1;
+  grid-column: 6;
 }
 
 .clear {
@@ -657,12 +666,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
   background: none !important;
 }
 
-.reverse {
-  grid-column: 6;
-}
-
 .special {
-  grid-column: 1;
   color: var(--gray);
   fill: currentColor;
   transition: color var(--fast);

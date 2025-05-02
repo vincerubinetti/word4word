@@ -14,10 +14,10 @@ export const routes = [
     path: "/",
     component: PageGame,
     meta: {
-      name: "Daily game",
+      name: "Daily Game",
       header: true,
       icon: Calendar1,
-      tooltip: "Daily game",
+      tooltip: "Daily Game",
     },
     beforeEnter: () => {
       const path = window.sessionStorage.redirectPath;
@@ -32,20 +32,20 @@ export const routes = [
     path: "/custom",
     component: PageCustom,
     meta: {
-      name: "Custom game",
+      name: "Custom Game",
       header: true,
       icon: PencilRuler,
-      tooltip: "Custom game",
+      tooltip: "Custom Game",
     },
   },
   {
     path: "/saved",
     component: PageSaved,
     meta: {
-      name: "Saved games",
+      name: "Saved Games",
       header: computed(() => !isEmpty(savedGames.value)),
       icon: Bookmark,
-      tooltip: "Saved games",
+      tooltip: "Saved Games",
     },
   },
   {
@@ -62,7 +62,7 @@ export const routes = [
     path: "/:a([A-Za-z]{4})/:b([A-Za-z]{4})",
     component: PageGame,
     meta: {
-      name: "Custom game",
+      name: "Custom Game",
       header: false,
       icon: null,
       tooltip: "",

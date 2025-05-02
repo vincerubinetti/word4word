@@ -1,14 +1,17 @@
 <template>
   <section>
     <form @submit.prevent="$router.push(`/${a}/${b}`)">
-      <AppInput v-model.trim="a" placeholder="From" />
-      <AppInput v-model.trim="b" placeholder="To" />
+      <!-- inputs -->
+      <AppInput v-model.trim="a" placeholder="from" />
+      <AppInput v-model.trim="b" placeholder="to" />
 
+      <!-- status -->
       <div v-if="a.length < 4 || b.length < 4">Enter two 4-letter words</div>
       <div v-else-if="!aWord || !bWord">Enter valid words</div>
       <AppPar v-else-if="par.length" :par="par.length">Par</AppPar>
       <div v-else class="error">No path between these words!</div>
 
+      <!-- actions -->
       <button type="submit" class="primary" :disabled="!playable">
         <Play />Play
       </button>

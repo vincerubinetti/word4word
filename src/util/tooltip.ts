@@ -2,7 +2,7 @@ import { type Directive } from "vue";
 import tippy, { type Instance } from "tippy.js";
 import { sleep } from "@/util/misc";
 
-type ElementWithTooltip = HTMLElement & { _tippy?: Instance };
+type ElementWithTooltip = Element & { _tippy?: Instance };
 
 /** basic tooltip directive, using tippy directly for more control */
 export const tooltip: Directive<ElementWithTooltip, string> = {
@@ -19,10 +19,12 @@ export const tooltip: Directive<ElementWithTooltip, string> = {
       },
     });
     el._tippy?.setContent(value);
+    if (!el.textContent?.trim()) el.setAttribute("aria-label", value);
   },
   updated: (el, { value }) => {
     if (!value?.trim()) return;
     el._tippy?.setContent(value);
+    if (!el.textContent?.trim()) el.setAttribute("aria-label", value);
   },
   beforeUnmount: (el) => {
     el._tippy?.destroy();

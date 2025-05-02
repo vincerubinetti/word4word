@@ -1,5 +1,6 @@
 <template>
   <header>
+    <!-- title -->
     <div class="title">
       <span
         v-for="(char, index) in VITE_TITLE"
@@ -11,6 +12,7 @@
       </span>
     </div>
 
+    <!-- page name -->
     <h1>
       <span
         v-for="(char, index) in $route.meta.name"
@@ -22,6 +24,7 @@
       </span>
     </h1>
 
+    <!-- nav bar -->
     <nav>
       <template v-for="(route, index) in routes" :key="index">
         <RouterLink
@@ -71,7 +74,7 @@ watchEffect(() => {
 
 /** keyboard shortcut */
 useEventListener("keydown", ({ key, ctrlKey }) => {
-  if (key === "d" && ctrlKey) darkMode.value = !darkMode.value;
+  if (ctrlKey && key === "d") darkMode.value = !darkMode.value;
 });
 </script>
 
@@ -102,7 +105,6 @@ h1 {
   margin: 0;
   font-weight: unset;
   font-size: inherit;
-  text-transform: uppercase;
 }
 
 nav {
@@ -115,9 +117,8 @@ nav {
 
 a,
 button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   width: 30px;
   height: 30px;
   padding: 0;

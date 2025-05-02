@@ -3,6 +3,7 @@ import rawDictionary from "@/data/dictionary.yaml?raw";
 import { useQuery } from "@/util/composables";
 import { oneLetterDifferent, type Pars, type Word } from "@/word";
 
+/** par data in public */
 const rawPars = import.meta.env.BASE_URL + "pars.dat";
 
 /** par that represents infinity (no possible path) */
@@ -13,8 +14,6 @@ export let maxPar = 99;
 
 /** load game data */
 export const loadData = async () => {
-  // await sleep(1000);
-
   /** parse raw dictionary yaml */
   const dictionary = rawDictionary
     .split("\n")
@@ -36,10 +35,11 @@ export const loadData = async () => {
 
   /** get words in regular dictionary */
   const regularWords = filter(dictionary, { type: "regular" });
-  /** get words corresponding to pars matrix */
+  /** get words corresponding to pars triangular matrix */
   const matrixWords: { a: Word; b: Word }[] = [];
   regularWords.forEach((a, aIndex) =>
     regularWords.forEach((b, bIndex) => {
+      ``;
       /** triangular */
       if (aIndex < bIndex) matrixWords.push({ a, b });
     }),

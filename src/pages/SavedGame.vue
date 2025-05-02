@@ -21,7 +21,7 @@
     <span
       v-for="(char, index) in a.at(0)"
       :key="index"
-      class="char-a flip"
+      class="char-a flip wiggle-hover"
       :style="{ '--delay': index * 0.1 + 's' }"
     >
       {{ char }}
@@ -30,7 +30,7 @@
     <span
       v-for="(char, index) in b.at(-1)"
       :key="index"
-      class="char-b flip"
+      class="char-b flip wiggle-hover"
       :style="{ '--delay': (4 + index) * 0.1 + 's' }"
     >
       {{ char }}
@@ -60,8 +60,7 @@ const yours = computed(() => a.length + b.length);
   display: grid;
   grid-template-columns: 20px 5px repeat(4, 20px) 5px repeat(4, 20px) 5px 20px;
   align-items: center;
-  padding: 5px 10px;
-  border-radius: 999px;
+  padding: 5px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;

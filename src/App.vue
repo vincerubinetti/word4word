@@ -1,12 +1,16 @@
 <template>
   <AppHeader />
+
   <main>
+    <!-- game data status -->
     <section v-if="status === 'loading'" class="gray">
       Loading game data
     </section>
     <section v-else-if="status === 'error'" class="error">
       Error loading game data
     </section>
+
+    <!-- page -->
     <RouterView v-else />
   </main>
 </template>

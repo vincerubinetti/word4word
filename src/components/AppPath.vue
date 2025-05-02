@@ -6,7 +6,7 @@
         :key="charIndex"
         v-bind="$attrs"
         :link="
-          !hide &&
+          !redact &&
           wordIndex < path.length - 1 &&
           path[wordIndex + 1]?.text[charIndex] !== char
         "
@@ -15,7 +15,7 @@
           '--delay': wordIndex * 0.2 + charIndex * 0.1 + 's',
         }"
       >
-        {{ hide && inRange(wordIndex, 1, path.length - 1) ? "?" : char }}
+        {{ redact && inRange(wordIndex, 1, path.length - 1) ? "?" : char }}
       </AppChar>
     </template>
   </div>
@@ -30,7 +30,7 @@ defineOptions({ inheritAttrs: false });
 
 type Props = {
   path: Word[];
-  hide?: boolean;
+  redact?: boolean;
 };
 
 defineProps<Props>();
@@ -40,7 +40,6 @@ defineProps<Props>();
 .grid {
   display: grid;
   grid-template-columns: repeat(4, auto) !important;
-  place-items: center;
   gap: 5px;
 }
 </style>
