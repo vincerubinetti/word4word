@@ -1,5 +1,6 @@
 <template>
   <section>
+    <!-- tab buttons -->
     <TabGroup :selectedIndex="tab" @change="(index) => (tab = index)">
       <TabList class="buttons">
         <Tab as="template" v-slot="{ selected }">
@@ -25,6 +26,7 @@
       </TabList>
 
       <TabPanels>
+        <!-- player path -->
         <TabPanel class="grid">
           <div
             v-for="(word, wordIndex) in aPath"
@@ -159,6 +161,7 @@
           </div>
         </TabPanel>
 
+        <!-- par path -->
         <TabPanel as="template">
           <AppPath
             :class="won ? 'wiggle-always' : 'flip'"
@@ -179,6 +182,7 @@
       </TabPanels>
     </TabGroup>
 
+    <!-- actions -->
     <div class="buttons">
       <button
         class="secondary square"
@@ -204,6 +208,7 @@
         <Check v-if="copied" class="success" /> <Copy v-else />
       </button>
       <button
+        v-else
         class="secondary square"
         v-tooltip="'Reverse path'"
         @click.prevent="reverse"
@@ -321,19 +326,18 @@ const saveGame = () => {
 
 /** reset game */
 const resetGame = () => {
-  if (window.confirm("Start over?")) {
+  if (window.confirm("Start over? Can't be undone.")) {
     delete savedGames.value[key.value];
     loadGame();
   }
 };
 
-/** input dom element */
 const inputElement = useTemplateRef("inputElement");
 
 /** input text */
 const input = ref("");
 
-/** full input word object, undef if invalid word */
+/** full input word object, undef if invalid */
 const inputWord = computed(() => {
   if (!data.value) return;
   const { lookupWord } = data.value;
@@ -367,9 +371,14 @@ const check = () => {
 watchEffect(() => input.value.length === 4 && check());
 
 /** clear input */
-const clear = () => {
+const clear = async () => {
   input.value = "";
   inputElement.value?.element?.focus();
+  await sleep(100);
+  inputElement.value?.element?.scrollIntoView({
+    block: "nearest",
+    behavior: "smooth",
+  });
 };
 
 /** which path was last added to */
@@ -392,14 +401,7 @@ const submit = async () => {
   }
 
   /** reset input */
-  input.value = "";
-
-  inputElement.value?.element?.focus();
-  await sleep(100);
-  inputElement.value?.element?.scrollIntoView({
-    block: "nearest",
-    behavior: "smooth",
-  });
+  clear();
 };
 
 /** remove word from path */
@@ -435,7 +437,7 @@ const hideMessage = debounce(() => (message.value = ""), 1500);
 /** find shortest path between a/b */
 const par = computed(() => findPath(a, b));
 
-/** length of players path */
+/** length of player path */
 const steps = computed(() => aPath.value.length + bPath.value.length);
 
 /** map of word in path to distance from end of opposite path */
@@ -472,7 +474,7 @@ const hint = () => {
     { type: "regular" },
   );
   const newText = sample(links)?.text ?? "";
-  if (input.value === newText && links.length > 2) hint();
+  if (input.value === newText && links.length >= 2) hint();
   else input.value = newText;
   inputElement.value?.element?.focus();
 };
@@ -489,18 +491,10 @@ const reverse = () => {
 /** keyboard shortcuts on input */
 const shortcuts = (event: KeyboardEvent) => {
   if (event.ctrlKey) {
-    if (event.key === "r") {
-      event.preventDefault();
-      removeLast();
-    }
-    if (event.key === "h") {
-      event.preventDefault();
-      hint();
-    }
-    if (event.key === "c") {
-      event.preventDefault();
-      clear();
-    }
+    event.preventDefault();
+    if (event.key === "r") removeLast();
+    if (event.key === "h") hint();
+    if (event.key === "c") clear();
   }
 };
 
@@ -572,7 +566,7 @@ const maxParticles = 20;
 const minSize = 5;
 const maxSize = 15;
 
-/** confetti */
+/** "confetti" */
 const { pause, resume } = useIntervalFn(
   () => {
     if (document.querySelectorAll(".particle").length > maxParticles) return;
@@ -641,7 +635,6 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 
 :deep(.input) {
   grid-column: 2 / 6;
-  width: 100%;
 }
 
 .message,
@@ -667,8 +660,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 }
 
 .special {
-  color: var(--gray);
-  fill: currentColor;
-  transition: color var(--fast);
+  fill: var(--gray);
+  transition: fill var(--fast);
 }
 </style>
