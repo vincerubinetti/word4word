@@ -35,6 +35,7 @@
           "
           :to="route.path"
           :class="[
+            'link',
             'underline',
             $route.meta.name === route.meta.name ? 'active' : 'inactive',
           ]"
@@ -45,6 +46,7 @@
       </template>
 
       <button
+        class="link"
         role="switch"
         :aria-checked="darkMode"
         @click="darkMode = !darkMode"
@@ -75,23 +77,29 @@ watchEffect(() => {
 
 <style scoped>
 header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   padding: 10px;
-  gap: 10px 20px;
+  gap: 10px;
   border-bottom: solid 2px var(--light-gray);
   background: var(--off-white);
   color: var(--black);
   font-size: 1.2rem;
+  line-height: 1;
+  white-space: nowrap;
   transition:
     background var(--fast),
     color var(--fast),
     border-color var(--fast);
 }
 
+header > * {
+  flex: 1 0 0;
+}
+
 .title {
-  padding: 0 10px;
   font-weight: var(--bold);
   text-align: left;
 }
@@ -104,14 +112,11 @@ h1 {
 
 nav {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   justify-content: flex-end;
   gap: 5px;
 }
 
-a,
-button {
+.link {
   display: grid;
   place-items: center;
   width: 30px;
@@ -121,16 +126,23 @@ button {
 
 @media (max-width: 600px) {
   header {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    font-size: 1rem;
   }
 
-  .title {
-    text-align: center;
+  .link {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    text-align: right;
   }
 
   nav {
     justify-content: center;
+    flex-basis: 100%;
   }
 }
 </style>

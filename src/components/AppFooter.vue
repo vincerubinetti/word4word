@@ -25,7 +25,7 @@ footer {
   gap: 10px 20px;
   background: var(--white);
   color: var(--black);
-  font-size: 1.2rem;
+  font-size: 1.1em;
   transition:
     background var(--fast),
     color var(--fast);

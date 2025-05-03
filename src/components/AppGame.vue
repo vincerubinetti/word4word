@@ -72,7 +72,6 @@
 
             <div class="row">
               <AppInput
-                ref="inputElement"
                 v-model="input"
                 class="input"
                 placeholder="Word"
@@ -219,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { debounce, filter, map, random, sample } from "lodash";
 import {
   ArrowDown,
@@ -237,7 +236,12 @@ import {
   X,
 } from "lucide-vue-next";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
-import { useDebounceFn, useIntervalFn } from "@vueuse/core";
+import {
+  useActiveElement,
+  useDebounceFn,
+  useIntervalFn,
+  usePrevious,
+} from "@vueuse/core";
 import AppChar from "@/components/AppChar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
@@ -331,8 +335,6 @@ const resetGame = () => {
   }
 };
 
-const inputElement = useTemplateRef("inputElement");
-
 /** input text */
 const input = ref("");
 
@@ -370,16 +372,25 @@ const check = () => {
 watchEffect(() => input.value.length === 4 && check());
 
 /** clear input */
-const clear = async () => {
+const clear = () => {
   input.value = "";
-  inputElement.value?.element?.focus();
+  focus();
+};
+
+/** focused element */
+const focused = useActiveElement();
+/** previously focused element */
+const previousFocused = usePrevious(focused);
+
+/** revert focus to previously focused element */
+const focus = async () => {
+  previousFocused.value?.focus();
   await sleep(100);
-  inputElement.value?.element?.scrollIntoView({
+  previousFocused.value?.scrollIntoView({
     block: "nearest",
     behavior: "smooth",
   });
 };
-
 
 /** submit word to be added to path */
 const submit = async () => {
@@ -404,10 +415,12 @@ const remove = (path: "a" | "b") => {
   if (path === "a" && aPath.value.length > 1) {
     aPath.value = aPath.value.slice(0, -1);
     saveGame();
+    focus();
   }
   if (path === "b" && bPath.value.length > 1) {
     bPath.value = bPath.value.slice(1);
     saveGame();
+    focus();
   }
 };
 
@@ -465,7 +478,7 @@ const hint = () => {
   const newText = sample(links)?.text ?? "";
   if (input.value === newText && links.length >= 2) hint();
   else input.value = newText;
-  inputElement.value?.element?.focus();
+  focus();
 };
 
 /** reverse path direction */
