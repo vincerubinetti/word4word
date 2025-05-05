@@ -60,13 +60,14 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   margin: 0;
 }
 
 #app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
+  display: contents;
 }
 
 main {
@@ -92,7 +93,7 @@ section {
     border-color var(--fast);
 }
 
-section:last-child {
+section:only-child {
   flex-grow: 1;
 }
 

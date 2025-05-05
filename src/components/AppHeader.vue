@@ -136,13 +136,12 @@ nav {
 }
 
 @media (max-width: 400px) {
-  h1 {
-    text-align: right;
+  .title {
+    display: none;
   }
 
-  nav {
-    justify-content: center;
-    flex-basis: 100%;
+  h1 {
+    text-align: left;
   }
 }
 </style>

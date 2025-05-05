@@ -236,18 +236,13 @@ import {
   X,
 } from "lucide-vue-next";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
-import {
-  useActiveElement,
-  useDebounceFn,
-  useIntervalFn,
-  usePrevious,
-} from "@vueuse/core";
+import { useDebounceFn, useIntervalFn } from "@vueuse/core";
 import AppChar from "@/components/AppChar.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data } from "@/data";
-import { sleep } from "@/util/misc";
+import { usePrevFocus } from "@/util/composables";
 import { savedGames } from "@/util/storage";
 import { findPath, oneLetterDifferent, type Word } from "@/word";
 
@@ -377,20 +372,7 @@ const clear = () => {
   focus();
 };
 
-/** focused element */
-const focused = useActiveElement();
-/** previously focused element */
-const previousFocused = usePrevious(focused);
-
-/** revert focus to previously focused element */
-const focus = async () => {
-  previousFocused.value?.focus();
-  await sleep(100);
-  previousFocused.value?.scrollIntoView({
-    block: "nearest",
-    behavior: "smooth",
-  });
-};
+const { revert: focus } = usePrevFocus();
 
 /** submit word to be added to path */
 const submit = async () => {
