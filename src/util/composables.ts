@@ -1,5 +1,4 @@
 import { ref } from "vue";
-import { useActiveElement, usePrevious } from "@vueuse/core";
 
 /** simple async manager/wrapper */
 export const useQuery = <Data, Args extends unknown[]>(
@@ -27,15 +26,4 @@ export const useQuery = <Data, Args extends unknown[]>(
   }
 
   return { run, data, status };
-};
-
-/** revert focus to previously focused element */
-export const usePrevFocus = () => {
-  const current = useActiveElement();
-  const previous = usePrevious(current);
-  const revert = () => {
-    previous.value?.focus();
-    previous.value?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  };
-  return { current, previous, revert };
 };

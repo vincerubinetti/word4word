@@ -72,6 +72,7 @@
 
             <div class="row">
               <AppInput
+                ref="inputElement"
                 v-model="input"
                 class="input"
                 placeholder="Word"
@@ -218,8 +219,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from "vue";
-import { debounce, filter, map, random, sample } from "lodash";
+import { computed, ref, useTemplateRef, watch, watchEffect } from "vue";
+import { clamp, debounce, filter, map, random, sample } from "lodash";
 import {
   ArrowDown,
   ArrowUp,
@@ -242,7 +243,7 @@ import AppInput from "@/components/AppInput.vue";
 import AppPar from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data } from "@/data";
-import { usePrevFocus } from "@/util/composables";
+import { sleep } from "@/util/misc";
 import { savedGames } from "@/util/storage";
 import { findPath, oneLetterDifferent, type Word } from "@/word";
 
@@ -330,6 +331,8 @@ const resetGame = () => {
   }
 };
 
+const inputElement = useTemplateRef("inputElement");
+
 /** input text */
 const input = ref("");
 
@@ -372,7 +375,15 @@ const clear = () => {
   focus();
 };
 
-const { revert: focus } = usePrevFocus();
+/** focus input */
+const focus = async () => {
+  inputElement.value?.element?.focus();
+  await sleep(100);
+  inputElement.value?.element?.scrollIntoView({
+    block: "nearest",
+    behavior: "smooth",
+  });
+};
 
 /** submit word to be added to path */
 const submit = async () => {
@@ -438,7 +449,7 @@ const dists = computed(() => {
         /** if no path */
         if (dist < 1 || max < 1) return [word.text, invert ? 0 : 1];
         /** normalize to 0-1 */
-        dist = dist / (max - 1);
+        dist = clamp(dist / (max - 1), 0, 1);
         /** flip */
         if (invert) dist = 1 - dist;
         return [word.text, dist];
