@@ -64,6 +64,7 @@ body {
   flex-direction: column;
   min-height: 100dvh;
   margin: 0;
+  transition: padding var(--fast);
 }
 
 #app {
@@ -84,7 +85,6 @@ section {
   justify-content: center;
   padding: 40px max(40px, (100% - var(--col)) / 2);
   gap: 20px;
-  border-bottom: solid 2px var(--light-gray);
   background: var(--white);
   color: var(--black);
   transition:
@@ -95,6 +95,10 @@ section {
 
 section:only-child {
   flex-grow: 1;
+}
+
+section:not(:last-child) {
+  border-bottom: solid 2px var(--light-gray);
 }
 
 section:nth-child(even) {

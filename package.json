@@ -13,6 +13,7 @@
     "fast-shuffle": "^6.1.1",
     "lodash": "^4.17.21",
     "lucide-vue-next": "^0.503.0",
+    "simple-keyboard": "^3.8.53",
     "tippy.js": "^6.3.7",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
