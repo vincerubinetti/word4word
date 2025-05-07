@@ -4,6 +4,8 @@
       ref="keyboardElement"
       :class="['keyboard', !show && 'hide']"
       aria-hidden="true"
+      @touchstart.prevent
+      @click.prevent
     >
       <template v-for="(row, colIndex) in keys" :key="colIndex">
         <button
@@ -13,7 +15,8 @@
             (key === '✓' || key === '←') && 'big',
             rowIndex === 0 && (colIndex !== 1 ? 'first-col' : 'second-row'),
           ]"
-          @click="type(key)"
+          @touchstart.prevent.stop="type(key)"
+          @click.prevent
         >
           <CircleCheckBig v-if="key === '✓'" />
           <Delete v-else-if="key === '←'" />
@@ -125,8 +128,6 @@ const type = (key: string) => {
   align-self: center;
   width: 100vw;
   max-width: 400px;
-  padding: 5px;
-  gap: 5px;
   translate: 0 0;
   border: solid 2px var(--light-gray);
   background: var(--white);
@@ -143,13 +144,13 @@ const type = (key: string) => {
 
 button {
   grid-column-end: span 2;
-  padding: 0;
-  background: var(--light-gray);
+  padding: 2px;
+  background: var(--off-white) content-box;
   touch-action: none;
 }
 
-button:hover {
-  background: var(--gray);
+button:active {
+  background-color: var(--gray);
 }
 
 .first-col {
