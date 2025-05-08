@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useTemplateRef, watchEffect } from "vue";
+import { onUnmounted, ref, useTemplateRef, watchEffect } from "vue";
 import { CircleCheckBig, Delete, Keyboard, KeyboardOff } from "lucide-vue-next";
 import { useElementSize } from "@vueuse/core";
 
@@ -66,10 +66,9 @@ const show = ref("ontouchstart" in window);
 
 /** hide native keyboard input, e.g. on mobile */
 watchEffect(() => {
-  if (show.value) {
-    input?.setAttribute("inputmode", "none");
-    input?.focus();
-  } else input?.removeAttribute("inputmode");
+  input?.focus();
+  if (show.value) input?.setAttribute("inputmode", "none");
+  else input?.removeAttribute("inputmode");
 });
 
 /** size of keyboard */
@@ -99,26 +98,17 @@ const type = (key: string) => {
   else if (key === "←") {
     /** simulate backspace */
     document.execCommand("delete", false, key);
-    // if (start === end) {
-    //   if (start > 0) {
-    //     input.value = input.value.slice(0, start - 1) + input.value.slice(end);
-    //     input.selectionStart = start - 1;
-    //     input.selectionEnd = start - 1;
-    //   }
-    // } else {
-    //   input.value = input.value.slice(0, start) + input.value.slice(end);
-    //   input.selectionStart = start;
-    //   input.selectionEnd = start;
-    // }
   } else {
     /** simulate type key */
     document.execCommand("insertText", false, key);
-    // input.value = input.value.slice(0, start) + key + input.value.slice(end);
-    // input.selectionStart = end + 1;
-    // input.selectionEnd = end + 1;
-    // input.dispatchEvent(new InputEvent("input"));
   }
 };
+
+/** reset external things */
+onUnmounted(() => {
+  input?.setAttribute("inputmode", "none");
+  document.body.style.paddingBottom = "";
+});
 </script>
 
 <style scoped>
