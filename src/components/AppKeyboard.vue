@@ -11,7 +11,6 @@
     <div
       ref="keyboardElement"
       :class="['keyboard', !show && 'hide']"
-      aria-hidden="true"
       @touchstart.prevent
       @mousedown.prevent
       @click.prevent
@@ -25,6 +24,9 @@
             (key === '✓' || key === '←') && 'big',
             rowIndex === 0 && (colIndex !== 1 ? 'first-col' : 'second-row'),
           ]"
+          :aria-label="
+            key === '✓' ? 'Submit' : key === '←' ? 'Backspace' : `Type ${key}`
+          "
           @touchstart.prevent.stop="type(key)"
           @mousedown.prevent.stop="type(key)"
           @click.prevent
@@ -118,16 +120,17 @@ onUnmounted(() => {
   bottom: 0;
   grid-template-columns: repeat(20, 1fr);
   grid-auto-rows: 40px;
-  align-self: center;
+  align-self: stretch;
   width: 100vw;
-  max-width: 400px;
+  padding: 5px max(5px, (100% - 300px) / 2);
   translate: 0 0;
-  border: solid 2px var(--light-gray);
+  border-top: solid 2px var(--light-gray);
   background: var(--white);
   font-weight: var(--bold);
   font-size: 1.1rem;
   transition:
     background var(--fast),
+    border-color var(--fast),
     translate var(--fast);
 }
 
@@ -140,10 +143,17 @@ onUnmounted(() => {
   padding: 2px;
   background: var(--off-white) content-box;
   touch-action: none;
+  transition: background var(--fast);
 }
 
 .key:active {
   background-color: var(--gray);
+}
+
+@media (hover) {
+  .key:hover {
+    background-color: var(--gray);
+  }
 }
 
 .first-col {
