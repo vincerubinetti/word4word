@@ -214,7 +214,10 @@
       >
         <ArrowUpDown />
       </button>
-      <AppKeyboard :input="inputElement?.element" />
+      <AppKeyboard
+        v-if="inputElement?.element"
+        :input="inputElement?.element"
+      />
     </div>
   </section>
 </template>
