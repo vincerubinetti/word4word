@@ -1,10 +1,19 @@
 <template>
+  <button
+    class="secondary square"
+    @click="show = !show"
+    v-tooltip="show ? 'Hide game keyboard' : 'Show game keyboard'"
+  >
+    <KeyboardOff v-if="show" />
+    <Keyboard v-else />
+  </button>
   <Teleport to="body">
     <div
       ref="keyboardElement"
       :class="['keyboard', !show && 'hide']"
       aria-hidden="true"
       @touchstart.prevent
+      @mousedown.prevent
       @click.prevent
     >
       <template v-for="(row, colIndex) in keys" :key="colIndex">
@@ -12,10 +21,12 @@
           v-for="(key, rowIndex) in row"
           :key="rowIndex"
           :class="[
+            'key',
             (key === '✓' || key === '←') && 'big',
             rowIndex === 0 && (colIndex !== 1 ? 'first-col' : 'second-row'),
           ]"
           @touchstart.prevent.stop="type(key)"
+          @mousedown.prevent.stop="type(key)"
           @click.prevent
         >
           <CircleCheckBig v-if="key === '✓'" />
@@ -31,9 +42,8 @@
 
 <script setup lang="ts">
 import { ref, useTemplateRef, watchEffect } from "vue";
-import { debounce } from "lodash";
-import { CircleCheckBig, Delete } from "lucide-vue-next";
-import { useElementSize, useEventListener } from "@vueuse/core";
+import { CircleCheckBig, Delete, Keyboard, KeyboardOff } from "lucide-vue-next";
+import { useElementSize } from "@vueuse/core";
 
 type Props = {
   /** input element to hook into */
@@ -52,21 +62,15 @@ const keys = [
 ];
 
 /** hide/show */
-const show = ref(false);
-const setShow = debounce((value: boolean) => (show.value = value), 100);
-useEventListener(
-  () => input,
-  "focus",
-  () => setShow(true),
-);
-useEventListener(
-  () => input,
-  "blur",
-  () => setShow(false),
-);
+const show = ref("ontouchstart" in window);
 
 /** hide native keyboard input, e.g. on mobile */
-watchEffect(() => input?.setAttribute("inputmode", "none"));
+watchEffect(() => {
+  if (show.value) {
+    input?.setAttribute("inputmode", "none");
+    input?.focus();
+  } else input?.removeAttribute("inputmode");
+});
 
 /** size of keyboard */
 const measure = useElementSize(keyboardElement);
@@ -82,7 +86,6 @@ watchEffect(
 const type = (key: string) => {
   if (!input) return;
 
-  setShow.cancel();
   input.focus();
 
   /** get selection */
@@ -142,14 +145,14 @@ const type = (key: string) => {
   translate: 0 100%;
 }
 
-button {
+.key {
   grid-column-end: span 2;
   padding: 2px;
   background: var(--off-white) content-box;
   touch-action: none;
 }
 
-button:active {
+.key:active {
   background-color: var(--gray);
 }
 

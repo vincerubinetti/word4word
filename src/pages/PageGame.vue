@@ -8,7 +8,8 @@ import { ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AppGame from "@/components/AppGame.vue";
 import { data } from "@/data";
-import { getDaily, type Word } from "@/word";
+import type { Word } from "@/word";
+import { getDaily } from "@/word";
 
 const route = useRoute();
 const router = useRouter();

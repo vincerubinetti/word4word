@@ -214,9 +214,8 @@
       >
         <ArrowUpDown />
       </button>
+      <AppKeyboard :input="inputElement?.element" />
     </div>
-
-    <AppKeyboard v-if="touchscreen" :input="inputElement?.element" />
   </section>
 </template>
 
@@ -246,9 +245,10 @@ import AppKeyboard from "@/components/AppKeyboard.vue";
 import AppPar from "@/components/AppPar.vue";
 import AppPath from "@/components/AppPath.vue";
 import { data } from "@/data";
-import { sleep, touchscreen } from "@/util/misc";
+import { sleep } from "@/util/misc";
 import { savedGames } from "@/util/storage";
-import { findPath, oneLetterDifferent, type Word } from "@/word";
+import { findPath, oneLetterDifferent } from "@/word";
+import type { Word } from "@/word";
 
 const { VITE_TITLE } = import.meta.env;
 
@@ -592,7 +592,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 .grid {
@@ -655,7 +655,7 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
 }
 
 .special {
-  fill: var(--gray);
-  transition: fill var(--fast);
+  stroke: var(--gray);
+  transition: stroke var(--fast);
 }
 </style>
