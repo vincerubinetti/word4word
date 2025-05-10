@@ -35,7 +35,7 @@
             :style="{ '--dist': dists.a[word.text] }"
           >
             <RouterLink
-              :to="{ path: 'about', query: { search: word.text } }"
+              :to="{ path: '/about', query: { search: word.text } }"
               target="_blank"
             >
               <Star
@@ -124,7 +124,7 @@
             :style="{ '--dist': dists.b[word.text] }"
           >
             <RouterLink
-              :to="{ path: 'about', query: { search: word.text } }"
+              :to="{ path: '/about', query: { search: word.text } }"
               target="_blank"
             >
               <Star
