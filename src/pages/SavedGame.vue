@@ -6,7 +6,7 @@
       [
         type ? `${startCase(type)} game` : '',
         started || '',
-        `Yours ${yours}, Par ${par ?? '?'}`,
+        `Yours ${yours}, Par ${par || '?'}`,
       ]
         .filter(Boolean)
         .join('<br>')
@@ -37,7 +37,7 @@
     </span>
     <span />
     <span class="count" :style="{ color: par ? getDifficulty(par).color : '' }">
-      {{ par ?? "" }}
+      {{ par || "?" }}
     </span>
   </RouterLink>
 </template>

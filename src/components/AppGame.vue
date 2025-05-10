@@ -34,14 +34,17 @@
             class="row"
             :style="{ '--dist': dists.a[word.text] }"
           >
-            <button
-              v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
-              class="secondary square"
-              v-tooltip="'Remove word'"
-              @click="remove('a')"
+            <RouterLink
+              :to="{ path: 'about', query: { search: word.text } }"
+              target="_blank"
             >
-              <X />
-            </button>
+              <Star
+                v-if="word.type === 'special'"
+                class="special"
+                tabindex="0"
+                v-tooltip="'Special word'"
+              />
+            </RouterLink>
             <AppChar
               v-for="(char, charIndex) in word.text"
               :key="charIndex"
@@ -54,45 +57,25 @@
             >
               {{ char }}
             </AppChar>
-            <RouterLink
-              :to="{ path: 'about', query: { search: word.text } }"
-              target="_blank"
+            <button
+              v-if="!won && wordIndex === aPath.length - 1 && aPath.length > 1"
+              class="secondary square"
+              v-tooltip="'Remove word'"
+              @click="remove('a')"
             >
-              <Star
-                v-if="word.type === 'special'"
-                class="special"
-                tabindex="0"
-                v-tooltip="'Special word'"
-              />
-            </RouterLink>
+              <X />
+            </button>
           </div>
 
           <template v-if="!won">
             <div class="spacer" />
 
             <div class="row">
-              <AppInput
-                ref="inputElement"
-                v-model="input"
-                class="input"
-                placeholder="Word"
-                @keydown.enter.prevent="submit"
-              />
-
               <Transition name="slide" mode="out-in">
                 <aside v-if="message" class="message" aria-live="polite">
                   {{ message }}
                 </aside>
               </Transition>
-
-              <button
-                v-if="input.length > 0"
-                class="clear secondary square"
-                v-tooltip="'Clear input'"
-                @click="clear"
-              >
-                <X />
-              </button>
 
               <button
                 v-if="inputWord && (aDiff || bDiff)"
@@ -103,6 +86,23 @@
                 <MoveVertical v-if="aDiff && bDiff" />
                 <ArrowUp v-else-if="aDiff" />
                 <ArrowDown v-else-if="bDiff" />
+              </button>
+
+              <AppInput
+                ref="inputElement"
+                v-model="input"
+                class="input"
+                placeholder="Word"
+                @keydown.enter.prevent="submit"
+              />
+
+              <button
+                v-if="input.length > 0"
+                class="clear secondary square"
+                v-tooltip="'Clear input'"
+                @click="clear"
+              >
+                <X />
               </button>
 
               <button
@@ -123,14 +123,17 @@
             class="row"
             :style="{ '--dist': dists.b[word.text] }"
           >
-            <button
-              v-if="!won && wordIndex === 0 && bPath.length > 1"
-              class="secondary square"
-              v-tooltip="'Remove word'"
-              @click="remove('b')"
+            <RouterLink
+              :to="{ path: 'about', query: { search: word.text } }"
+              target="_blank"
             >
-              <X />
-            </button>
+              <Star
+                v-if="word.type === 'special'"
+                class="special"
+                tabindex="0"
+                v-tooltip="'Special word'"
+              />
+            </RouterLink>
             <AppChar
               v-for="(char, charIndex) in word.text"
               :key="charIndex"
@@ -146,17 +149,14 @@
             >
               {{ char }}
             </AppChar>
-            <RouterLink
-              :to="{ path: 'about', query: { search: word.text } }"
-              target="_blank"
+            <button
+              v-if="!won && wordIndex === 0 && bPath.length > 1"
+              class="secondary square"
+              v-tooltip="'Remove word'"
+              @click="remove('b')"
             >
-              <Star
-                v-if="word.type === 'special'"
-                class="special"
-                tabindex="0"
-                v-tooltip="'Special word'"
-              />
-            </RouterLink>
+              <X />
+            </button>
           </div>
         </TabPanel>
 
@@ -643,18 +643,18 @@ watchEffect(() => (won.value && perfect.value ? resume() : pause()));
   grid-row: 1;
 }
 
-.hint {
-  grid-column: 6;
-}
-
 .clear {
-  grid-column: 2;
+  grid-column: 5;
   background: none !important;
 }
 
 .submit {
-  grid-column: 5;
+  grid-column: 2;
   background: none !important;
+}
+
+.hint {
+  grid-column: 6;
 }
 
 .special {
