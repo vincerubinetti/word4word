@@ -79,7 +79,7 @@ ague: special
 ahed: obscure
 ahem: regular
 ahis: special
-ahoy: regular
+ahoy: special
 ahti: obscure
 aias: obscure
 aida: obscure
@@ -90,7 +90,7 @@ ails: special
 aims: regular
 aine: obscure
 ains: obscure
-aint: regular
+aint: special
 airn: obscure
 airs: regular
 airt: obscure
@@ -139,7 +139,7 @@ alod: obscure
 aloe: regular
 aloo: obscure
 alow: special
-alps: regular
+alps: special
 also: regular
 alto: regular
 alts: obscure
@@ -482,7 +482,7 @@ bito: obscure
 bits: regular
 bitt: special
 bize: obscure
-blab: regular
+blab: special
 blad: special
 blae: obscure
 blag: obscure
@@ -576,7 +576,7 @@ boss: regular
 bota: obscure
 bote: obscure
 both: regular
-bots: regular
+bots: special
 bott: obscure
 bouk: obscure
 boun: obscure
@@ -779,8 +779,8 @@ cero: special
 cert: obscure
 cess: special
 cete: obscure
-chad: regular
-chai: regular
+chad: special
+chai: special
 chal: obscure
 cham: special
 chan: obscure
@@ -867,7 +867,7 @@ coal: regular
 coat: regular
 coax: regular
 cobb: obscure
-cobs: regular
+cobs: special
 coby: special
 coca: special
 coch: obscure
@@ -908,7 +908,7 @@ cone: regular
 conf: obscure
 cong: obscure
 coni: special
-conk: regular
+conk: special
 conn: special
 cons: regular
 cony: obscure
@@ -1375,7 +1375,7 @@ eath: obscure
 eats: regular
 eaus: obscure
 eaux: obscure
-eave: regular
+eave: special
 ebbs: regular
 ebon: special
 ebro: obscure
@@ -1390,7 +1390,7 @@ ecos: obscure
 ecru: special
 ecus: special
 eddo: special
-eddy: regular
+eddy: special
 eden: regular
 edge: regular
 edgy: regular
@@ -1962,7 +1962,7 @@ glom: special
 glop: special
 glow: regular
 glue: regular
-glug: regular
+glug: special
 glum: regular
 glut: special
 gnar: special
@@ -2094,7 +2094,7 @@ gyny: obscure
 gyps: special
 gyre: special
 gyri: special
-gyro: regular
+gyro: special
 gyte: obscure
 gyve: special
 haaf: obscure
@@ -2192,7 +2192,7 @@ helm: regular
 helo: obscure
 help: regular
 heme: special
-hemi: regular
+hemi: special
 hemp: regular
 hems: regular
 hend: obscure
@@ -3731,14 +3731,14 @@ oran: obscure
 orbs: regular
 orby: obscure
 orca: regular
-orcs: regular
+orcs: special
 ordo: obscure
 ords: obscure
 oreo: special
 ores: regular
 orfe: obscure
 orfs: obscure
-orgy: regular
+orgy: special
 orle: special
 orra: obscure
 orts: special
@@ -3945,7 +3945,7 @@ pili: special
 pill: regular
 pily: obscure
 pima: special
-pimp: regular
+pimp: special
 pina: special
 pine: regular
 ping: regular
@@ -4255,7 +4255,7 @@ reek: regular
 reel: regular
 reen: obscure
 rees: obscure
-refs: regular
+refs: special
 reft: special
 rego: obscure
 regs: obscure
@@ -4532,7 +4532,7 @@ scut: special
 scye: obscure
 seal: regular
 seam: regular
-sean: regular
+sean: special
 sear: regular
 seas: regular
 seat: regular
@@ -4864,7 +4864,7 @@ spur: regular
 sris: obscure
 stab: regular
 stag: regular
-stan: regular
+stan: special
 stap: obscure
 star: regular
 stat: regular
@@ -5196,7 +5196,7 @@ tome: regular
 tomo: obscure
 toms: special
 tone: regular
-tong: special
+tong: regular
 tonk: obscure
 tons: regular
 tony: special
@@ -5550,13 +5550,13 @@ wale: regular
 wali: special
 walk: regular
 wall: regular
-walt: regular
+walt: special
 waly: obscure
 wame: obscure
 wand: regular
 wane: regular
-wang: regular
-wank: regular
+wang: special
+wank: special
 wans: obscure
 want: regular
 wany: obscure

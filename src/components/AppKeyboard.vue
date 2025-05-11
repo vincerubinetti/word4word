@@ -9,7 +9,6 @@
   </button>
   <Teleport to="body">
     <div
-      ref="keyboardElement"
       :class="['keyboard', !show && 'hide']"
       @touchstart.prevent
       @mousedown.prevent
@@ -45,7 +44,6 @@
 <script setup lang="ts">
 import { onUnmounted, ref, useTemplateRef, watchEffect } from "vue";
 import { CircleCheckBig, Delete, Keyboard, KeyboardOff } from "lucide-vue-next";
-import { useElementSize } from "@vueuse/core";
 
 type Props = {
   /** input element to hook into */
@@ -53,8 +51,6 @@ type Props = {
 };
 
 const { input } = defineProps<Props>();
-
-const keyboardElement = useTemplateRef("keyboardElement");
 
 /** keyboard key rows */
 const keys = [
@@ -72,16 +68,6 @@ watchEffect(() => {
   if (show.value) input?.setAttribute("inputmode", "none");
   else input?.removeAttribute("inputmode");
 });
-
-/** size of keyboard */
-const measure = useElementSize(keyboardElement);
-
-/** make room on screen for keyboard */
-watchEffect(
-  () =>
-    (document.body.style.paddingBottom =
-      (show.value ? measure.height.value : 0) + "px"),
-);
 
 /** on key press */
 const type = (key: string) => {
@@ -109,14 +95,13 @@ const type = (key: string) => {
 /** reset external things */
 onUnmounted(() => {
   input?.setAttribute("inputmode", "none");
-  document.body.style.paddingBottom = "";
 });
 </script>
 
 <style scoped>
 .keyboard {
   display: grid;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   grid-template-columns: repeat(20, 1fr);
   grid-auto-rows: 40px;

@@ -90,7 +90,6 @@
             :key="index"
             :class="['row', selected?.text === word.text && 'selected']"
             tabindex="0"
-            v-tooltip="'See info about word'"
             @click="select(word)"
             @keydown.enter="select(word)"
           >
