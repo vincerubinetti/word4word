@@ -3,7 +3,8 @@
   <body>
     <script type="text/javascript">
       console.debug("Redirecting from:", location);
-      const { origin, pathname, search, hash } = location;
+      let { origin, pathname, search, hash } = location;
+      pathname = pathname.replace(/^\/word4word/, "");
       sessionStorage.redirectPath = pathname + search + hash;
       location = "/word4word";
     </script>
