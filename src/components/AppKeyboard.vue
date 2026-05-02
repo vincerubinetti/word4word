@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, useTemplateRef, watchEffect } from "vue";
+import { onUnmounted, ref, watchEffect } from "vue";
 import { CircleCheckBig, Delete, Keyboard, KeyboardOff } from "lucide-vue-next";
 
 type Props = {
